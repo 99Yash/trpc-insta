@@ -7,10 +7,45 @@ import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
 import '../styles/globals.css';
 import { inter } from '@/styles/fonts';
+import { ToastProvider } from '@/components/toastProvider';
 
 export const metadata: Metadata = {
-  title: 'TRINSTA',
-  description: 'Instagram: t3-stack. Shadcn UI. Server Components',
+  title: {
+    default: 'Trinsta',
+    template: '%s | Trinsta',
+  },
+  metadataBase: new URL('https://trpc-insta.vercel.app'),
+  description:
+    'Instagram Clone using the t3-stack: tRPC. Shadcn UI. Server Components',
+  keywords: [
+    'Instagram',
+    'Clone',
+    'Next js',
+    'App Router',
+    'Tailwind',
+    'React',
+    'Radix UI',
+    'Clerk Auth',
+    'Clerk.com',
+    'Clerk.dev',
+    'TSX',
+    'Typescript',
+    'tRPC',
+    'Server-Components',
+    'Shadcn UI',
+  ],
+  authors: {
+    name: 'Yash Gourav Kar',
+    url: 'https://github.com/99Yash',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    title: 'Trinsta',
+    description: 'Instagram with the best from the React ecosystem',
+    url: 'https://trpc-insta.vercel.app',
+    siteName: 'trpc-insta.vercel.app',
+  },
 };
 
 export default function RootLayout({
@@ -25,8 +60,10 @@ export default function RootLayout({
           <body className={` min-h-screen antialiased ${inter.className}`}>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
               <Header />
-              {children}
               <TailwindIndicator />
+              <div className="container max-w-7xl pt-14 mx-auto h-full">
+                <ToastProvider>{children}</ToastProvider>
+              </div>
               <Toaster />
             </ThemeProvider>
           </body>
