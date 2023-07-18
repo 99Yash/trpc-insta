@@ -120,7 +120,6 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure;
 
 /**
  * Protected (authenticated) procedure
@@ -130,4 +129,5 @@ export const publicProcedure = t.procedure;
  *
  * @see https://trpc.io/docs/procedures
  */
+export const publicProcedure = t.procedure;
 export const protectedProcedure = t.procedure.use(isAuthed);

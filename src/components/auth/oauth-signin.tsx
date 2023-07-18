@@ -1,11 +1,11 @@
 'use client';
 
-import { isClerkAPIResponseError, useSignIn } from '@clerk/nextjs';
-import { OAuthStrategy } from '@clerk/nextjs/dist/types/server';
+import { isClerkAPIResponseError, useSignUp } from '@clerk/nextjs';
+import type { OAuthStrategy } from '@clerk/nextjs/dist/types/server';
 import React from 'react';
 import { Icons } from '../icons';
 import { Button } from '../ui/button';
-import { toast } from '../ui/use-toast';
+import { useToast } from '../ui/use-toast';
 
 const OAuthSignIn = () => {
   const oauthProviders = [
@@ -16,14 +16,16 @@ const OAuthSignIn = () => {
     icon: keyof typeof Icons;
     strategy: OAuthStrategy;
   }[];
-  const { signIn, isLoaded: signInLoaded } = useSignIn();
+
+  const { toast } = useToast();
+  const { signUp, isLoaded } = useSignUp();
   const [isLoading, setIsLoading] = React.useState<OAuthStrategy | null>(null);
 
   async function oauthSignIn(provider: OAuthStrategy) {
-    if (!signInLoaded) return null;
+    if (!isLoaded) return null;
     try {
       setIsLoading(provider);
-      await signIn.authenticateWithRedirect({
+      await signUp.authenticateWithRedirect({
         strategy: provider,
         redirectUrl: '/sso-callback',
         redirectUrlComplete: '/',

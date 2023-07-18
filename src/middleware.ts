@@ -15,6 +15,31 @@ export default authMiddleware({
   async afterAuth(auth, req) {
     if (auth.isPublicRoute) {
       //  For public routes, we don't need to do anything
+
+      if (auth.userId) {
+        const user = await clerkClient.users.getUser(auth.userId);
+
+        if (!user) {
+          throw new Error('User not found.');
+        }
+
+        // If the user doesn't have a username, set something default
+        if (!user.unsafeMetadata.username) {
+          await clerkClient.users.updateUser(auth.userId, {
+            unsafeMetadata: {
+              username: (
+                (user.firstName ? user.firstName : '') +
+                (user.lastName ? user.lastName : '') +
+                user.id.substring(8, 12) +
+                Math.floor(Math.random() * 100).toString()
+              )
+                .trim()
+                .replace(/\s/g, '')
+                .toLowerCase() satisfies PublicMetadata,
+            },
+          });
+        }
+      }
       return NextResponse.next();
     }
     const url = new URL(req.nextUrl.origin);
@@ -33,13 +58,12 @@ export default authMiddleware({
 
     // If the user doesn't have a username, set something default
     if (!user.unsafeMetadata.username) {
-      console.log('mid');
       await clerkClient.users.updateUser(auth.userId, {
         unsafeMetadata: {
           username: (
             (user.firstName ? user.firstName : '') +
             (user.lastName ? user.lastName : '') +
-            user.id.substring(5, 8) +
+            user.id.substring(8, 12) +
             Math.floor(Math.random() * 100).toString()
           )
             .trim()
