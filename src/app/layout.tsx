@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'TRINSTA',
-  description: 'Instagram t3 stack Server Components',
+  description: 'Instagram: t3-stack. Shadcn UI. Server Components',
 };
 
 export default function RootLayout({

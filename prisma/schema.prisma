@@ -9,11 +9,42 @@ datasource db {
     relationMode = "prisma"
 }
 
-model Comment{
-    id          String   @id @default(cuid())
-    text        String
-    authorId    String
-    postId      String
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+model Like {
+  id        String   @id @default(cuid())
+  authorId  String   @unique
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([postId, authorId], name: "Like_PostId_AuthorId_Index")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  authorId  String   @unique
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  text      String
+  likes     Int
+  createdAt DateTime @default(now())
+
+   @@index([postId, authorId], name: "Comment_PostId_AuthorId_Index")
+}
+
+model Post {
+  id        String    @id @default(cuid())
+  authorId  String    @unique
+  caption   String 
+  likes     Like[]
+  comments  Comment[]
+  picture   Json?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([authorId], name: "Post_AuthorId_Index")
+}
+
+model Followers {
+  id         String   @id @default(cuid())
+  followerId String   @unique
 }
