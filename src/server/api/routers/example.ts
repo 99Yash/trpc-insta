@@ -1,4 +1,6 @@
+import { userPublicMetadataSchema } from '@/lib/validators';
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import { clerkClient } from '@clerk/nextjs';
 import { z } from 'zod';
 
 export const exampleRouter = createTRPCRouter({
@@ -9,9 +11,22 @@ export const exampleRouter = createTRPCRouter({
       })
     )
     .query(({ input, ctx }) => {
-      console.log(ctx.auth);
       return {
         greeting: `hello to ${ctx.auth.user?.firstName} by ${input.name}`,
       };
+    }),
+  updateMetadata: protectedProcedure
+    .input(userPublicMetadataSchema)
+    .mutation(async ({ ctx, input }) => {
+      const {
+        auth: { userId },
+      } = ctx;
+      const { username, bio } = input;
+      return await clerkClient.users.updateUser(userId, {
+        unsafeMetadata: {
+          username,
+          bio,
+        },
+      });
     }),
 });

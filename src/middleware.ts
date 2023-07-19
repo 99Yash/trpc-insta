@@ -29,7 +29,6 @@ export default authMiddleware({
             unsafeMetadata: {
               username: (
                 (user.firstName ? user.firstName : '') +
-                (user.lastName ? user.lastName : '') +
                 user.id.substring(8, 12) +
                 Math.floor(Math.random() * 100).toString()
               )
@@ -62,7 +61,6 @@ export default authMiddleware({
         unsafeMetadata: {
           username: (
             (user.firstName ? user.firstName : '') +
-            (user.lastName ? user.lastName : '') +
             user.id.substring(8, 12) +
             Math.floor(Math.random() * 100).toString()
           )

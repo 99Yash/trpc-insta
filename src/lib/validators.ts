@@ -7,9 +7,14 @@ export const userPublicMetadataSchema = z.object({
       message: 'Bio must be less than 300 characters',
     })
     .optional(),
-  username: z.string().max(55, {
-    message: 'Username must be less than 85 characters',
-  }),
+  username: z
+    .string()
+    .min(2, {
+      message: 'Username must be at least 2 characters',
+    })
+    .max(55, {
+      message: 'Username must be less than 55 characters',
+    }),
 });
 
 export type PublicMetadata = z.infer<

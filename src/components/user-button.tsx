@@ -29,12 +29,12 @@ export const UserButton = () => {
           <Avatar>
             <AvatarImage
               className="h-10 w-10"
-              src={user?.profileImageUrl}
+              src={user?.imageUrl}
               alt={user?.firstName || 'You'}
             />
           </Avatar>
         ) : (
-          <Skeleton className="h-10 w-10 rounded-full bg-slate-400 " />
+          <Skeleton className="h-10 w-10 rounded-full " />
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className={` ${inter.className} `} align="end">
@@ -52,13 +52,12 @@ export const UserButton = () => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          onClick={() =>
-            void router.push(`/${user?.unsafeMetadata.username as string}`)
-          }
+          onClick={() => void router.push(`/${user?.id}`)}
           className="cursor-pointer"
         >
           <User className="mr-2 h-4 w-4" />
           <span className="font-normal text-gray-300">View Profile</span>
+          <DropdownMenuShortcut className="font-black">⌘P</DropdownMenuShortcut>
         </DropdownMenuItem>
 
         <DropdownMenuItem
@@ -71,7 +70,10 @@ export const UserButton = () => {
         </DropdownMenuItem>
 
         <DropdownMenuItem
-          onClick={() => void signOut()}
+          onClick={() => {
+            signOut();
+            router.push('/');
+          }}
           className="cursor-pointer"
         >
           <LogOut className="mr-2 h-4 w-4" />
