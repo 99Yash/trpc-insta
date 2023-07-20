@@ -8,20 +8,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-model User {
-  id        String      @id @default(cuid())
-  clerkId   String      @unique
-  email     String?     @unique
-  name      String
-  username String @unique
-  bio       String?    @default("")
-  profileImageUrl String
-  posts     Post[]
-  followers Followers[]
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-}
-
 model Like {
   id        String   @id @default(cuid())
   authorId  String   @unique
@@ -47,7 +33,6 @@ model Comment {
 model Post {
   id        String    @id @default(cuid())
   authorId  String    @unique
-  author    User      @relation(fields: [authorId], references: [clerkId])
   caption   String
   likes     Like[]
   comments  Comment[]
@@ -61,5 +46,4 @@ model Post {
 model Followers {
   id         String @id @default(cuid())
   followerId String @unique
-  follower   User   @relation(fields: [followerId], references: [clerkId])
 }

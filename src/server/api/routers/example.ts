@@ -15,6 +15,18 @@ export const exampleRouter = createTRPCRouter({
         greeting: `hello to ${ctx.auth.user?.firstName} by ${input.name}`,
       };
     }),
+  updatePicture: protectedProcedure
+    .input(
+      z.object({
+        imgUrl: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const {
+        auth: { userId },
+      } = ctx;
+      (await clerkClient.users.getUser(userId)).imageUrl;
+    }),
   updateMetadata: protectedProcedure
     .input(userPublicMetadataSchema)
     .mutation(async ({ ctx, input }) => {

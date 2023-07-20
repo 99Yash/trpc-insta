@@ -1,7 +1,7 @@
 'use client';
 import { userPublicMetadataSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Settings2Icon } from 'lucide-react';
+import { Loader2, Settings2Icon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '../ui/button';
@@ -30,7 +30,10 @@ import { useRouter } from 'next/navigation';
 type UsernameBioMetadata = z.infer<typeof userPublicMetadataSchema>;
 
 const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
-  const defaultValues: Partial<UsernameBioMetadata> = {};
+  const defaultValues: UsernameBioMetadata = {
+    username,
+    bio,
+  };
   const { toast } = useToast();
   const router = useRouter();
 
@@ -46,6 +49,7 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
         title: 'Profile updated',
         description: 'Your profile has been updated',
         variant: 'default',
+        duration: 1300,
       });
     },
     onError: (err) =>
@@ -53,6 +57,7 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
         title: 'Uh oh..',
         description: err.message,
         variant: 'destructive',
+        duration: 1900,
       }),
   });
 
@@ -66,8 +71,8 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="mb-2" variant={'ghost'}>
-          <Settings2Icon className="h-4 w-4" />{' '}
+        <Button className="mb-2" variant={'secondary'}>
+          <Settings2Icon className="h-4 w-4 mr-2" /> Edit
         </Button>
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">
@@ -83,7 +88,11 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                 <FormItem>
                   <FormLabel className="text-gray-300">Username</FormLabel>
                   <FormControl>
-                    <Input placeholder={username} {...field} />
+                    <Input
+                      {...form.register('username')}
+                      placeholder={username}
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
                     Your public display name. It can be your real name or a
@@ -101,6 +110,7 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                   <FormLabel className="text-gray-300">Bio</FormLabel>
                   <FormControl>
                     <Textarea
+                      {...form.register('bio')}
                       placeholder={
                         bio.length > 0
                           ? bio
@@ -125,6 +135,7 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                 disabled={isLoading}
                 className="m-2"
               >
+                {isLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
                 Save Changes
               </Button>
             </div>
