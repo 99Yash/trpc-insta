@@ -24,18 +24,16 @@ export default authMiddleware({
         }
 
         // If the user doesn't have a username, set something default
-        if (!user.unsafeMetadata.username) {
+        if (!user.username) {
           await clerkClient.users.updateUser(auth.userId, {
-            unsafeMetadata: {
-              username: (
-                (user.firstName ? user.firstName : '') +
-                user.id.substring(8, 12) +
-                Math.floor(Math.random() * 100).toString()
-              )
-                .trim()
-                .replace(/\s/g, '')
-                .toLowerCase() satisfies PublicMetadata,
-            },
+            username: (
+              (user.firstName ? user.firstName : '') +
+              user.id.substring(8, 12) +
+              Math.floor(Math.random() * 100).toString()
+            )
+              .trim()
+              .replace(/\s/g, '')
+              .toLowerCase() satisfies PublicMetadata,
           });
         }
       }
@@ -56,18 +54,16 @@ export default authMiddleware({
     }
 
     // If the user doesn't have a username, set something default
-    if (!user.unsafeMetadata.username) {
+    if (!user.username) {
       await clerkClient.users.updateUser(auth.userId, {
-        unsafeMetadata: {
-          username: (
-            (user.firstName ? user.firstName : '') +
-            user.id.substring(8, 12) +
-            Math.floor(Math.random() * 100).toString()
-          )
-            .trim()
-            .replace(/\s/g, '')
-            .toLowerCase() satisfies PublicMetadata,
-        },
+        username: (
+          (user.firstName ? user.firstName : '') +
+          user.id.substring(8, 12) +
+          Math.floor(Math.random() * 100).toString()
+        )
+          .trim()
+          .replace(/\s/g, '')
+          .toLowerCase() satisfies PublicMetadata,
       });
     }
   },

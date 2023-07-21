@@ -18,14 +18,14 @@ export const exampleRouter = createTRPCRouter({
   updatePicture: protectedProcedure
     .input(
       z.object({
-        imgUrl: z.string(),
+        image: z.any(),
+        caption: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const {
         auth: { userId },
       } = ctx;
-      (await clerkClient.users.getUser(userId)).imageUrl;
     }),
   updateMetadata: protectedProcedure
     .input(userPublicMetadataSchema)
@@ -34,11 +34,13 @@ export const exampleRouter = createTRPCRouter({
         auth: { userId },
       } = ctx;
       const { username, bio } = input;
-      return await clerkClient.users.updateUser(userId, {
+      await clerkClient.users.updateUser(userId, {
         unsafeMetadata: {
-          username,
           bio,
         },
+      });
+      return await clerkClient.users.updateUser(userId, {
+        username,
       });
     }),
 });

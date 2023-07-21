@@ -1,9 +1,12 @@
 'use client';
-import { userPublicMetadataSchema } from '@/lib/validators';
+import { api } from '@/lib/api/api';
+import { addPostSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, Settings2Icon } from 'lucide-react';
+import { FileImage, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -22,28 +25,20 @@ import {
   FormMessage,
 } from '../ui/form';
 import { Input } from '../ui/input';
-import { Textarea } from '../ui/textarea';
-import { api } from '@/lib/api/api';
 import { useToast } from '../ui/use-toast';
-import { useRouter } from 'next/navigation';
-
-type UsernameBioMetadata = z.infer<typeof userPublicMetadataSchema>;
-
-const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
-  const defaultValues: UsernameBioMetadata = {
-    username,
-    bio,
-  };
-  const { toast } = useToast();
+type addPostResolver = z.infer<typeof addPostSchema>;
+const CreatePost = () => {
   const router = useRouter();
-
-  const form = useForm<UsernameBioMetadata>({
-    resolver: zodResolver(userPublicMetadataSchema),
-    defaultValues,
-    mode: 'onChange',
+  const { toast } = useToast();
+  const form = useForm({
+    resolver: zodResolver(addPostSchema),
+    defaultValues: {
+      image: '',
+      caption: '',
+    } satisfies addPostResolver,
   });
 
-  const { mutate, isLoading } = api.example.updateMetadata.useMutation({
+  const { mutate, isLoading } = api.example.updatePicture.useMutation({
     onSuccess: () => {
       toast({
         title: 'Profile updated',
@@ -61,9 +56,10 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
       }),
   });
 
-  const onSubmit = (inputs: UsernameBioMetadata) => {
+  const onSubmit = (inputs: addPostResolver) => {
     mutate({
-      ...inputs,
+      image: inputs.image,
+      caption: inputs.caption,
     });
     router.refresh();
   };
@@ -71,32 +67,32 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="mb-2" variant={'secondary'}>
-          <Settings2Icon className="h-4 w-4 mr-2" /> Edit
+        <Button variant="secondary" className="m-2">
+          <Icons.image className="h-4 w-4 mr-2" />
+          New Post
         </Button>
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">
         <DialogHeader>
-          <DialogTitle className="text-gray-300">Edit Profile</DialogTitle>
+          <DialogTitle className="text-gray-300 mb-4">Add Post</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="username"
+              name="caption"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-300">Username</FormLabel>
+                  <FormLabel className="text-gray-300">Caption</FormLabel>
                   <FormControl>
                     <Input
-                      {...form.register('username')}
-                      placeholder={username}
+                      {...form.register('caption')}
+                      placeholder={'Enter Caption'}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Your public display name. It can be your real name or a
-                    pseudonym.
+                    Add a catchy title that makes your post interesting.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -104,25 +100,20 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
             />
             <FormField
               control={form.control}
-              name="bio"
+              name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-300">Bio</FormLabel>
+                  <FormLabel className="text-gray-300">Image</FormLabel>
                   <FormControl>
-                    <Textarea
-                      {...form.register('bio')}
-                      placeholder={
-                        bio.length > 0
-                          ? bio
-                          : 'Tell us a little bit about yourself'
-                      }
+                    <Input
+                      type="file"
+                      {...form.register('image')}
                       className="resize-none"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    This is your bio. It will be visible to everyone who visits
-                    your page.
+                    Add any picture you feel worth sharing.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -136,7 +127,7 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                 className="m-2"
               >
                 {isLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                Save Changes
+                Create
               </Button>
             </div>
           </form>
@@ -146,4 +137,4 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
   );
 };
 
-export default EditProfile;
+export default CreatePost;

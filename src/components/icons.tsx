@@ -4,12 +4,14 @@ import {
   LucideProps,
   MessageSquare,
   User,
+  Image,
 } from 'lucide-react';
 
 export const Icons = {
   user: User,
   spinner: Loader2,
   logo: Command,
+  image: Image,
 
   google: ({ ...props }: LucideProps) => (
     <svg

@@ -13,7 +13,7 @@
 /out/
 
 .env
-
+*.todo
 # production
 /build
 

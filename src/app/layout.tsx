@@ -5,9 +5,10 @@ import { Toaster } from '@/components/ui/toaster';
 import TRPCProvider from '@/context/trpc-provider';
 import { ClerkProvider } from '@clerk/nextjs';
 import type { Metadata } from 'next';
-import '../styles/globals.css';
 import { inter } from '@/styles/fonts';
 import { ToastProvider } from '@/components/toastProvider';
+import '@uploadthing/react/styles.css';
+import '../styles/globals.css';
 
 export const metadata: Metadata = {
   title: {

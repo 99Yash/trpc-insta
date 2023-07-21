@@ -1,3 +1,4 @@
+import CreatePost from '@/components/forms/create-post';
 import EditProfile from '@/components/forms/edit-profile';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -68,6 +69,7 @@ const Page = async ({
                 : ''
             }
           />
+          <CreatePost />
         </div>
         <h4 className="text-sm md:text-md font-semibold text-gray-400">
           {clerkUser.unsafeMetadata.username as string}

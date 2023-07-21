@@ -8,12 +8,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useRouter } from 'next/navigation';
 import { inter } from '@/styles/fonts';
-import { RedirectToUserProfile, useClerk } from '@clerk/nextjs';
-import { LogOut, PlusCircle, Settings, Settings2, User } from 'lucide-react';
+import { useClerk } from '@clerk/nextjs';
+import { LogOut, PlusCircle, Settings, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { Avatar, AvatarImage } from './ui/avatar';
-import { Skeleton } from './ui/skeleton';
+import { Button } from './ui/button';
 import {
   Dialog,
   DialogContent,
@@ -23,7 +23,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
-import { Button } from './ui/button';
+import { Skeleton } from './ui/skeleton';
 
 export const UserButton = () => {
   const { user, signOut } = useClerk();
@@ -67,20 +67,11 @@ export const UserButton = () => {
             className="cursor-pointer"
           >
             <User className="mr-2 h-4 w-4" />
-            <span className="font-normal text-gray-300">View Profile</span>
-            <DropdownMenuShortcut className="font-black">
+            <span className="font-normal text-gray-300">
+              {user?.firstName}&apos;s Profile
+            </span>
+            <DropdownMenuShortcut className="font-semibold">
               ⌘P
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
-            //todo add onClick
-            className="cursor-pointer"
-          >
-            <PlusCircle className="mr-2 h-4 w-4" />
-            <span className="font-normal text-gray-300">Create New Post</span>
-            <DropdownMenuShortcut className="font-black">
-              ⌘N
             </DropdownMenuShortcut>
           </DropdownMenuItem>
 
@@ -90,8 +81,8 @@ export const UserButton = () => {
           >
             <Settings className="mr-2 h-4 w-4" />
             <span className="text-gray-300 font-normal">Your Account</span>
-            <DropdownMenuShortcut className="font-black">
-              ⌘P
+            <DropdownMenuShortcut className="font-semibold">
+              ⇧⌘P
             </DropdownMenuShortcut>
           </DropdownMenuItem>
 
@@ -101,13 +92,14 @@ export const UserButton = () => {
             <DropdownMenuItem className="cursor-pointer mt-2">
               <LogOut className="mr-2 h-4 w-4" />
               <span className="font-normal text-gray-300">Log out</span>
-              <DropdownMenuShortcut className="font-black">
+              <DropdownMenuShortcut className="font-semibold">
                 ⇧⌘Q
               </DropdownMenuShortcut>
             </DropdownMenuItem>
           </DialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
+      {/*//? dialog for logging out */}
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-gray-300">You sure?</DialogTitle>

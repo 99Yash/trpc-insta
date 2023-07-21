@@ -4,7 +4,7 @@ const nextConfig = {
     removeConsole: true,
   },
   images: {
-    domains: ['img.clerk.com'],
+    domains: ['uploadthing.com', 'img.clerk.com'],
   },
   experimental: {
     appDir: true,
