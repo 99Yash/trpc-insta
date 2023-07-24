@@ -1,16 +1,14 @@
-'use client';
-
-//@typescript-eslint/no-unsafe-assignment
+import { getSession } from '@/lib/session';
 import { inter } from '@/styles/fonts';
-import { useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import { Icons } from './icons';
 import { UserButton } from './user-button';
 
-const Header = () => {
-  const { isSignedIn } = useAuth();
+const Header = async () => {
+  const session = await getSession();
+
   return (
-    <header className={`${inter.className} absolute z-30 w-full`}>
+    <header className={`${inter.className} sticky z-30 w-full`}>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">
           <Link
@@ -28,7 +26,7 @@ const Header = () => {
             {/* Desktop sign in links */}
             <ul className="flex grow flex-wrap items-center justify-end">
               <li>
-                {!isSignedIn ? (
+                {!session?.user ? (
                   <Link
                     className="text-sm font-medium text-zinc-300 duration-500 hover:text-white"
                     href="/sign-in"
@@ -36,7 +34,7 @@ const Header = () => {
                     Sign In
                   </Link>
                 ) : (
-                  <UserButton />
+                  <UserButton user={session.user} />
                 )}
               </li>
             </ul>

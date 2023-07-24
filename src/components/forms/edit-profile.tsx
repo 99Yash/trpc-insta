@@ -1,7 +1,9 @@
 'use client';
+import { api } from '@/lib/api/api';
 import { userPublicMetadataSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Settings2Icon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '../ui/button';
@@ -23,9 +25,7 @@ import {
 } from '../ui/form';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
-import { api } from '@/lib/api/api';
 import { useToast } from '../ui/use-toast';
-import { useRouter } from 'next/navigation';
 
 type UsernameBioMetadata = z.infer<typeof userPublicMetadataSchema>;
 

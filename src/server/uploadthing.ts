@@ -12,7 +12,7 @@ const auth = (req: NextApiRequest, res: NextApiResponse) => {
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
-  imageUploader: f({ image: { maxFileSize: '4MB' } })
+  imageUploader: f({ image: { maxFileSize: '16MB' } })
     // Set permissions and file types for this FileRoute
     // Todo: wait for uploadthing or imagrate to app routes
     .middleware(({ req, res }) => {

@@ -5,6 +5,11 @@ import {
   MessageSquare,
   User,
   Image,
+  UploadCloud,
+  Crop,
+  RefreshCw,
+  X,
+  Trash,
 } from 'lucide-react';
 
 export const Icons = {
@@ -12,6 +17,11 @@ export const Icons = {
   spinner: Loader2,
   logo: Command,
   image: Image,
+  upload: UploadCloud,
+  crop: Crop,
+  reset: RefreshCw,
+  close: X,
+  trash: Trash,
 
   google: ({ ...props }: LucideProps) => (
     <svg

@@ -1,13 +1,9 @@
 import Header from '@/components/header';
 import TailwindIndicator from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
 import TRPCProvider from '@/context/trpc-provider';
-import { ClerkProvider } from '@clerk/nextjs';
-import type { Metadata } from 'next';
 import { inter } from '@/styles/fonts';
-import { ToastProvider } from '@/components/toastProvider';
-import '@uploadthing/react/styles.css';
+import type { Metadata } from 'next';
 import '../styles/globals.css';
 
 export const metadata: Metadata = {
@@ -23,12 +19,12 @@ export const metadata: Metadata = {
     'Clone',
     'Next js',
     'App Router',
-    'Tailwind',
+    'Tailwind CSS',
     'React',
     'Radix UI',
-    'Clerk Auth',
-    'Clerk.com',
-    'Clerk.dev',
+    'Next Auth',
+    'Prisma',
+    'Vercel',
     'TSX',
     'Typescript',
     'tRPC',
@@ -55,21 +51,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <TRPCProvider>
-        <html lang="en" suppressHydrationWarning>
-          <body className={` min-h-screen antialiased ${inter.className}`}>
-            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-              <Header />
-              <TailwindIndicator />
-              <div className="container max-w-7xl pt-14 mx-auto h-full">
-                <ToastProvider>{children}</ToastProvider>
-              </div>
-              <Toaster />
-            </ThemeProvider>
-          </body>
-        </html>
-      </TRPCProvider>
-    </ClerkProvider>
+    <TRPCProvider>
+      <html lang="en" suppressHydrationWarning>
+        <head />
+        <body className={` min-h-screen antialiased ${inter.className}`}>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <Header />
+            {children}
+            <TailwindIndicator />
+          </ThemeProvider>
+        </body>
+      </html>
+    </TRPCProvider>
   );
 }

@@ -1,5 +1,4 @@
 'use client';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { inter } from '@/styles/fonts';
-import { useClerk } from '@clerk/nextjs';
-import { LogOut, PlusCircle, Settings, User } from 'lucide-react';
+import { LogOut, Settings, UserIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
@@ -24,9 +22,14 @@ import {
   DialogTrigger,
 } from './ui/dialog';
 import { Skeleton } from './ui/skeleton';
+import { User } from 'next-auth';
+import { signOut } from 'next-auth/react';
 
-export const UserButton = () => {
-  const { user, signOut } = useClerk();
+interface UserButtonProps extends React.HTMLAttributes<HTMLDivElement> {
+  user: Pick<User, 'name' | 'image' | 'email'>;
+}
+
+export const UserButton = ({ user }: UserButtonProps) => {
   const router = useRouter();
 
   return (
@@ -36,12 +39,12 @@ export const UserButton = () => {
           asChild
           className="border-none focus-within:border-none hover:cursor-pointer focus:border-none"
         >
-          {user?.profileImageUrl ? (
+          {user?.image ? (
             <Avatar>
               <AvatarImage
                 className="h-10 w-10"
-                src={user?.imageUrl}
-                alt={user?.firstName || 'You'}
+                src={user?.image}
+                alt={user?.name?.split(' ')[0] || 'You'}
               />
             </Avatar>
           ) : (
@@ -51,30 +54,28 @@ export const UserButton = () => {
         <DropdownMenuContent className={` ${inter.className} `} align="end">
           <div className="flex items-center justify-start gap-2 p-2">
             <div className="flex flex-col space-y-1 leading-none">
-              {user?.fullName && <p className="font-medium">{user.fullName}</p>}
-              {user?.primaryEmailAddress && (
+              {user?.name && <p className="font-medium">{user.name}</p>}
+              {user?.email && (
                 <p className="w-[200px] truncate text-sm font-medium text-gray-500">
-                  {user?.primaryEmailAddress?.emailAddress}
+                  {user?.email}
                 </p>
               )}
             </div>
           </div>
-
           <DropdownMenuSeparator />
-
           <DropdownMenuItem
-            onClick={() => void router.push(`/user/${user?.id}`)}
+            onClick={() => void router.push(`/`)}
             className="cursor-pointer"
           >
-            <User className="mr-2 h-4 w-4" />
+            <UserIcon className="mr-2 h-4 w-4" />
             <span className="font-normal text-gray-300">
-              {user?.firstName}&apos;s Profile
+              {user?.name?.split(' ')[0]}&apos;s Profile
             </span>
             <DropdownMenuShortcut className="font-semibold">
               ⌘P
             </DropdownMenuShortcut>
           </DropdownMenuItem>
-
+          {/* //todo add create a post */}
           <DropdownMenuItem
             onClick={() => void router.push(`/user/settings`)}
             className="cursor-pointer"
@@ -82,12 +83,10 @@ export const UserButton = () => {
             <Settings className="mr-2 h-4 w-4" />
             <span className="text-gray-300 font-normal">Your Account</span>
             <DropdownMenuShortcut className="font-semibold">
-              ⇧⌘P
+              ⇧⌘A
             </DropdownMenuShortcut>
           </DropdownMenuItem>
-
           <DropdownMenuSeparator />
-
           <DialogTrigger asChild>
             <DropdownMenuItem className="cursor-pointer mt-2">
               <LogOut className="mr-2 h-4 w-4" />

@@ -8,31 +8,61 @@ datasource db {
   relationMode = "prisma"
 }
 
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  
+  profile Profile?
+  accounts Account[]
+  sessions Session[]
+  posts    Post[]
+  likes    Like[]
+
+  @@index([id])
+}
+
+model Profile{
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  bio       String?
+  username   String?
+
+  @@index([userId])
+}
+
+
 model Like {
   id        String   @id @default(cuid())
-  authorId  String   @unique
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
   postId    String
   createdAt DateTime @default(now())
   post      Post     @relation(fields: [postId], references: [id])
 
-  @@index([postId, authorId], map: "Like_PostId_AuthorId_Index")
+  @@index([postId, userId], map: "Like_PostId_UserId_Index")
 }
 
 model Comment {
   id        String   @id @default(cuid())
-  authorId  String   @unique
+  userId    String   @unique
+  //user User @relation(......) is not required for my app.
   postId    String
   text      String
   likes     Int
   createdAt DateTime @default(now())
   post      Post     @relation(fields: [postId], references: [id])
 
-  @@index([postId, authorId], map: "Comment_PostId_AuthorId_Index")
+  @@index([postId, userId], map: "Comment_PostId_userId_Index")
 }
 
 model Post {
   id        String    @id @default(cuid())
-  authorId  String    @unique
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id])
   caption   String
   picture   Json?
   createdAt DateTime  @default(now())
@@ -40,10 +70,48 @@ model Post {
   likes     Like[]
   comments  Comment[]
 
-  @@index([authorId], map: "Post_AuthorId_Index")
+  @@index([userId], map: "Post_userId_Index")
 }
 
 model Followers {
-  id         String @id @default(cuid())
-  followerId String @unique
+  followingId String @unique 
+  followerId  String 
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

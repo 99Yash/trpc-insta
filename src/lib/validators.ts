@@ -18,8 +18,8 @@ export const userPublicMetadataSchema = z.object({
 });
 
 export const addPostSchema = z.object({
-  caption: z.string().optional(),
-  image: z.any(),
+  caption: z.string().default(''),
+  imgUrl: z.string(),
 });
 
 export type PublicMetadata = z.infer<
