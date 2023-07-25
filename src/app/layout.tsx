@@ -5,6 +5,7 @@ import TRPCProvider from '@/context/trpc-provider';
 import { inter } from '@/styles/fonts';
 import type { Metadata } from 'next';
 import '../styles/globals.css';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: {
@@ -57,7 +58,8 @@ export default function RootLayout({
         <body className={` min-h-screen antialiased ${inter.className}`}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <Header />
-            {children}
+            <div className="container max-w-7xl mx-auto h-full">{children}</div>
+            <Toaster />
             <TailwindIndicator />
           </ThemeProvider>
         </body>

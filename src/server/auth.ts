@@ -15,13 +15,14 @@ import GoogleProvider from 'next-auth/providers/google';
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
+
 declare module 'next-auth' {
+  interface User {
+    username: string;
+    id: string;
+  }
   interface Session extends DefaultSession {
-    user: {
-      id: string;
-      // ...other properties
-      // role: UserRole;
-    } & DefaultSession['user'];
+    user?: User & DefaultSession['user'];
   }
 
   // interface User {
@@ -42,8 +43,10 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
+        username: user.username,
       },
     }),
+
     redirect() {
       return '/';
     },

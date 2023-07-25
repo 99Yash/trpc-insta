@@ -16,24 +16,15 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   
-  profile Profile?
+  bio String?
+  username String? @default(cuid()) @unique
   accounts Account[]
   sessions Session[]
   posts    Post[]
   likes    Like[]
 
-  @@index([id])
+  @@index([id,username])
 }
-
-model Profile{
-  userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
-  bio       String?
-  username   String?
-
-  @@index([userId])
-}
-
 
 model Like {
   id        String   @id @default(cuid())

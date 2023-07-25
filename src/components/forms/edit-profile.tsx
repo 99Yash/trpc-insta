@@ -4,7 +4,7 @@ import { userPublicMetadataSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, Settings2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '../ui/button';
 import {
@@ -36,18 +36,23 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
   };
   const { toast } = useToast();
   const router = useRouter();
+  const apiCtx = api.useContext();
 
   const form = useForm<UsernameBioMetadata>({
     resolver: zodResolver(userPublicMetadataSchema),
     defaultValues,
     mode: 'onChange',
   });
+  const watchingUsername = form.watch('username');
 
-  const { mutate, isLoading } = api.example.updateMetadata.useMutation({
-    onSuccess: () => {
+  const updateProfileMutation = api.example.updateUsernameBio.useMutation({
+    onSuccess: async () => {
+      //! fix invalidate user error.
+      await apiCtx.example.fetchUser.invalidate();
+
       toast({
         title: 'Profile updated',
-        description: 'Your profile has been updated',
+        description: 'Your profile data has been updated',
         variant: 'default',
         duration: 1300,
       });
@@ -57,22 +62,29 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
         title: 'Uh oh..',
         description: err.message,
         variant: 'destructive',
-        duration: 1900,
+        duration: 8900,
       }),
   });
 
-  const onSubmit = (inputs: UsernameBioMetadata) => {
-    mutate({
-      ...inputs,
+  const onSubmit: SubmitHandler<UsernameBioMetadata> = async (
+    inputs: UsernameBioMetadata
+  ) => {
+    await updateProfileMutation.mutateAsync({
+      username: inputs.username,
+      bio: inputs.bio ? inputs.bio : '',
     });
-    router.refresh();
+    if (username === watchingUsername) {
+      return;
+    } else {
+      router.push(`/${inputs.username}`);
+    }
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button className="mb-2" variant={'secondary'}>
-          <Settings2Icon className="h-4 w-4 mr-2" /> Edit
+          <Settings2Icon className="h-4 w-4 mr-2" /> Edit Profile
         </Button>
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">
@@ -95,8 +107,8 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                     />
                   </FormControl>
                   <FormDescription>
-                    Your public display name. It can be your real name or a
-                    pseudonym.
+                    Your public display name. Changing this will reload this
+                    page.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -132,10 +144,12 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
               <Button
                 type="submit"
                 variant="default"
-                disabled={isLoading}
+                disabled={updateProfileMutation.isLoading}
                 className="m-2"
               >
-                {isLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+                {updateProfileMutation.isLoading && (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                )}
                 Save Changes
               </Button>
             </div>

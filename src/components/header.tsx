@@ -20,6 +20,8 @@ const Header = async () => {
               Trinsta.
             </span>
           </Link>
+
+          {/* //? Search bar */}
           {/* Desktop navigation */}
 
           <nav className="flex grow">

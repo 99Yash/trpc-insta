@@ -6,6 +6,7 @@ export const userPublicMetadataSchema = z.object({
     .max(300, {
       message: 'Bio must be less than 300 characters',
     })
+    .default('')
     .optional(),
   username: z
     .string()
