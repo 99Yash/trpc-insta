@@ -18,10 +18,34 @@ export const userPublicMetadataSchema = z.object({
     }),
 });
 
-export const addPostSchema = z.object({
-  caption: z.string().default(''),
-  imgUrl: z.string(),
-});
+export const addPostSchema = z
+  .object({
+    caption: z.string().default(''),
+    images: z.unknown().refine(
+      (val) => {
+        return val !== undefined;
+      },
+      {
+        message: 'Image is required and cannot be empty.',
+        path: ['images'],
+      }
+    ),
+  })
+  .refine(
+    (val) => {
+      //? This allows to accept a single image file as well, iff it is an instanceof File
+      if (!Array.isArray(val)) {
+        return val instanceof File;
+      } else {
+        return val.every((file) => file instanceof File);
+        //? Check for array of files
+      }
+    },
+    {
+      message: 'Image is required and cannot be null.',
+      path: ['images'],
+    }
+  );
 
 export type PublicMetadata = z.infer<
   typeof userPublicMetadataSchema.shape.username

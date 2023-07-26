@@ -1,13 +1,8 @@
 'use client';
-import { api } from '@/lib/api/api';
-import { addPostSchema } from '@/lib/validators';
-import { UploadButton } from '@/utils/uploadthing';
-import { zodResolver } from '@hookform/resolvers/zod';
-import Image from 'next/image';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { FileDialog } from '../file-dialog';
-import { Icons } from '../icons';
+
+import { OurFileRouter } from '@/server/uploadthing';
+import { generateReactHelpers } from '@uploadthing/react/hooks';
+import { ImagePlus } from 'lucide-react';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -16,6 +11,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
+import { useState, useTransition } from 'react';
+import { FileWithPreview } from '@/types';
+import { useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
@@ -23,70 +21,101 @@ import {
   FormLabel,
   UncontrolledFormMessage,
 } from '../ui/form';
+import Image from 'next/image';
+import { FileDialog } from '@/components/file-dialog';
+import { Icons } from '../icons';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { addPostSchema } from '@/lib/validators';
+import { z } from 'zod';
+import { Zoom } from '../zoom-image';
+import { customToastError } from '@/lib/utils';
+import { isArrayOfFile } from '../../lib/utils';
 import { Textarea } from '../ui/textarea';
-import { useToast } from '../ui/use-toast';
+import { api } from '@/lib/api/client';
+import { toast } from '../ui/use-toast';
 
-type addPostResolver = z.infer<typeof addPostSchema>;
+type Inputs = z.infer<typeof addPostSchema>;
+const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
 const CreatePost = () => {
-  const { toast } = useToast();
+  const [files, setFiles] = useState<FileWithPreview[] | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  const form = useForm<addPostResolver>({
+  const { isUploading, startUpload } = useUploadThing('imageUploader');
+
+  const form = useForm<Inputs>({
     resolver: zodResolver(addPostSchema),
-    mode: 'onChange',
   });
 
-  const { mutate, isLoading } = api.example.createPost.useMutation({
-    onSuccess: () => {
-      toast({
-        title: 'Profile updated',
-        description: 'Your profile has been updated',
-        variant: 'default',
-        duration: 1300,
-      });
-    },
-    onError: (err) =>
-      toast({
-        title: 'Uh oh..',
-        description: err.message,
-        variant: 'destructive',
-        duration: 1900,
-      }),
-  });
+  const previews = form.watch('images') as FileWithPreview[] | null;
 
-  const onSubmit = (inputs: addPostResolver) => {
-    mutate({
-      ...inputs,
+  function onSubmit(data: Inputs) {
+    startTransition(async () => {
+      try {
+        //?check if its a file & let uploadThing do its thing.
+
+        const addPostMutation = api.example.addPost.useMutation({
+          onSuccess: () => {
+            toast({
+              title: 'Success',
+              description: 'Your post has been created',
+              variant: 'default',
+              duration: 1200,
+            });
+          },
+          onError: (error) => {
+            toast({
+              title: 'Error',
+              description: 'Failed to create post',
+              variant: 'destructive',
+              duration: 2000,
+            });
+          },
+        });
+        const images = isArrayOfFile(data.images)
+          ? await startUpload(data.images).then((res) => {
+              const formattedImages = res?.map((image) => ({
+                id: image.fileKey,
+                url: image.fileUrl,
+              }));
+              return formattedImages ?? null;
+            })
+          : null;
+
+        await addPostMutation.mutateAsync({
+          caption: data.caption,
+          images: images,
+        });
+        //todo add procedure for adding a post to db.
+
+        form.reset();
+        setFiles(null);
+      } catch (err) {
+        customToastError(err);
+      }
     });
-    toast({
-      title: 'Post created',
-      description: 'Your post has been created',
-      variant: 'default',
-    });
-  };
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="m-2">
-          <Icons.image className="h-4 w-4 mr-2" />
-          New Post
+        <Button className="mb-2" variant={'secondary'}>
+          <ImagePlus className="h-4 w-4 mr-2" /> Create Post
         </Button>
       </DialogTrigger>
-      <DialogContent className=" sm:max-w-[475px]">
+      <DialogContent className="sm:max-w-[475px]">
         <DialogHeader>
-          <DialogTitle className="text-gray-300 mb-4">Add Post</DialogTitle>
+          <DialogTitle className="text-gray-300">
+            Share something new!
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form
-            className="grid w-full max-w-2xl gap-5"
-            onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormItem>
               <FormLabel>Caption</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Type product description here."
+                  placeholder="Add a caption here (optional)"
                   {...form.register('caption')}
                 />
               </FormControl>
@@ -94,15 +123,29 @@ const CreatePost = () => {
                 message={form.formState.errors.caption?.message}
               />
             </FormItem>
-
             <FormItem className="flex w-full flex-col gap-1.5">
               <FormLabel>Images</FormLabel>
+              {!isUploading && previews?.length ? (
+                <div className="flex items-center gap-2">
+                  {previews.map((file) => (
+                    <Zoom key={file.name}>
+                      <Image
+                        src={file.preview}
+                        alt={file.name}
+                        className="h-20 w-20 shrink-0 rounded-md object-cover object-center"
+                        width={230}
+                        height={230}
+                      />
+                    </Zoom>
+                  ))}
+                </div>
+              ) : null}
               <FormControl>
                 <FileDialog
                   setValue={form.setValue}
-                  name="imgUrl"
+                  name="images"
                   maxFiles={3}
-                  maxSize={1024 * 1024 * 4}
+                  maxSize={1024 * 1024 * 16}
                   files={files}
                   setFiles={setFiles}
                   isUploading={isUploading}
@@ -110,18 +153,18 @@ const CreatePost = () => {
                 />
               </FormControl>
               <UncontrolledFormMessage
-                message={form.formState.errors.imgUrl?.message}
+                message={form.formState.errors.images?.message}
               />
             </FormItem>
-            <Button className="w-fit" disabled={isPending}>
+            <Button type="submit" className="w-fit" disabled={isPending}>
               {isPending && (
                 <Icons.spinner
                   className="mr-2 h-4 w-4 animate-spin"
                   aria-hidden="true"
                 />
               )}
-              Add Product
-              <span className="sr-only">Add Product</span>
+              Create Post
+              <span className="sr-only">Create Post</span>
             </Button>
           </form>
         </Form>

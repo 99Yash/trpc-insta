@@ -1,10 +1,9 @@
 'use client';
-import React, { FC } from 'react';
-import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import { Icons } from './icons';
 import { signIn } from 'next-auth/react';
-import { prisma } from '@/server/db';
+import React, { FC } from 'react';
+import { Icons } from './icons';
+import { Button } from './ui/button';
 
 interface LoginButtonProps extends React.HTMLAttributes<HTMLDivElement> {}
 const LoginButton: FC<LoginButtonProps> = ({ className, ...props }) => {

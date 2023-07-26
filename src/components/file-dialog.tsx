@@ -1,27 +1,29 @@
 import * as React from 'react';
-import Image from 'next/image';
-import type { FileWithPath } from 'react-dropzone';
-
+import type { FileWithPreview } from '@/types';
 import Cropper, { type ReactCropperElement } from 'react-cropper';
-import { useDropzone, type Accept, type FileRejection } from 'react-dropzone';
+import {
+  useDropzone,
+  type Accept,
+  type FileRejection,
+  type FileWithPath,
+} from 'react-dropzone';
 import type {
   FieldValues,
   Path,
   PathValue,
   UseFormSetValue,
 } from 'react-hook-form';
-import { useToast } from '@/components/ui/use-toast';
-
 import 'cropperjs/dist/cropper.css';
+
+import Image from 'next/image';
 
 import { cn, formatBytes } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Icons } from '@/components/icons';
+import { toast } from './ui/use-toast';
 
-type FileWithPreview = FileWithPath & {
-  preview: string;
-};
+// FIXME Your proposed upload exceeds the maximum allowed size, this should trigger toast.error too
 
 interface FileDialogProps<TFieldValues extends FieldValues>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -42,7 +44,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
   accept = {
     'image/*': [],
   },
-  maxSize = 1024 * 1024 * 2,
+  maxSize = 1024 * 1024 * 8,
   maxFiles = 1,
   files,
   setFiles,
@@ -51,7 +53,6 @@ export function FileDialog<TFieldValues extends FieldValues>({
   className,
   ...props
 }: FileDialogProps<TFieldValues>) {
-  const { toast } = useToast();
   const onDrop = React.useCallback(
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
       setValue(
@@ -74,16 +75,13 @@ export function FileDialog<TFieldValues extends FieldValues>({
         rejectedFiles.forEach(({ errors }) => {
           if (errors[0]?.code === 'file-too-large') {
             toast({
-              title: 'File is too large',
               description: `File is too large. Max size is ${formatBytes(
                 maxSize
               )}`,
-              variant: 'destructive',
             });
             return;
           }
-          errors[0]?.message &&
-            toast({ description: errors[0].message, variant: 'destructive' });
+          errors[0]?.message && toast({ description: errors[0].message });
         });
       }
     },
@@ -164,7 +162,8 @@ export function FileDialog<TFieldValues extends FieldValues>({
           )}
         </div>
         <p className="text-center text-sm font-medium text-muted-foreground">
-          You can upload up to {maxFiles} {maxFiles === 1 ? 'file' : 'files'}
+          You can upload up to {maxFiles} {maxFiles === 1 ? 'file' : 'files'}.
+          You have to select them all at once.
         </p>
         {files?.length ? (
           <div className="grid gap-5">
@@ -188,7 +187,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
             size="sm"
             className="mt-2.5 w-full"
             onClick={() => {
-              setFiles(null);
+              setFiles([]);
               setValue(
                 name,
                 null as PathValue<TFieldValues, Path<TFieldValues>>,
@@ -229,23 +228,33 @@ function FileCard<TFieldValues extends FieldValues>({
   const [cropData, setCropData] = React.useState<string | null>(null);
   const cropperRef = React.useRef<ReactCropperElement>(null);
 
-  // Crop image
   const onCrop = React.useCallback(() => {
     if (!files || !cropperRef.current) return;
-    setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
 
-    cropperRef.current?.cropper.getCroppedCanvas().toBlob((blob) => {
-      if (!blob) return;
+    const croppedCanvas = cropperRef.current?.cropper.getCroppedCanvas();
+    setCropData(croppedCanvas.toDataURL());
+
+    croppedCanvas.toBlob((blob) => {
+      if (!blob) {
+        console.error('Blob creation failed');
+        return;
+      }
       const croppedImage = new File([blob], file.name, {
         type: file.type,
         lastModified: Date.now(),
       });
-      files.splice(i, 1, croppedImage as FileWithPreview);
-      setValue(name, files as PathValue<TFieldValues, Path<TFieldValues>>);
+
+      const croppedFileWithPathAndPreview = Object.assign(croppedImage, {
+        preview: URL.createObjectURL(croppedImage),
+        path: file.name,
+      }) satisfies FileWithPreview;
+
+      const newFiles = [...files];
+      newFiles.splice(i, 1, croppedFileWithPathAndPreview);
+      setValue(name, newFiles as PathValue<TFieldValues, Path<TFieldValues>>);
     });
   }, [file.name, file.type, files, i, name, setValue]);
 
-  // Crop image on enter key press
   React.useEffect(() => {
     function handleKeydown(e: KeyboardEvent) {
       if (e.key === 'Enter') {

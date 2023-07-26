@@ -106,7 +106,7 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription className="text-gray-400">
                     Your public display name. Changing this will reload this
                     page.
                   </FormDescription>
@@ -132,7 +132,7 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
+                  <FormDescription className="text-gray-400">
                     This is your bio. It will be visible to everyone who visits
                     your page.
                   </FormDescription>
