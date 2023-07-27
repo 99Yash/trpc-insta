@@ -36,11 +36,11 @@ const page = async ({
             <h5 className="text-md font-medium">{user?.username}</h5>
             {session?.user?.username === user?.username && (
               <div className="flex gap-2">
+                <CreatePost />
                 <EditProfile
                   username={username as string}
                   bio={(user?.bio as string) || ''}
                 />
-                <CreatePost />
               </div>
             )}
           </div>

@@ -19,7 +19,12 @@ import Image from 'next/image';
 
 import { cn, formatBytes } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Icons } from '@/components/icons';
 import { toast } from './ui/use-toast';
 
@@ -183,7 +188,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
         {files?.length ? (
           <Button
             type="button"
-            variant="outline"
+            variant="destructive"
             size="sm"
             className="mt-2.5 w-full"
             onClick={() => {
@@ -202,6 +207,9 @@ export function FileDialog<TFieldValues extends FieldValues>({
             <span className="sr-only">Remove All</span>
           </Button>
         ) : null}
+        <DialogClose>
+          <Button className="w-full">Save and Close</Button>
+        </DialogClose>
       </DialogContent>
     </Dialog>
   );

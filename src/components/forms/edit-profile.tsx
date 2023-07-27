@@ -26,6 +26,7 @@ import {
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
+import { customToastError, manualDialogClose } from '@/lib/utils';
 
 type UsernameBioMetadata = z.infer<typeof userPublicMetadataSchema>;
 
@@ -49,7 +50,6 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
     onSuccess: async () => {
       //! fix invalidate user error.
       await apiCtx.example.fetchUser.invalidate();
-
       toast({
         title: 'Profile updated',
         description: 'Your profile data has been updated',
@@ -69,14 +69,21 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
   const onSubmit: SubmitHandler<UsernameBioMetadata> = async (
     inputs: UsernameBioMetadata
   ) => {
-    await updateProfileMutation.mutateAsync({
-      username: inputs.username,
-      bio: inputs.bio ? inputs.bio : '',
-    });
-    if (username === watchingUsername) {
-      return;
-    } else {
-      router.push(`/${inputs.username}`);
+    //todo if form is unmodified, stop
+    try {
+      await updateProfileMutation.mutateAsync({
+        username: inputs.username,
+        bio: inputs.bio ? inputs.bio : '',
+      });
+      if (username === watchingUsername) {
+        return;
+      } else {
+        router.push(`/${inputs.username}`);
+      }
+    } catch (err: any) {
+      customToastError(err);
+    } finally {
+      manualDialogClose();
     }
   };
 

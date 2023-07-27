@@ -6,17 +6,20 @@ import { ImagePlus } from 'lucide-react';
 import { Button } from '../ui/button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
 import { useState, useTransition } from 'react';
 import { FileWithPreview } from '@/types';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   Form,
   FormControl,
+  FormField,
   FormItem,
   FormLabel,
   UncontrolledFormMessage,
@@ -28,7 +31,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { addPostSchema } from '@/lib/validators';
 import { z } from 'zod';
 import { Zoom } from '../zoom-image';
-import { customToastError } from '@/lib/utils';
+import { customToastError, manualDialogClose } from '@/lib/utils';
 import { isArrayOfFile } from '../../lib/utils';
 import { Textarea } from '../ui/textarea';
 import { api } from '@/lib/api/client';
@@ -39,7 +42,7 @@ const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
 const CreatePost = () => {
   const [files, setFiles] = useState<FileWithPreview[] | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
 
   const { isUploading, startUpload } = useUploadThing('imageUploader');
 
@@ -49,52 +52,52 @@ const CreatePost = () => {
 
   const previews = form.watch('images') as FileWithPreview[] | null;
 
-  function onSubmit(data: Inputs) {
-    startTransition(async () => {
-      try {
-        //?check if its a file & let uploadThing do its thing.
+  const addPostMutation = api.example.addPost.useMutation({
+    onSuccess: () => {
+      toast({
+        title: 'Success',
+        description: 'Your post has been created',
+        variant: 'default',
+        duration: 1200,
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: 'Failed to post',
+        variant: 'destructive',
+        duration: 2000,
+      });
+    },
+  });
 
-        const addPostMutation = api.example.addPost.useMutation({
-          onSuccess: () => {
-            toast({
-              title: 'Success',
-              description: 'Your post has been created',
-              variant: 'default',
-              duration: 1200,
-            });
-          },
-          onError: (error) => {
-            toast({
-              title: 'Error',
-              description: 'Failed to create post',
-              variant: 'destructive',
-              duration: 2000,
-            });
-          },
-        });
-        const images = isArrayOfFile(data.images)
-          ? await startUpload(data.images).then((res) => {
-              const formattedImages = res?.map((image) => ({
-                id: image.fileKey,
-                url: image.fileUrl,
-              }));
-              return formattedImages ?? null;
-            })
-          : null;
+  const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+    try {
+      //?check if its a file & let uploadThing do its thing.
+      setLoading(true);
+      console.log('nigga');
+      const images = isArrayOfFile(data.images)
+        ? await startUpload(data.images).then((res) => {
+            const formattedImages = res?.map((image) => ({
+              id: image.fileKey,
+              url: image.fileUrl,
+            }));
+            return formattedImages ?? null;
+          })
+        : null;
 
-        await addPostMutation.mutateAsync({
-          caption: data.caption,
-          images: images,
-        });
-        //todo add procedure for adding a post to db.
-
-        form.reset();
-        setFiles(null);
-      } catch (err) {
-        customToastError(err);
-      }
-    });
-  }
+      await addPostMutation.mutateAsync({
+        caption: data.caption,
+        images: images,
+      });
+      //todo add procedure for adding a post to db.
+      manualDialogClose();
+      form.reset();
+      setFiles(null);
+    } catch (err) {
+      customToastError(err);
+    }
+  };
 
   return (
     <Dialog>
@@ -111,61 +114,70 @@ const CreatePost = () => {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormItem>
-              <FormLabel>Caption</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Add a caption here (optional)"
-                  {...form.register('caption')}
-                />
-              </FormControl>
-              <UncontrolledFormMessage
-                message={form.formState.errors.caption?.message}
-              />
-            </FormItem>
-            <FormItem className="flex w-full flex-col gap-1.5">
-              <FormLabel>Images</FormLabel>
-              {!isUploading && previews?.length ? (
-                <div className="flex items-center gap-2">
-                  {previews.map((file) => (
-                    <Zoom key={file.name}>
-                      <Image
-                        src={file.preview}
-                        alt={file.name}
-                        className="h-20 w-20 shrink-0 rounded-md object-cover object-center"
-                        width={230}
-                        height={230}
-                      />
-                    </Zoom>
-                  ))}
-                </div>
-              ) : null}
-              <FormControl>
-                <FileDialog
-                  setValue={form.setValue}
-                  name="images"
-                  maxFiles={3}
-                  maxSize={1024 * 1024 * 16}
-                  files={files}
-                  setFiles={setFiles}
-                  isUploading={isUploading}
-                  disabled={isPending}
-                />
-              </FormControl>
-              <UncontrolledFormMessage
-                message={form.formState.errors.images?.message}
-              />
-            </FormItem>
-            <Button type="submit" className="w-fit" disabled={isPending}>
-              {isPending && (
-                <Icons.spinner
-                  className="mr-2 h-4 w-4 animate-spin"
-                  aria-hidden="true"
-                />
+            <FormField
+              control={form.control}
+              name="caption"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-300">Caption</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Add a caption here (optional)"
+                      {...form.register('caption')}
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
               )}
-              Create Post
-              <span className="sr-only">Create Post</span>
-            </Button>
+            />
+            <FormField
+              control={form.control}
+              name="images"
+              render={({ field }) => (
+                <FormItem className="flex w-full flex-col gap-1.5">
+                  <FormLabel>Images</FormLabel>
+                  {!isUploading && previews?.length ? (
+                    <div className="flex items-center gap-2">
+                      {previews.map((file) => (
+                        <Zoom key={file.name}>
+                          <Image
+                            src={file.preview}
+                            alt={file.name}
+                            className="h-20 w-20 shrink-0 rounded-md object-cover object-center"
+                            width={230}
+                            height={230}
+                          />
+                        </Zoom>
+                      ))}
+                    </div>
+                  ) : null}
+                  <FormControl>
+                    <FileDialog
+                      setValue={form.setValue}
+                      name="images"
+                      maxFiles={3}
+                      maxSize={1024 * 1024 * 16}
+                      files={files}
+                      setFiles={setFiles}
+                      isUploading={isUploading}
+                      disabled={loading}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="submit" className="w-fit" disabled={loading}>
+                {loading && (
+                  <Icons.spinner
+                    className="mr-2 h-4 w-4 animate-spin"
+                    aria-hidden="true"
+                  />
+                )}
+                Create Post
+                <span className="sr-only">Create Post</span>
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

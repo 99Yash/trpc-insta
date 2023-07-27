@@ -1,4 +1,3 @@
-import { addPostSchema } from '@/lib/validators';
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -6,7 +5,6 @@ import {
 } from '@/server/api/trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { StoredFile } from '../../../types/index';
 
 const imageSchema = z.object({
   id: z.string(),

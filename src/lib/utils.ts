@@ -32,12 +32,17 @@ export function customToastError(err: unknown) {
     const errors = err.issues.map((issue) => {
       return issue.message;
     });
-    return toast({ description: errors.join('\n') });
+    return toast({ description: errors.join('\n'), variant: 'destructive' });
   } else if (err instanceof Error) {
-    return toast({ description: err.message });
+    return toast({ description: err.message, variant: 'destructive' });
   } else {
     return toast({
       description: 'Something went wrong, please try again later.',
+      variant: 'destructive',
     });
   }
 }
+
+export const manualDialogClose = () => {
+  document.getElementById('closeDialog')?.click();
+};
