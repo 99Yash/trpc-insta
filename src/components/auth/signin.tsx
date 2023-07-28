@@ -1,6 +1,5 @@
 import { Icons } from '@/components/icons';
 import LoginButton from '@/components/login-button';
-import Link from 'next/link';
 
 const SignIn = () => {
   return (

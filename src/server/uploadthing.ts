@@ -1,22 +1,22 @@
 /** server/uploadthing.ts */
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { getCurrentUser } from '@/lib/session';
 
 import { createUploadthing, type FileRouter } from 'uploadthing/next-legacy';
 
 const f = createUploadthing();
 
-const auth = (req: NextApiRequest, res: NextApiResponse) => {
-  return { id: 'fakeId' };
+const auth = () => {
+  return getCurrentUser();
 }; // Fake auth function
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
   // Define as many FileRoutes as you like, each with a unique routeSlug
-  imageUploader: f({ image: { maxFileSize: '16MB' } })
+  imageUploader: f({ image: { maxFileSize: '16MB', maxFileCount: 3 } })
     // Set permissions and file types for this FileRoute
     // Todo: wait for uploadthing or imagrate to app routes
-    .middleware(({ req, res }) => {
-      const user = auth(req, res);
+    .middleware(async (req) => {
+      const user = await auth();
 
       // If you throw, the user will not be able to upload
       if (!user) throw new Error('Unauthorized');

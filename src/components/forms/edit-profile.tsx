@@ -2,7 +2,7 @@
 import { api } from '@/lib/api/api';
 import { userPublicMetadataSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, Settings2Icon } from 'lucide-react';
+import { AlertTriangle, Loader2, Settings2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -69,7 +69,7 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
   const onSubmit: SubmitHandler<UsernameBioMetadata> = async (
     inputs: UsernameBioMetadata
   ) => {
-    //todo if form is unmodified, stop
+    //todo if form is unmodified, stop. isDirty not working
     try {
       await updateProfileMutation.mutateAsync({
         username: inputs.username,
@@ -102,31 +102,10 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-gray-300">Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...form.register('username')}
-                      placeholder={username}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription className="text-gray-400">
-                    Your public display name. Changing this will reload this
-                    page.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-gray-300">Bio</FormLabel>
+                  <FormLabel className="text-gray-400">Bio</FormLabel>
                   <FormControl>
                     <Textarea
                       {...form.register('bio')}
@@ -142,6 +121,28 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                   <FormDescription className="text-gray-400">
                     This is your bio. It will be visible to everyone who visits
                     your page.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-400">Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...form.register('username')}
+                      placeholder={username}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription className=" flex gap-2 items-center text-yellow-600">
+                    <AlertTriangle className="h-4 w-4 " />
+                    Your public display name. Changing this will reload this
+                    page.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

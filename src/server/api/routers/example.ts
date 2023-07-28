@@ -8,7 +8,7 @@ import { z } from 'zod';
 
 const imageSchema = z.object({
   id: z.string(),
-  url: z.string().url(),
+  url: z.string(),
 });
 
 export const exampleRouter = createTRPCRouter({

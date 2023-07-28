@@ -15,24 +15,24 @@ model User {
   emailVerified DateTime?
   image         String?
   createdAt     DateTime  @default(now())
-  
-  bio String?
-  username String? @default(cuid()) @unique
+
+  bio      String?
+  username String?   @unique @default(cuid())
   accounts Account[]
   sessions Session[]
   posts    Post[]
   likes    Like[]
 
-  @@index([id,username])
+  @@index([id, username])
 }
 
 model Like {
   id        String   @id @default(cuid())
   userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
   postId    String
   createdAt DateTime @default(now())
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id],onDelete: Cascade)
 
   @@index([postId, userId], map: "Like_PostId_UserId_Index")
 }
@@ -45,17 +45,17 @@ model Comment {
   text      String
   likes     Int
   createdAt DateTime @default(now())
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id],onDelete: Cascade)
 
   @@index([postId, userId], map: "Comment_PostId_userId_Index")
 }
 
 model Post {
   id        String    @id @default(cuid())
-  userId    String    @unique
-  user      User      @relation(fields: [userId], references: [id])
+  userId    String
+  user      User      @relation(fields: [userId], references: [id],onDelete: Cascade)
   caption   String
-  images   Json?
+  images    Json?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   likes     Like[]
@@ -65,8 +65,8 @@ model Post {
 }
 
 model Followers {
-  followingId String @unique 
-  followerId  String 
+  followingId String @unique
+  followerId  String
 }
 
 model Account {

@@ -1,11 +1,18 @@
 import SignIn from '@/components/auth/signin';
 import { buttonVariants } from '@/components/ui/button';
+import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { FC } from 'react';
 
-const page: FC = () => {
+const SignInPage: FC = async () => {
+  const user = await getCurrentUser();
+
+  if (user) {
+    return redirect('/');
+  }
   return (
     <div className="absolute inset-0">
       <div className="h-full max-w-2xl mx-auto flex flex-col items-center justify-center gap-20">
@@ -26,4 +33,4 @@ const page: FC = () => {
   );
 };
 
-export default page;
+export default SignInPage;

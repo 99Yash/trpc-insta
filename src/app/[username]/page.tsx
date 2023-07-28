@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getSession } from '@/lib/session';
 import { prisma } from '@/server/db';
+import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 const page = async ({
@@ -14,8 +15,6 @@ const page = async ({
   };
 }) => {
   const { username } = params;
-  const session = await getSession();
-
   const UserProfile = async () => {
     const user = await prisma.user.findFirst({
       where: {
@@ -25,6 +24,9 @@ const page = async ({
         posts: true,
       },
     });
+
+    if (!user) return notFound();
+    const session = await getSession();
     return (
       <div className="h-9/10 flex items-center gap-6 text-gray-300">
         <Avatar className="md:h-36 md:w-36 h-20 w-20 border border-slate-950 mb-5">

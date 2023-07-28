@@ -1,50 +1,41 @@
 'use client';
 
+import { FileDialog } from '@/components/file-dialog';
+import { api } from '@/lib/api/client';
+import { customToastError, manualDialogClose } from '@/lib/utils';
+import { addPostSchema } from '@/lib/validators';
 import { OurFileRouter } from '@/server/uploadthing';
+import { FileWithPreview } from '@/types';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { generateReactHelpers } from '@uploadthing/react/hooks';
 import { ImagePlus } from 'lucide-react';
+import Image from 'next/image';
+import { useState, useTransition } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { isArrayOfFile } from '../../lib/utils';
+import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog';
-import { useState, useTransition } from 'react';
-import { FileWithPreview } from '@/types';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  UncontrolledFormMessage,
-} from '../ui/form';
-import Image from 'next/image';
-import { FileDialog } from '@/components/file-dialog';
-import { Icons } from '../icons';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { addPostSchema } from '@/lib/validators';
-import { z } from 'zod';
-import { Zoom } from '../zoom-image';
-import { customToastError, manualDialogClose } from '@/lib/utils';
-import { isArrayOfFile } from '../../lib/utils';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form';
 import { Textarea } from '../ui/textarea';
-import { api } from '@/lib/api/client';
 import { toast } from '../ui/use-toast';
+import { Zoom } from '../zoom-image';
 
 type Inputs = z.infer<typeof addPostSchema>;
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
 const CreatePost = () => {
   const [files, setFiles] = useState<FileWithPreview[] | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const { isUploading, startUpload } = useUploadThing('imageUploader');
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<Inputs>({
     resolver: zodResolver(addPostSchema),
@@ -72,31 +63,32 @@ const CreatePost = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
-    try {
-      //?check if its a file & let uploadThing do its thing.
-      setLoading(true);
-      console.log('nigga');
-      const images = isArrayOfFile(data.images)
-        ? await startUpload(data.images).then((res) => {
-            const formattedImages = res?.map((image) => ({
-              id: image.fileKey,
-              url: image.fileUrl,
-            }));
-            return formattedImages ?? null;
-          })
-        : null;
+    console.log('submitting form', form.getValues());
+    startTransition(async () => {
+      try {
+        //?check if its a file & let uploadThing do its thing.
+        //!error here
+        const images = isArrayOfFile(data.images)
+          ? await startUpload(data.images).then((res) => {
+              const formattedImages = res?.map((image) => ({
+                id: image.fileKey,
+                url: image.fileUrl,
+              }));
+              return formattedImages ?? null;
+            })
+          : null;
 
-      await addPostMutation.mutateAsync({
-        caption: data.caption,
-        images: images,
-      });
-      //todo add procedure for adding a post to db.
-      manualDialogClose();
-      form.reset();
-      setFiles(null);
-    } catch (err) {
-      customToastError(err);
-    }
+        await addPostMutation.mutateAsync({
+          caption: data.caption,
+          images: images,
+        });
+        manualDialogClose();
+        form.reset();
+        setFiles(null);
+      } catch (err) {
+        customToastError(err);
+      }
+    });
   };
 
   return (
@@ -113,7 +105,10 @@ const CreatePost = () => {
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+            onSubmit={() => onSubmit(form.getValues())}
+            className="space-y-8"
+          >
             <FormField
               control={form.control}
               name="caption"
@@ -160,24 +155,26 @@ const CreatePost = () => {
                       files={files}
                       setFiles={setFiles}
                       isUploading={isUploading}
-                      disabled={loading}
+                      disabled={isPending}
                     />
                   </FormControl>
                 </FormItem>
               )}
             />
-            <DialogFooter>
-              <Button type="submit" className="w-fit" disabled={loading}>
-                {loading && (
-                  <Icons.spinner
-                    className="mr-2 h-4 w-4 animate-spin"
-                    aria-hidden="true"
-                  />
-                )}
-                Create Post
-                <span className="sr-only">Create Post</span>
-              </Button>
-            </DialogFooter>
+            <Button
+              type="submit"
+              className="w-full text-black"
+              disabled={isPending}
+            >
+              {isPending && (
+                <Icons.spinner
+                  className="mr-2 h-4 w-4 animate-spin"
+                  aria-hidden="true"
+                />
+              )}
+              Create Post
+              <span className="sr-only">Create Post</span>
+            </Button>
           </form>
         </Form>
       </DialogContent>

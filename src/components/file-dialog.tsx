@@ -50,7 +50,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
     'image/*': [],
   },
   maxSize = 1024 * 1024 * 8,
-  maxFiles = 1,
+  maxFiles = 3,
   files,
   setFiles,
   isUploading = false,

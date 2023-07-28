@@ -25,7 +25,7 @@ import {
 import { User } from 'next-auth';
 
 interface UserButtonProps {
-  user: Pick<User, 'name' | 'image' | 'id' | 'username' | 'email'>;
+  user: Pick<User, 'name' | 'image' | 'username' | 'email'>;
 }
 
 //todo add suspense for showing user avatar

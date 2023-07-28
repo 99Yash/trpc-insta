@@ -21,12 +21,13 @@ export const userPublicMetadataSchema = z.object({
 export const addPostSchema = z
   .object({
     caption: z.string().default(''),
-    images: z.unknown().refine(
+    images: z.array(z.unknown()).refine(
       (val) => {
-        return val !== undefined;
+        return val !== undefined && val.length <= 3;
       },
       {
-        message: 'Image is required and cannot be empty.',
+        message:
+          'Image is required and cannot be empty. Maximum 3 images allowed.',
         path: ['images'],
       }
     ),
