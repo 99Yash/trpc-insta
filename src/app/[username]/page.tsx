@@ -36,7 +36,7 @@ const page = async ({
         <div className="hidden md:flex md:w-1/2  md:flex-col gap-1">
           <div className="flex gap-10 items-baseline">
             <h5 className="text-md font-medium">{user?.username}</h5>
-            {session?.user?.username === user?.username && (
+            {session?.user?.id === user?.id && (
               <div className="flex gap-2">
                 <CreatePost />
                 <EditProfile

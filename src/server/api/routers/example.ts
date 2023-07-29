@@ -1,3 +1,4 @@
+import { addPostSchema, imageSchema } from '@/lib/validators';
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -5,11 +6,6 @@ import {
 } from '@/server/api/trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-
-const imageSchema = z.object({
-  id: z.string(),
-  url: z.string(),
-});
 
 export const exampleRouter = createTRPCRouter({
   hello: protectedProcedure
@@ -26,7 +22,7 @@ export const exampleRouter = createTRPCRouter({
   addPost: protectedProcedure
     .input(
       z.object({
-        caption: z.string().default(''),
+        caption: z.string().optional().default(''),
         images: z.union([z.array(imageSchema), z.null()]),
       })
     )
@@ -40,7 +36,7 @@ export const exampleRouter = createTRPCRouter({
       const newPost = await ctx.prisma.post.create({
         data: {
           caption: input.caption,
-          images: input.images ? input.images.length > 0 : undefined,
+          images: input.images ? input.images : undefined,
           userId: ctx.session.user.id,
         },
       });

@@ -1,4 +1,10 @@
 import { z } from 'zod';
+import { isArrayOfFile } from './utils';
+
+export const imageSchema = z.object({
+  id: z.string(),
+  url: z.string(),
+});
 
 export const userPublicMetadataSchema = z.object({
   bio: z
@@ -18,35 +24,14 @@ export const userPublicMetadataSchema = z.object({
     }),
 });
 
-export const addPostSchema = z
-  .object({
-    caption: z.string().default(''),
-    images: z.array(z.unknown()).refine(
-      (val) => {
-        return val !== undefined && val.length <= 3;
-      },
-      {
-        message:
-          'Image is required and cannot be empty. Maximum 3 images allowed.',
-        path: ['images'],
-      }
-    ),
-  })
-  .refine(
-    (val) => {
-      //? This allows to accept a single image file as well, iff it is an instanceof File
-      if (!Array.isArray(val)) {
-        return val instanceof File;
-      } else {
-        return val.every((file) => file instanceof File);
-        //? Check for array of files
-      }
-    },
-    {
-      message: 'Image is required and cannot be null.',
-      path: ['images'],
-    }
-  );
+export const addPostSchema = z.object({
+  caption: z.string().default(''),
+  images: z
+    .unknown()
+    .refine(isArrayOfFile, 'Must be an array of File')
+    .nullable()
+    .default(null),
+});
 
 export type PublicMetadata = z.infer<
   typeof userPublicMetadataSchema.shape.username
