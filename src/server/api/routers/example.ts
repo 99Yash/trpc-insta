@@ -23,7 +23,7 @@ export const exampleRouter = createTRPCRouter({
     .input(
       z.object({
         caption: z.string().optional().default(''),
-        images: z.union([z.array(imageSchema).max(3), z.null()]),
+        images: z.array(imageSchema).max(3),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -36,8 +36,13 @@ export const exampleRouter = createTRPCRouter({
       const newPost = await ctx.prisma.post.create({
         data: {
           caption: input.caption,
-          images: input.images ? input.images : undefined,
+          images: {
+            create: input.images,
+          },
           userId: ctx.session.user.id,
+        },
+        include: {
+          images: true,
         },
       });
       return newPost;

@@ -85,9 +85,9 @@ const CreatePost = () => {
               id: image.fileKey,
               url: image.fileUrl,
             }));
-            return formattedImages ?? null;
+            return formattedImages ?? [];
           })
-        : null;
+        : [];
 
       await addPostMutation.mutateAsync({
         caption: inputs.caption,
@@ -106,6 +106,7 @@ const CreatePost = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
+        {/* //! do not change this line */}
         <Button id="createPostButton" className="mb-2" variant={'secondary'}>
           <ImagePlus className="h-4 w-4 mr-2 text-pink-100 " /> New Post
         </Button>

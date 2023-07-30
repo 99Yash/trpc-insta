@@ -1,13 +1,16 @@
 import CreatePost from '@/components/forms/create-post';
 import EditProfile from '@/components/forms/edit-profile';
+import PostImageCarousel from '@/components/post-image-carousel';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import AddPostButton from '@/components/utilities/add-post-button';
 import { getCurrentUser, getSession } from '@/lib/session';
 import { prisma } from '@/server/db';
+import { StoredFile } from '@/types';
 import { Instagram } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
+import { Prisma } from '@prisma/client';
 
 const page = async ({
   params,
@@ -18,6 +21,7 @@ const page = async ({
 }) => {
   const { username } = params;
   const user = await getCurrentUser();
+
   const UserProfile = async () => {
     const user = await prisma.user.findFirst({
       where: {
@@ -64,7 +68,7 @@ const page = async ({
           <h5 className="text-md self-start md:hidden  font-semibold ">
             {user?.name}
           </h5>
-          <p className="text-sm self-start md:hidden  text-gray-400">
+          <p className="text-sm self-start md:hidden  text-gray-300">
             {user?.bio}
           </p>
           <hr className="border-0 h-[1px] mt-2 bg-gradient-to-r from-gray-900 via-slate-500 to-gray-900" />
@@ -72,16 +76,18 @@ const page = async ({
           <div className="grid grid-cols-3 justify-evenly">
             <div className="flex flex-col items-center ">
               <h5 className="text-md font-semibold ">{numberOfPosts}</h5>
-              <p className="text-sm text-gray-400">Posts</p>
-            </div>
-            <div className="flex flex-col items-center ">
-              <h5 className="text-md font-semibold ">0</h5>
-              <p className="text-sm text-gray-400">Following</p>
+              <p className="text-sm text-gray-400">
+                {numberOfPosts === 1 ? 'post' : 'posts'}
+              </p>
             </div>
 
             <div className="flex flex-col items-center ">
               <h5 className="text-md font-semibold ">0</h5>
               <p className="text-sm text-gray-400">Followers</p>
+            </div>
+            <div className="flex flex-col items-center ">
+              <h5 className="text-md font-semibold ">0</h5>
+              <p className="text-sm text-gray-400">Following</p>
             </div>
           </div>
           <hr className="border-0 h-[1px] mt-2 bg-gradient-to-r from-gray-900 via-slate-500 to-gray-900" />
@@ -104,20 +110,22 @@ const page = async ({
           <div className="flex gap-8 items-center ">
             <div className="flex gap-2 justify-center items-center  ">
               <h5 className="text-md font-semibold ">{numberOfPosts}</h5>
-              <p className="text-sm text-gray-400">posts</p>
-            </div>
-            <div className="flex gap-2 justify-center items-center  ">
-              <h5 className="text-md font-semibold ">0</h5>
-              <p className="text-sm text-gray-400">following</p>
+              <p className="text-sm text-gray-400">
+                {numberOfPosts === 1 ? 'post' : 'posts'}
+              </p>
             </div>
             <div className="flex gap-2 justify-center items-center ">
               <h5 className="text-md font-semibold ">0</h5>
               <p className="text-sm text-gray-400">followers</p>
             </div>
+            <div className="flex gap-2 justify-center items-center  ">
+              <h5 className="text-md font-semibold ">0</h5>
+              <p className="text-sm text-gray-400">following</p>
+            </div>
           </div>
           <div className="flex flex-col gap-2">
             <h5 className="text-md font-semibold ">{user?.name}</h5>
-            <p className="text-sm text-gray-400">{user?.bio}</p>
+            <p className="text-sm text-gray-300">{user?.bio}</p>
           </div>
         </div>
       </div>
@@ -131,9 +139,10 @@ const page = async ({
           username,
         },
       },
+      include: { images: true },
     });
     //todo make it 0. put this in center
-    if (postsByUser.length === 2 && user?.username === username)
+    if (postsByUser.length === 0 && user?.username === username)
       return (
         <div className="h-1/2 flex flex-col gap-4 justify-center items-center">
           <Instagram className="h-10 w-10 text-gray-400 " />
@@ -159,7 +168,13 @@ const page = async ({
           </p>
         </div>
       );
-    return <></>;
+    return (
+      <div className="block">
+        {postsByUser.map((post) => (
+          <PostImageCarousel key={post.id} images={post.images} />
+        ))}
+      </div>
+    );
   };
 
   return (
