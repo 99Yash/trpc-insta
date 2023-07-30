@@ -106,8 +106,8 @@ const CreatePost = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="mb-2" variant={'secondary'}>
-          <ImagePlus className="h-4 w-4 mr-2 text-pink-100 " /> Post
+        <Button id="createPostButton" className="mb-2" variant={'secondary'}>
+          <ImagePlus className="h-4 w-4 mr-2 text-pink-100 " /> New Post
         </Button>
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">
@@ -177,7 +177,7 @@ const CreatePost = () => {
                 type="submit"
                 variant="default"
                 disabled={addPostMutation.isLoading}
-                className="m-2"
+                className="m-2 w-full"
               >
                 {addPostMutation.isLoading && (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />

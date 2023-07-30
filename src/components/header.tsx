@@ -15,7 +15,7 @@ const Header = async () => {
             href="/"
             className="mr-4 flex shrink-0 items-center justify-center gap-2"
           >
-            <Icons.logo className="h-8 w-8 stroke-zinc-300 duration-500 hover:stroke-zinc-100 sm:h-6 sm:w-6" />
+            <Icons.logo className="h-8 w-8 stroke-zinc-300 duration-300 hover:stroke-zinc-100 sm:h-6 sm:w-6" />
             <span className="inline stroke-zinc-300 font-semibold">
               Trinsta.
             </span>

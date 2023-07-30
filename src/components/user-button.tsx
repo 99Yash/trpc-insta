@@ -38,7 +38,7 @@ export const UserButton = ({ user }: UserButtonProps) => {
       <DropdownMenu>
         <DropdownMenuTrigger
           asChild
-          className="border-none focus-within:border-none hover:cursor-pointer focus:border-none"
+          className="border-none opacity-70 focus-within:border-none hover:cursor-pointer focus:border-none"
         >
           <Avatar className="h-10 w-10">
             <AvatarImage

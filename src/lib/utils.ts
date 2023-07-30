@@ -46,3 +46,7 @@ export function customToastError(err: unknown) {
 export const manualDialogClose = () => {
   document.getElementById('closeDialog')?.click();
 };
+
+export const openAddPostModal = () => {
+  document.getElementById('createPostButton')?.click();
+};

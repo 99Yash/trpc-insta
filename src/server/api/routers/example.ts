@@ -23,7 +23,7 @@ export const exampleRouter = createTRPCRouter({
     .input(
       z.object({
         caption: z.string().optional().default(''),
-        images: z.union([z.array(imageSchema), z.null()]),
+        images: z.union([z.array(imageSchema).max(3), z.null()]),
       })
     )
     .mutation(async ({ ctx, input }) => {
