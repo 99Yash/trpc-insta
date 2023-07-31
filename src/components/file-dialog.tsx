@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/dialog';
 import { Icons } from '@/components/icons';
 import { toast } from './ui/use-toast';
+import { Loader2 } from 'lucide-react';
 
 // FIXME Your proposed upload exceeds the maximum allowed size, this should trigger toast.error too
 
@@ -116,6 +117,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" disabled={disabled}>
+          {isUploading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
           Upload Images
           <span className="sr-only">Upload Images</span>
         </Button>

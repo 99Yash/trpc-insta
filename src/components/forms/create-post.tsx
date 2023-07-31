@@ -107,7 +107,7 @@ const CreatePost = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button id="createPostButton" className="mb-2" variant={'secondary'}>
-          <ImagePlus className="h-4 w-4 mr-2 text-pink-100 " /> New Post
+          <ImagePlus className="h-4 w-4 mr-2 " /> New Post
         </Button>
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">
@@ -161,11 +161,11 @@ const CreatePost = () => {
                   setValue={form.setValue}
                   name="images"
                   maxFiles={3}
-                  maxSize={1024 * 1024 * 4}
+                  maxSize={1024 * 1024 * 16}
                   files={files}
                   setFiles={setFiles}
                   isUploading={isUploading}
-                  disabled={addPostMutation.isLoading}
+                  disabled={addPostMutation.isLoading || isUploading}
                 />
               </FormControl>
               <UncontrolledFormMessage

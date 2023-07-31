@@ -26,7 +26,7 @@ const Header = async () => {
 
           <nav className="flex grow">
             {/* Desktop sign in links */}
-            <ul className="flex grow flex-wrap items-center justify-end">
+            <ul className="flex grow flex-wrap items-center justify-end gap-4">
               <li>
                 {!session?.user ? (
                   <Link

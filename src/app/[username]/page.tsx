@@ -7,9 +7,43 @@ import AddPostButton from '@/components/utilities/add-post-button';
 import { getCurrentUser, getSession } from '@/lib/session';
 import { prisma } from '@/server/db';
 import { Instagram } from 'lucide-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: {
+    username: string;
+  };
+}): Promise<Metadata> {
+  const user = await prisma.user.findUnique({
+    where: {
+      username: params.username,
+    },
+  });
+  if (!user) return notFound();
+  return {
+    title: `${user.name} (@${user.username}) ● Trinsta.`,
+    description: user.bio,
+    openGraph: {
+      title: `
+      ${user.name} (@${user.username}) ● Trinsta.
+      `,
+      description: user.bio ? user.bio : '',
+      url: '',
+      images: [
+        {
+          url: user.image as string,
+          width: 400,
+          height: 400,
+        },
+      ],
+    },
+  };
+}
 
 const page = async ({
   params,
@@ -22,7 +56,7 @@ const page = async ({
   const user = await getCurrentUser();
 
   const UserProfile = async () => {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
       where: {
         username,
       },
@@ -134,15 +168,18 @@ const page = async ({
   };
 
   const UserPosts = async () => {
+    // todo invalidate posts on creation
     const postsByUser = await prisma.post.findMany({
       where: {
         user: {
           username,
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
       include: { images: true },
     });
-    //todo make it 0. put this in center
     if (postsByUser.length === 0 && user?.username === username)
       return (
         <div className="h-1/2 flex flex-col gap-4 justify-center items-center">
@@ -170,30 +207,21 @@ const page = async ({
         </div>
       );
     return (
-      // <div className="block">
-      //   {postsByUser.map((post) => (
-      //     <PostImageCarousel key={post.id} images={post.images} />
-      //   ))}
-      // </div>
-      <>
-        <div className="grid grid-cols-3 md:gap-4 sm:gap-2 ">
-          {postsByUser.map((post) => (
-            // <div className="grid grid-cols-3 md:gap-4 sm:gap-2 " key={post.id}>
-            <>
-              {/* //todo on clicking the image navigate to a route having a carousel */}
-              <AspectRatio key={post.id} ratio={1}>
-                <Image
-                  src={post.images[0]?.url as string}
-                  alt={post.caption}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  fill
-                />
-              </AspectRatio>
-            </>
-            // </div>
-          ))}
-        </div>
-      </>
+      <div className="grid grid-cols-3 md:gap-4 sm:gap-2 ">
+        {postsByUser.map((post) => (
+          <>
+            {/* //todo on clicking the image navigate to a route having a carousel */}
+            <AspectRatio key={post.id} ratio={1}>
+              <Image
+                src={post.images[0]?.url as string}
+                alt={post.caption}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                fill
+              />
+            </AspectRatio>
+          </>
+        ))}
+      </div>
     );
   };
 
@@ -207,7 +235,13 @@ const page = async ({
         <UserProfile />
       </Suspense>
       <hr className="border-0 hidden md:block h-[1px] mt-2 bg-slate-700  " />
-      <Suspense fallback={<Skeleton className="grid grid-cols-3" />}>
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-3 md:gap-4 sm:gap-2">
+            <Skeleton className="h-30 w-30" />
+          </div>
+        }
+      >
         <UserPosts />
       </Suspense>
     </div>
