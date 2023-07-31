@@ -1,16 +1,15 @@
 import CreatePost from '@/components/forms/create-post';
 import EditProfile from '@/components/forms/edit-profile';
-import PostImageCarousel from '@/components/post-image-carousel';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import AddPostButton from '@/components/utilities/add-post-button';
 import { getCurrentUser, getSession } from '@/lib/session';
 import { prisma } from '@/server/db';
-import { StoredFile } from '@/types';
 import { Instagram } from 'lucide-react';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { Prisma } from '@prisma/client';
 
 const page = async ({
   params,
@@ -54,6 +53,7 @@ const page = async ({
                 <div className="flex gap-2">
                   <CreatePost />
                   <EditProfile
+                    name={user.name as string}
                     username={username as string}
                     bio={(user?.bio as string) || ''}
                   />
@@ -101,6 +101,7 @@ const page = async ({
               <div className="flex gap-2 justify-end ">
                 <CreatePost />
                 <EditProfile
+                  name={user.name as string}
                   username={username as string}
                   bio={(user?.bio as string) || ''}
                 />
@@ -169,11 +170,30 @@ const page = async ({
         </div>
       );
     return (
-      <div className="block">
-        {postsByUser.map((post) => (
-          <PostImageCarousel key={post.id} images={post.images} />
-        ))}
-      </div>
+      // <div className="block">
+      //   {postsByUser.map((post) => (
+      //     <PostImageCarousel key={post.id} images={post.images} />
+      //   ))}
+      // </div>
+      <>
+        <div className="grid grid-cols-3 md:gap-4 sm:gap-2 ">
+          {postsByUser.map((post) => (
+            // <div className="grid grid-cols-3 md:gap-4 sm:gap-2 " key={post.id}>
+            <>
+              {/* //todo on clicking the image navigate to a route having a carousel */}
+              <AspectRatio key={post.id} ratio={1}>
+                <Image
+                  src={post.images[0]?.url as string}
+                  alt={post.caption}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  fill
+                />
+              </AspectRatio>
+            </>
+            // </div>
+          ))}
+        </div>
+      </>
     );
   };
 

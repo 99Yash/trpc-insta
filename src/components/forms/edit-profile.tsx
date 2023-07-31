@@ -1,6 +1,6 @@
 'use client';
 import { api } from '@/lib/api/api';
-import { userPublicMetadataSchema } from '@/lib/validators';
+import { userProfileSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertTriangle, Loader2, Settings2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -28,25 +28,34 @@ import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
 import { customToastError, manualDialogClose } from '@/lib/utils';
 
-type UsernameBioMetadata = z.infer<typeof userPublicMetadataSchema>;
+type UsernameBioMetadata = z.infer<typeof userProfileSchema>;
 
-const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
+const EditProfile = ({
+  username,
+  bio,
+  name,
+}: {
+  username: string;
+  name: string;
+  bio: string;
+}) => {
   const defaultValues: UsernameBioMetadata = {
     username,
     bio,
+    name,
   };
   const { toast } = useToast();
   const router = useRouter();
   const apiCtx = api.useContext();
 
   const form = useForm<UsernameBioMetadata>({
-    resolver: zodResolver(userPublicMetadataSchema),
+    resolver: zodResolver(userProfileSchema),
     defaultValues,
     mode: 'onChange',
   });
   const watchingUsername = form.watch('username');
 
-  const updateProfileMutation = api.example.updateUsernameBio.useMutation({
+  const updateProfileMutation = api.example.updateUserProfile.useMutation({
     onSuccess: async () => {
       //! fix invalidate user error.
       await apiCtx.example.fetchUser.invalidate();
@@ -74,6 +83,7 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
       await updateProfileMutation.mutateAsync({
         username: inputs.username,
         bio: inputs.bio ? inputs.bio : '',
+        name: inputs.name,
       });
       if (username === watchingUsername) {
         return;
@@ -122,7 +132,28 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                     This is your bio. It will be visible to everyone who visits
                     your page.
                   </FormDescription>
-                  <FormMessage />
+                  <FormMessage className="text-red-300" />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-gray-400">Display Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...form.register('name')}
+                      placeholder={name}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription className="text-gray-400">
+                    This is your public display name. It will be visible to
+                    everyone who visits your page.
+                  </FormDescription>
+                  <FormMessage className="text-red-300" />
                 </FormItem>
               )}
             />
@@ -141,10 +172,9 @@ const EditProfile = ({ username, bio }: { username: string; bio: string }) => {
                   </FormControl>
                   <FormDescription className=" flex gap-2 items-center text-yellow-600">
                     <AlertTriangle className="h-4 w-4 " />
-                    Your public display name. Changing this will reload this
-                    page.
+                    Your username. Changing this will reload this page.
                   </FormDescription>
-                  <FormMessage />
+                  <FormMessage className="text-red-300" />
                 </FormItem>
               )}
             />

@@ -1,4 +1,8 @@
-import { addPostSchema, imageSchema } from '@/lib/validators';
+import {
+  addPostSchema,
+  imageSchema,
+  userProfileSchema,
+} from '@/lib/validators';
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -59,13 +63,8 @@ export const exampleRouter = createTRPCRouter({
       });
       return retrievedUser;
     }),
-  updateUsernameBio: protectedProcedure
-    .input(
-      z.object({
-        username: z.string(),
-        bio: z.string(),
-      })
-    )
+  updateUserProfile: protectedProcedure
+    .input(userProfileSchema)
     .mutation(async ({ ctx, input }) => {
       const requestingUser = ctx.session.user;
       if (!requestingUser)
@@ -86,6 +85,7 @@ export const exampleRouter = createTRPCRouter({
         data: {
           username: input.username,
           bio: input.bio,
+          name: input.name,
         },
       });
       return updatedUser;

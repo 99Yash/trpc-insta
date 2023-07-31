@@ -6,7 +6,7 @@ export const imageSchema = z.object({
   url: z.string(),
 });
 
-export const userPublicMetadataSchema = z.object({
+export const userProfileSchema = z.object({
   bio: z
     .string()
     .max(300, {
@@ -22,6 +22,9 @@ export const userPublicMetadataSchema = z.object({
     .max(55, {
       message: 'Username must be less than 55 characters',
     }),
+  name: z.string().min(2, {
+    message: 'Name must be at least 2 characters',
+  }),
 });
 
 export const addPostSchema = z.object({
@@ -33,6 +36,4 @@ export const addPostSchema = z.object({
     .default(null),
 });
 
-export type PublicMetadata = z.infer<
-  typeof userPublicMetadataSchema.shape.username
->;
+export type PublicMetadata = z.infer<typeof userProfileSchema.shape.username>;
