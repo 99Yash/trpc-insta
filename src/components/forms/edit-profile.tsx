@@ -151,7 +151,7 @@ const EditProfile = ({
                   </FormControl>
                   <FormDescription className="text-gray-400">
                     This is your public display name. It will be visible to
-                    everyone who visits your page.
+                    everyone who visits your page. Cannot be empty.
                   </FormDescription>
                   <FormMessage className="text-red-300" />
                 </FormItem>

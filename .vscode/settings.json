@@ -5,6 +5,7 @@
     "middlewares",
     "nextjs",
     "runtimes",
+    "Trinsta",
     "TRPC"
   ]
 }

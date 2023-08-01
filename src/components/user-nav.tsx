@@ -9,9 +9,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { inter } from '@/styles/fonts';
 import { LogOut, UserIcon } from 'lucide-react';
+import { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Avatar, AvatarImage } from './ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import {
   Dialog,
@@ -22,13 +23,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
-import { User } from 'next-auth';
 
 interface UserButtonProps {
   user: Pick<User, 'name' | 'image' | 'username' | 'email'>;
 }
-
-//todo add suspense for showing user avatar
 
 export const UserButton = ({ user }: UserButtonProps) => {
   const router = useRouter();
@@ -41,10 +39,10 @@ export const UserButton = ({ user }: UserButtonProps) => {
           className="border-none opacity-70 focus-within:border-none hover:cursor-pointer focus:border-none"
         >
           <Avatar className="h-10 w-10">
-            <AvatarImage
-              src={user?.image as string}
-              alt={user?.name?.split(' ')[0] || 'You'}
-            />
+            <AvatarImage src={user?.image as string} />
+            <AvatarFallback>{`${user.name?.split(' ')[0]![0]}${user.name?.split(
+              ' '
+            )[1]![0]}`}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className={` ${inter.className} `} align="end">

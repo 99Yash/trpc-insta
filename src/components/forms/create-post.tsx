@@ -112,7 +112,9 @@ const CreatePost = () => {
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">
         <DialogHeader>
-          <DialogTitle className="text-gray-300">Add Post</DialogTitle>
+          <DialogTitle className="text-gray-300">
+            Share some new Photos!
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -133,7 +135,7 @@ const CreatePost = () => {
                     />
                   </FormControl>
                   <FormDescription className="text-gray-400">
-                    Add a caption. Optional
+                    Adding a caption is optional.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

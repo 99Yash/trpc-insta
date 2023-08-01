@@ -51,6 +51,7 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.45.1",
     "react-medium-image-zoom": "^5.1.6",
+    "react-wrap-balancer": "^1.0.0",
     "superjson": "^1.12.4",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6",

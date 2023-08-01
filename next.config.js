@@ -4,7 +4,7 @@ const nextConfig = {
     removeConsole: true,
   },
   images: {
-    domains: ['uploadthing.com'],
+    domains: ['uploadthing.com', 'lh3.googleusercontent.com'],
   },
 };
 

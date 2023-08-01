@@ -1,16 +1,13 @@
 import CreatePost from '@/components/forms/create-post';
 import EditProfile from '@/components/forms/edit-profile';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Skeleton } from '@/components/ui/skeleton';
 import AddPostButton from '@/components/utilities/add-post-button';
+import UserPost from '@/components/utilities/user-post';
 import { getCurrentUser, getSession } from '@/lib/session';
 import { prisma } from '@/server/db';
 import { Instagram } from 'lucide-react';
 import { Metadata } from 'next';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 
 export async function generateMetadata({
   params,
@@ -26,7 +23,7 @@ export async function generateMetadata({
   });
   if (!user) return notFound();
   return {
-    title: `${user.name} (@${user.username}) ● Trinsta.`,
+    title: `${user.name} (@${user.username})`,
     description: user.bio,
     openGraph: {
       title: `
@@ -72,12 +69,14 @@ const page = async ({
     const session = await getSession();
     //todo if this is not the user's profile page, add following/follow buttons
     return (
-      <div className="h-9/10 flex flex-col md:flex-row md:items-start sm:justify-center sm:items-center md:justify-evenly gap-4 text-gray-300">
+      <div className="min-h-9/10 flex flex-col md:flex-row md:items-start sm:justify-center sm:items-center md:justify-evenly gap-4 text-gray-300">
         {/* //? avatar and username and buttons */}
         <div className="flex self-start gap-4">
-          <Avatar className="md:h-36 md:w-36 h-20 w-20 border border-slate-950 mb-5">
+          <Avatar className="md:h-36 md:w-36 h-20 w-20 border rounded-full border-slate-950 mb-5">
             <AvatarImage src={user?.image as string} alt="You" />
-            <AvatarFallback>You</AvatarFallback>
+            <AvatarFallback>{`${user.name?.split(' ')[0]![0]}${user.name?.split(
+              ' '
+            )[1]![0]}`}</AvatarFallback>
           </Avatar>
           {/* //? mobile view */}
           <div className="md:hidden flex flex-col ">
@@ -168,7 +167,8 @@ const page = async ({
   };
 
   const UserPosts = async () => {
-    // todo invalidate posts on creation
+    // todo invalidate posts on creation.
+    //todo limit the posts fetched.
     const postsByUser = await prisma.post.findMany({
       where: {
         user: {
@@ -208,42 +208,23 @@ const page = async ({
       );
     return (
       <div className="grid grid-cols-3 md:gap-4 sm:gap-2 ">
+        {/* //todo on clicking the image navigate to a route having a carousel */}
         {postsByUser.map((post) => (
-          <>
-            {/* //todo on clicking the image navigate to a route having a carousel */}
-            <AspectRatio key={post.id} ratio={1}>
-              <Image
-                src={post.images[0]?.url as string}
-                alt={post.caption}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                fill
-              />
-            </AspectRatio>
-          </>
+          <UserPost
+            key={post.id}
+            postId={post.id}
+            firstImageUrl={post.images[0]!.url! as string}
+          />
         ))}
       </div>
     );
   };
 
   return (
-    <div className=" flex flex-col gap-4 w-full">
-      <Suspense
-        fallback={
-          <Skeleton className="md:h-36 md:w-36 h-20 w-20 border rounded-full border-slate-950 mb-5" />
-        }
-      >
-        <UserProfile />
-      </Suspense>
-      <hr className="border-0 hidden md:block h-[1px] mt-2 bg-slate-700  " />
-      <Suspense
-        fallback={
-          <div className="grid grid-cols-3 md:gap-4 sm:gap-2">
-            <Skeleton className="h-30 w-30" />
-          </div>
-        }
-      >
-        <UserPosts />
-      </Suspense>
+    <div className=" flex flex-col w-full gap-4">
+      <UserProfile />
+      <hr className="border-0 hidden md:block h-[1px] mt-2 bg-slate-700" />
+      <UserPosts />
     </div>
   );
 };

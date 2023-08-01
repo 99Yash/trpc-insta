@@ -10,7 +10,7 @@ import { Toaster } from '@/components/ui/toaster';
 export const metadata: Metadata = {
   title: {
     default: 'Trinsta',
-    template: '%s | Trinsta',
+    template: '%s • Trinsta.',
   },
   metadataBase: new URL('https://trpc-insta.vercel.app'),
   description:
@@ -32,6 +32,12 @@ export const metadata: Metadata = {
     'Server-Components',
     'Shadcn UI',
   ],
+  twitter: {
+    title: 'Trinsta',
+    description:
+      'A fully functional Instagram Clone using the t3 stack • Shadcn UI • Server Components in Next.js  ',
+    creator: '@YashGouravKar1',
+  },
   authors: {
     name: 'Yash Gourav Kar',
     url: 'https://github.com/99Yash',
@@ -57,8 +63,10 @@ export default function RootLayout({
         <head />
         <body className={` min-h-screen antialiased ${inter.className}`}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            <Header />
-            <div className="container max-w-7xl mx-auto h-full">{children}</div>
+            <div className="container max-w-[90rem] h-screen">
+              <Header />
+              {children}
+            </div>
             <Toaster />
             <TailwindIndicator />
           </ThemeProvider>

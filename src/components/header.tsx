@@ -2,14 +2,14 @@ import { getSession } from '@/lib/session';
 import { inter } from '@/styles/fonts';
 import Link from 'next/link';
 import { Icons } from './icons';
-import { UserButton } from './user-button';
+import { UserButton } from './user-nav';
 
 const Header = async () => {
   const session = await getSession();
 
   return (
-    <header className={`${inter.className} sticky z-30 w-full`}>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <header className={`${inter.className} sticky z-30`}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">
           <Link
             href="/"
