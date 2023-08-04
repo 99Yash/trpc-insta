@@ -184,7 +184,11 @@ const CreatePost = () => {
                 {addPostMutation.isLoading && (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 )}
-                Save Changes
+                {addPostMutation.isLoading ? (
+                  <p>Saving your Post</p>
+                ) : (
+                  <p>Save Changes</p>
+                )}
               </Button>
             </div>
           </form>

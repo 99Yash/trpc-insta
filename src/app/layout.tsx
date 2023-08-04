@@ -6,6 +6,7 @@ import { inter } from '@/styles/fonts';
 import type { Metadata } from 'next';
 import '../styles/globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import * as React from 'react';
 
 export const metadata: Metadata = {
   title: {
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
     'Instagram',
     'Clone',
     'Next js',
+    't3 Stack',
     'App Router',
     'Tailwind CSS',
     'React',

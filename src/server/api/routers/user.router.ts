@@ -1,52 +1,10 @@
-import { imageSchema, userProfileSchema } from '@/lib/validators';
-import {
-  createTRPCRouter,
-  protectedProcedure,
-  publicProcedure,
-} from '@/server/api/trpc';
+import { userProfileSchema } from '@/lib/validators';
+import { protectedProcedure, publicProcedure } from '@/server/api/trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { createTRPCRouter } from '../trpc';
 
-export const exampleRouter = createTRPCRouter({
-  hello: protectedProcedure
-    .input(
-      z.object({
-        name: z.string(),
-      })
-    )
-    .query(({ input, ctx }) => {
-      return {
-        greeting: `hello to ${ctx.session.user?.name} by ${input.name}`,
-      };
-    }),
-  addPost: protectedProcedure
-    .input(
-      z.object({
-        caption: z.string().optional().default(''),
-        images: z.array(imageSchema).max(3),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const requestingUser = ctx.session.user;
-      if (!requestingUser)
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'User not authenticated',
-        });
-      const newPost = await ctx.prisma.post.create({
-        data: {
-          caption: input.caption,
-          images: {
-            create: input.images,
-          },
-          userId: ctx.session.user.id,
-        },
-        include: {
-          images: true,
-        },
-      });
-      return newPost;
-    }),
+export const userRouter = createTRPCRouter({
   fetchUser: publicProcedure
     .input(
       z.object({
