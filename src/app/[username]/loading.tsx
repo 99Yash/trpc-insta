@@ -13,34 +13,34 @@ const loading = () => {
             <div className="flex flex-col gap-3 ">
               <Skeleton className="h-4 w-[12px]" />
               <div className="flex gap-2">
-                <Skeleton className={' '} />
-                <Skeleton className={cn(buttonVariants())} />
+                <Skeleton className="h-10 w-20" />
+                <Skeleton className="h-10 w-20" />
               </div>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col md:hidden gap-2">
-          <Skeleton className="h-4 self-start w-[170px]" />
-          <Skeleton className="text-sm self-start h-6 w-[300px]" />
+          <Skeleton className="h-4 self-start w-[370px]" />
+          <Skeleton className="text-sm self-start h-6 w-[500px]" />
           <hr className="border-0 h-[1px] mt-2 bg-gradient-to-r from-gray-900 via-slate-500 to-gray-900" />
           {/* //? row of numbers(posts, following, followers) */}
           <div className="grid grid-cols-3 justify-evenly">
             <div className="flex flex-col items-center ">
-              <Skeleton className=" h-4 w-6 " />
+              <Skeleton className=" h-6 w-20 " />
               <Skeleton className="h-4 w-12 " />
             </div>
 
             <div className="flex flex-col items-center ">
-              <Skeleton className="h-4 w-6 " />
+              <Skeleton className="h-6 w-20 " />
               <Skeleton className="h-4 w-[60px]" />
             </div>
             <div className="flex flex-col items-center ">
-              <Skeleton className="h-4 w-6 " />
+              <Skeleton className="h-6 w-20 " />
               <Skeleton className="h-4 w-12" />
             </div>
           </div>
-          <hr className="border-0 h-[1px] mt-2 bg-gradient-to-r from-gray-900 via-slate-500 to-gray-900" />
+          <hr className="border-0 h-px mt-2 bg-gradient-to-r from-gray-900 via-slate-500 to-gray-900" />
         </div>
         <div className="hidden md:flex md:w-1/2 md:flex-col gap-4">
           <div className="flex md:flex-row gap-10 items-baseline">
@@ -57,11 +57,11 @@ const loading = () => {
             </div>
             <div className="flex gap-2 justify-center items-center ">
               <Skeleton className="h-4 w-4"></Skeleton>
-              <Skeleton className="h-4 w-6 "></Skeleton>
+              <Skeleton className="h-6 w-20 "></Skeleton>
             </div>
             <div className="flex gap-2 justify-center items-center  ">
               <Skeleton className="h-4 w-4"></Skeleton>
-              <Skeleton className="h-4 w-6 "></Skeleton>
+              <Skeleton className="h-6 w-20 "></Skeleton>
             </div>
           </div>
           <div className="flex flex-col gap-2">
@@ -70,15 +70,13 @@ const loading = () => {
           </div>
         </div>
       </div>
-      <hr className="border-0 hidden md:block h-[1px] mt-2 bg-slate-700" />
-      <div className="grid grid-cols-3 md:gap-4 sm:gap-2 ">
-        {/* //todo on clicking the image navigate to a route having a carousel */}
-        <Skeleton className="h-[150px] w-[150px]" />
-        <Skeleton className="h-[150px] w-[150px]" />
-        <Skeleton className="h-[150px] w-[150px]" />
-        <Skeleton className="h-[150px] w-[150px]" />
-        <Skeleton className="h-[150px] w-[150px]" />
-        <Skeleton className="h-[150px] w-[150px]" />
+      <hr className="border-0 hidden md:block h-px mt-2 bg-slate-700" />
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div key={index} className="relative pb-[100%]">
+            <Skeleton className="absolute inset-0 h-full w-full" />
+          </div>
+        ))}
       </div>
     </div>
   );

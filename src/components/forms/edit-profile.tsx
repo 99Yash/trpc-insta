@@ -56,10 +56,10 @@ const EditProfile = ({
   });
   const watchingUsername = form.watch('username');
 
-  const updateProfileMutation = api.example.updateUserProfile.useMutation({
+  const updateProfileMutation = api.user.updateUserProfile.useMutation({
     onSuccess: async () => {
       //! fix invalidate user error.
-      await apiCtx.example.fetchUser.invalidate();
+      await apiCtx.user.fetchUser.invalidate();
       toast({
         title: 'Profile updated',
         description: 'Your profile data has been updated',

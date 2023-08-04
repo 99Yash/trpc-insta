@@ -40,9 +40,9 @@ export const UserButton = ({ user }: UserButtonProps) => {
         >
           <Avatar className="h-10 w-10">
             <AvatarImage src={user?.image as string} />
-            <AvatarFallback>{`${user.name?.split(' ')[0]![0]}${user.name?.split(
-              ' '
-            )[1]![0]}`}</AvatarFallback>
+            <AvatarFallback>{`${user.name?.split(' ')[0]![0]}${
+              user.name?.split(' ')[1] ? user.name?.split(' ')[1]![0] : ''
+            }`}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className={` ${inter.className} `} align="end">

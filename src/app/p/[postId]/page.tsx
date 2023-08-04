@@ -99,9 +99,11 @@ const PostPage = async ({ params }: PostIdPageProps) => {
                 alt={post?.user?.username as string}
                 className="rounded-full self-center h-8 w-8 "
               />
-              <AvatarFallback>{`${post.user.name?.split(
-                ' '
-              )[0]![0]}${post.user.name?.split(' ')[1]![0]}`}</AvatarFallback>
+              <AvatarFallback>{`${post?.user.name?.split(' ')[0]![0]}${
+                post?.user.name?.split(' ')[1]
+                  ? post?.user.name?.split(' ')[1]![0]
+                  : ''
+              }`}</AvatarFallback>
             </Avatar>
             {/* //todo make the user pic and the username clickable, push to the profile of user. greyed on hover */}
             <p className="text-sm">{post?.user.username}</p>
@@ -119,9 +121,11 @@ const PostPage = async ({ params }: PostIdPageProps) => {
                   alt={post?.user?.username as string}
                   className="rounded-full self-center h-8 w-8 "
                 />
-                <AvatarFallback>{`${post.user.name?.split(
-                  ' '
-                )[0]![0]}${post.user.name?.split(' ')[1]![0]}`}</AvatarFallback>
+                <AvatarFallback>{`${post?.user.name?.split(' ')[0]![0]}${
+                  post?.user.name?.split(' ')[1]
+                    ? post?.user.name?.split(' ')[1]![0]
+                    : ''
+                }`}</AvatarFallback>
               </Avatar>
             </div>
             <div className="flex gap-2 flex-wrap h-full">
