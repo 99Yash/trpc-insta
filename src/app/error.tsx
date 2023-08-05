@@ -1,5 +1,12 @@
 'use client';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Error',
+  description: 'An error occurred',
+};
+
 export default function Error({ error }: { readonly error: Error }) {
   console.error(error);
 
@@ -9,7 +16,7 @@ export default function Error({ error }: { readonly error: Error }) {
         500
       </h1>
       <h2 className="text-[2rem] md:text-[3rem]">Error.</h2>
-      <h4 className="text-[1rem] md:text-[1.5rem]">{error.message}</h4>
+      <h4 className="text-[0.83rem] md:text-[1rem]">{error.message}</h4>
     </div>
   );
 }

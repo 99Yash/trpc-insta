@@ -125,7 +125,7 @@ const UserProfile = async ({ username }: { username: string }) => {
               <CreatePost />
               <EditProfile
                 name={user.name as string}
-                username={username as string}
+                username={username}
                 bio={(user?.bio as string) || ''}
               />
             </div>

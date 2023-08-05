@@ -1,5 +1,6 @@
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import CustomAvatar from '@/components/utilities/custom-avatar';
 import { prisma } from '@/server/db';
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -93,18 +94,10 @@ const PostPage = async ({ params }: PostIdPageProps) => {
         <div className="self-stretch flex-[2] bg-black ">
           {/* //? header -- user info */}
           <div className="flex pl-4 pt-2 gap-2 items-center">
-            <Avatar>
-              <AvatarImage
-                src={post?.user.image as string}
-                alt={post?.user?.username as string}
-                className="rounded-full self-center h-8 w-8 "
-              />
-              <AvatarFallback>{`${post?.user.name?.split(' ')[0]![0]}${
-                post?.user.name?.split(' ')[1]
-                  ? post?.user.name?.split(' ')[1]![0]
-                  : ''
-              }`}</AvatarFallback>
-            </Avatar>
+            <CustomAvatar
+              imgUrl={post.user.image as string}
+              name={post.user.name as string}
+            />
             {/* //todo make the user pic and the username clickable, push to the profile of user. greyed on hover */}
             <p className="text-sm">{post?.user.username}</p>
             {/* //todo paste formatTimeToNow here for the post */}
@@ -115,18 +108,10 @@ const PostPage = async ({ params }: PostIdPageProps) => {
             {/* //? first: user's caption ,if any */}
             <div className="flex mt-3">
               {/* //todo replace post user with comment author */}
-              <Avatar>
-                <AvatarImage
-                  src={post?.user.image as string}
-                  alt={post?.user?.username as string}
-                  className="rounded-full self-center h-8 w-8 "
-                />
-                <AvatarFallback>{`${post?.user.name?.split(' ')[0]![0]}${
-                  post?.user.name?.split(' ')[1]
-                    ? post?.user.name?.split(' ')[1]![0]
-                    : ''
-                }`}</AvatarFallback>
-              </Avatar>
+              <CustomAvatar
+                imgUrl={post.user.image as string}
+                name={post.user.name as string}
+              />
             </div>
             <div className="flex gap-2 flex-wrap h-full">
               <p className="text-sm">{post?.user.username}</p>

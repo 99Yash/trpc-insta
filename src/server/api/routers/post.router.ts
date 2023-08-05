@@ -32,4 +32,40 @@ export const postRouter = createTRPCRouter({
       });
       return newPost;
     }),
+  fetchPost: protectedProcedure
+    .input(
+      z.object({
+        postId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const retrievedPost = await ctx.prisma.post.findUnique({
+        where: {
+          id: input.postId,
+        },
+        include: {
+          comments: {
+            select: {
+              text: true,
+            },
+          },
+          images: true,
+          likes: true,
+        },
+      });
+      return retrievedPost;
+    }),
+  fetchAll: protectedProcedure.query(async ({ ctx, input }) => {
+    const posts = await ctx.prisma.post.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      include: {
+        images: true,
+        likes: true,
+        comments: true,
+      },
+    });
+    return posts;
+  }),
 });

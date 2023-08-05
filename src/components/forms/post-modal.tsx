@@ -1,10 +1,10 @@
-import React from 'react';
-import { AspectRatio } from '../ui/aspect-ratio';
-import Image from 'next/image';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { prisma } from '@/server/db';
+import { Heart, MessageCircle } from 'lucide-react';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ClipboardCopy, Copy, Heart, MessageCircle } from 'lucide-react';
+import { AspectRatio } from '../ui/aspect-ratio';
+import CustomAvatar from '../utilities/custom-avatar';
+import AddComment from './add-comment';
 
 //? the contents of the post modal
 const PostModal = async ({ postId }: { postId: string }) => {
@@ -13,7 +13,20 @@ const PostModal = async ({ postId }: { postId: string }) => {
       id: postId,
     },
     include: {
-      comments: true,
+      comments: {
+        include: {
+          user: {
+            select: {
+              username: true,
+              name: true, //? for fallback image
+              image: true,
+            },
+          },
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
       images: true,
       likes: true,
       user: {
@@ -43,43 +56,27 @@ const PostModal = async ({ postId }: { postId: string }) => {
 
       {/* //?right side */}
       {/* //todo hide this on smaller screens */}
-      <div className="flex flex-col w-[45vw] h-full bg-black ">
+      <div className="flex flex-grow flex-col w-[45vw] bg-black ">
         {/* //? header -- user info */}
         <div className="flex pl-4 pt-2 gap-2 items-center">
-          <Avatar>
-            <AvatarImage
-              src={post?.user.image as string}
-              alt={post?.user?.username as string}
-              className="rounded-full self-center h-8 w-8 "
-            />
-            <AvatarFallback>{`${post?.user.name?.split(' ')[0]![0]}${
-              post?.user.name?.split(' ')[1]
-                ? post?.user.name?.split(' ')[1]![0]
-                : ''
-            }`}</AvatarFallback>
-          </Avatar>
+          <CustomAvatar
+            imgUrl={post.user.image as string}
+            name={post.user.name as string}
+          />
           {/* //todo make the user pic and the username clickable, push to the profile of user. greyed on hover */}
           <p className="text-sm">{post?.user.username}</p>
           {/* //todo paste formatTimeToNow here for the post */}
         </div>
         <hr className="border-0 block w-full h-px mr-4 mt-2 bg-slate-700" />
         {/* //? comments section */}
-        <div className="flex flex-col justify-between gap-2 w-full pl-4">
+        <div className="flex flex-col justify-between gap-2 w-full pl-4 ">
           {/* //? first: user's caption ,if any */}
           <div className="flex mt-3">
             {/* //todo replace post user with comment author */}
-            <Avatar>
-              <AvatarImage
-                src={post?.user.image as string}
-                alt={post?.user?.username as string}
-                className="rounded-full self-center h-8 w-8 "
-              />
-              <AvatarFallback>{`${post?.user.name?.split(' ')[0]![0]}${
-                post?.user.name?.split(' ')[1]
-                  ? post?.user.name?.split(' ')[1]![0]
-                  : ''
-              }`}</AvatarFallback>
-            </Avatar>
+            <CustomAvatar
+              imgUrl={post.user.image as string}
+              name={post.user.name as string}
+            />
             {/* //? user caption */}
             <div className="flex gap-1 pt-2 flex-wrap ">
               <p className="text-sm font-semibold hover:text-gray-400 cursor-pointer">
@@ -89,6 +86,18 @@ const PostModal = async ({ postId }: { postId: string }) => {
             </div>
           </div>
           {/* //todo add comments */}
+          <div className="flex-grow flex flex-col gap-4 min-h-full">
+            {post.comments.map((cmt) => (
+              <div key={cmt.id} className="flex flex-wrap gap-1 mt-3">
+                <CustomAvatar
+                  imgUrl={cmt.user.image as string}
+                  name={cmt.user.name as string}
+                />
+                <p className="text-sm font-semibold">{cmt.user.username}</p>
+                <p className="text-sm">{cmt.text}</p>
+              </div>
+            ))}
+          </div>
 
           <hr className="border-0 block w-full h-px mr-4 mt-2 bg-slate-700" />
           <div className="flex flex-col gap-4">
@@ -97,6 +106,18 @@ const PostModal = async ({ postId }: { postId: string }) => {
               <Heart className="h-6 w-6 mr-2 " />
               <MessageCircle className="h-6 w-6 mr-2 transform scale-x-[-1]" />
               {/* todo add share btn */}
+            </div>
+            {/* //? no. of likes here */}
+            {/* //? formatTime here */}
+
+            <hr className="border-0 block w-full h-px mr-4 mt-2 bg-slate-700" />
+            {/* //* comment form here */}
+            <div className="flex gap-4">
+              <CustomAvatar
+                imgUrl={post.user.image as string}
+                name={post.user.name as string}
+              />
+              <AddComment postId={post.id} />
             </div>
           </div>
         </div>

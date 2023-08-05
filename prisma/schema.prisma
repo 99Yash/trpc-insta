@@ -22,6 +22,7 @@ model User {
   sessions Session[]
   posts    Post[]
   likes    Like[]
+  comments Comment[]
 
   @@index([id, username])
 }
@@ -39,8 +40,8 @@ model Like {
 
 model Comment {
   id        String   @id @default(cuid())
-  userId    String   @unique
-  //user User @relation(......) is not required for my app.
+  userId    String   
+  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
   postId    String
   text      String
   likes     Int
@@ -48,6 +49,7 @@ model Comment {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@index([postId, userId], map: "Comment_PostId_userId_Index")
+   @@index([userId, postId], map: "Comment_UserId_PostId_Index") 
 }
 
 model Post {

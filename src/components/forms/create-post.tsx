@@ -57,7 +57,7 @@ const CreatePost = () => {
   const addPostMutation = api.post.addPost.useMutation({
     onSuccess: async () => {
       //! fix invalidate user error.
-      await apiCtx.user.fetchUser.invalidate();
+      await apiCtx.post.fetchPost.invalidate();
       toast({
         title: 'Post created',
         description: 'Your post has been created',
