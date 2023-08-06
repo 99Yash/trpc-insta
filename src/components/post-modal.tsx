@@ -2,9 +2,9 @@ import { prisma } from '@/server/db';
 import { Heart, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { AspectRatio } from '../ui/aspect-ratio';
-import CustomAvatar from '../utilities/custom-avatar';
-import AddComment from './add-comment';
+import { AspectRatio } from './ui/aspect-ratio';
+import CustomAvatar from './utilities/custom-avatar';
+import AddComment from './forms/add-comment';
 
 //? the contents of the post modal
 const PostModal = async ({ postId }: { postId: string }) => {
@@ -42,12 +42,12 @@ const PostModal = async ({ postId }: { postId: string }) => {
   if (!post) return notFound();
 
   return (
-    <div className="flex">
+    <div className="flex max-h-[90vh] max-w-[80vw]">
       <AspectRatio className="max-w-[55vw] self-center" ratio={16 / 9}>
         <Image
           src={post?.images[0]?.url as string}
           alt={post?.caption}
-          className="object-contain bg-black"
+          className="object-contain absolute top-0 left-0 w-[100%] h-[100%] bg-black"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
           fill
         />
@@ -56,20 +56,19 @@ const PostModal = async ({ postId }: { postId: string }) => {
 
       {/* //?right side */}
       {/* //todo hide this on smaller screens */}
-      <div className="flex flex-grow flex-col w-[45vw] bg-black ">
+      <div className="flex flex-grow flex-col h-[90vh] w-[45vw] bg-black ">
         {/* //? header -- user info */}
-        <div className="flex pl-4 pt-2 gap-2 items-center">
+        <div className="flex pl-4 pt-2 gap-2 h-[10%] items-center">
           <CustomAvatar
             imgUrl={post.user.image as string}
             name={post.user.name as string}
           />
           {/* //todo make the user pic and the username clickable, push to the profile of user. greyed on hover */}
           <p className="text-sm">{post?.user.username}</p>
-          {/* //todo paste formatTimeToNow here for the post */}
         </div>
-        <hr className="border-0 block w-full h-px mr-4 mt-2 bg-slate-700" />
+        <hr className="border-0 block w-full h-px mr-4 bg-slate-700" />
         {/* //? comments section */}
-        <div className="flex flex-col justify-between gap-2 w-full pl-4 ">
+        <div className="flex flex-col justify-between h-[70%] gap-2 w-full pl-4 ">
           {/* //? first: user's caption ,if any */}
           <div className="flex mt-3">
             {/* //todo replace post user with comment author */}
@@ -85,10 +84,13 @@ const PostModal = async ({ postId }: { postId: string }) => {
               <p className="text-sm">{post?.caption}</p>
             </div>
           </div>
-          {/* //todo add comments */}
-          <div className="flex-grow flex flex-col gap-4 min-h-full">
+          {/* //? comments */}
+          <div className="flex-grow flex flex-col gap-4 scrollbar-hide overflow-auto">
             {post.comments.map((cmt) => (
-              <div key={cmt.id} className="flex flex-wrap gap-1 mt-3">
+              <div
+                key={cmt.id}
+                className="flex flex-wrap items-center gap-1 mt-3"
+              >
                 <CustomAvatar
                   imgUrl={cmt.user.image as string}
                   name={cmt.user.name as string}
@@ -100,12 +102,12 @@ const PostModal = async ({ postId }: { postId: string }) => {
           </div>
 
           <hr className="border-0 block w-full h-px mr-4 mt-2 bg-slate-700" />
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col h-[20%] gap-4">
             {/* //? button group */}
             <div className="flex">
               <Heart className="h-6 w-6 mr-2 " />
               <MessageCircle className="h-6 w-6 mr-2 transform scale-x-[-1]" />
-              {/* todo add share btn */}
+              {/* prolly add share btn */}
             </div>
             {/* //? no. of likes here */}
             {/* //? formatTime here */}

@@ -44,11 +44,7 @@ export const postRouter = createTRPCRouter({
           id: input.postId,
         },
         include: {
-          comments: {
-            select: {
-              text: true,
-            },
-          },
+          comments: true,
           images: true,
           likes: true,
         },

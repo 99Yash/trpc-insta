@@ -221,7 +221,7 @@ const page = async ({
   };
 
   return (
-    <div className=" flex flex-col w-full gap-4">
+    <div className=" flex flex-col w-full gap-4 h-full">
       <UserProfile username={username} />
       <hr className="border-0 hidden md:block h-[1px] mt-2 bg-slate-700" />
       <UserPosts />

@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 import '../styles/globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import * as React from 'react';
+import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: {
@@ -61,9 +62,15 @@ export default function RootLayout({
 }) {
   return (
     <TRPCProvider>
-      <html lang="en" suppressHydrationWarning>
+      <html
+        lang="en"
+        className={cn(
+          'scroll-smooth bg-neutral-900 font-sans text-slate-50 antialiased'
+        )}
+        suppressHydrationWarning
+      >
         <head />
-        <body className={` min-h-screen antialiased ${inter.className}`}>
+        <body className={` min-h-screen ${inter.className}`}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <div className="container max-w-[90rem] h-screen">
               <Header />

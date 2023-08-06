@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import PostModal from '../forms/post-modal';
+import PostModal from '../post-modal';
 import { AspectRatio } from '../ui/aspect-ratio';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 

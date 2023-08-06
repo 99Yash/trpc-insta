@@ -1,7 +1,7 @@
 'use client';
 import { toast } from '@/components/ui/use-toast';
 import { api } from '@/lib/api/api';
-import { customToastError } from '@/lib/utils';
+import { cn, customToastError } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
@@ -31,7 +31,6 @@ const AddComment = ({ postId }: { postId: string }) => {
   });
 
   const onSubmit = async () => {
-    console.log('comment', comment);
     try {
       await addCommentMutation.mutateAsync({ postId, text: comment });
       setComment('');
@@ -45,7 +44,9 @@ const AddComment = ({ postId }: { postId: string }) => {
       <Input
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className="border-none border-transparent focus-visible:border-transparent focus-visible:border-none mr-3 "
+        className={cn(
+          'border-none border-transparent focus-visible:border-transparent focus-visible:border-none mr-3 '
+        )}
         placeholder="Add a comment..."
       />
       {comment.length > 0 ? (
