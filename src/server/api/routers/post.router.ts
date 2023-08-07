@@ -1,5 +1,9 @@
 import { imageSchema } from '@/lib/validators';
-import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc';
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from '@/server/api/trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
@@ -32,7 +36,7 @@ export const postRouter = createTRPCRouter({
       });
       return newPost;
     }),
-  fetchPost: protectedProcedure
+  fetchPost: publicProcedure
     .input(
       z.object({
         postId: z.string(),
@@ -44,8 +48,19 @@ export const postRouter = createTRPCRouter({
           id: input.postId,
         },
         include: {
-          comments: true,
+          comments: {
+            include: {
+              user: true,
+            },
+          },
           images: true,
+          user: {
+            select: {
+              username: true,
+              image: true,
+              name: true,
+            },
+          },
           likes: true,
         },
       });
@@ -59,7 +74,7 @@ export const postRouter = createTRPCRouter({
       include: {
         images: true,
         likes: true,
-        comments: true,
+        // comments: true,
       },
     });
     return posts;

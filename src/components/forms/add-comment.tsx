@@ -39,11 +39,19 @@ const AddComment = ({ postId }: { postId: string }) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      onSubmit();
+    }
+  };
+
   return (
     <>
       <Input
         value={comment}
         onChange={(e) => setComment(e.target.value)}
+        onKeyDown={handleKeyDown}
         className={cn(
           'border-none border-transparent focus-visible:border-transparent focus-visible:border-none mr-3 '
         )}
@@ -52,7 +60,7 @@ const AddComment = ({ postId }: { postId: string }) => {
       {comment.length > 0 ? (
         <Button
           disabled={addCommentMutation.isLoading}
-          onClick={() => void onSubmit()}
+          onClick={onSubmit}
           variant={'ghost'}
         >
           {addCommentMutation.isLoading && (

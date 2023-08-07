@@ -168,7 +168,6 @@ const page = async ({
 
   const UserPosts = async () => {
     // todo invalidate posts on creation.
-    //todo limit the posts fetched.
     const postsByUser = await prisma.post.findMany({
       where: {
         user: {
@@ -207,7 +206,7 @@ const page = async ({
         </div>
       );
     return (
-      <div className="grid grid-cols-3 md:gap-4 sm:gap-2 ">
+      <div className="grid grid-cols-3 md:gap-4 sm:gap-2 md:mb-4 sm:mb-2 ">
         {/* //todo on clicking the image navigate to a route having a carousel */}
         {postsByUser.map((post) => (
           <UserPost
@@ -223,7 +222,7 @@ const page = async ({
   return (
     <div className=" flex flex-col w-full gap-4 h-full">
       <UserProfile username={username} />
-      <hr className="border-0 hidden md:block h-[1px] mt-2 bg-slate-700" />
+      <hr className="border-0 hidden md:block h-px mt-2 bg-slate-700" />
       <UserPosts />
     </div>
   );

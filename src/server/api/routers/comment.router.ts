@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 
 export const commentRouter = createTRPCRouter({
@@ -26,5 +26,22 @@ export const commentRouter = createTRPCRouter({
         },
       });
       return addedCmt;
+    }),
+  fetchCommentsOfPost: publicProcedure
+    .input(
+      z.object({
+        postId: z.string().min(1),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const comments = await ctx.prisma.comment.findMany({
+        where: {
+          postId: input.postId,
+        },
+        include: {
+          user: true,
+        },
+      });
+      return comments;
     }),
 });

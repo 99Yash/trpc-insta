@@ -35,7 +35,7 @@ model Like {
   createdAt DateTime @default(now())
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
-  @@index([postId, userId], map: "Like_PostId_UserId_Index")
+  @@unique([postId, userId], map: "Like_PostId_UserId_Index")
 }
 
 model Comment {

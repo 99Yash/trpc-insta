@@ -1,10 +1,10 @@
+import { getCurrentUser } from '@/lib/session';
 import { prisma } from '@/server/db';
 import { Heart, MessageCircle } from 'lucide-react';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { AspectRatio } from './ui/aspect-ratio';
-import CustomAvatar from './utilities/custom-avatar';
 import AddComment from './forms/add-comment';
+import CustomAvatar from './utilities/custom-avatar';
+import PostImage from './utilities/post-image';
 
 //? the contents of the post modal
 const PostModal = async ({ postId }: { postId: string }) => {
@@ -39,19 +39,13 @@ const PostModal = async ({ postId }: { postId: string }) => {
     },
   });
 
+  const user = await getCurrentUser();
+
   if (!post) return notFound();
 
   return (
     <div className="flex max-h-[90vh] max-w-[80vw]">
-      <AspectRatio className="max-w-[55vw] self-center" ratio={16 / 9}>
-        <Image
-          src={post?.images[0]?.url as string}
-          alt={post?.caption}
-          className="object-contain absolute top-0 left-0 w-[100%] h-[100%] bg-black"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
-          fill
-        />
-      </AspectRatio>
+      <PostImage imageUrl={post.images[0]?.url as string} postId={post.id} />
       {/* //?line separate */}
 
       {/* //?right side */}
@@ -87,40 +81,57 @@ const PostModal = async ({ postId }: { postId: string }) => {
           {/* //? comments */}
           <div className="flex-grow flex flex-col gap-4 scrollbar-hide overflow-auto">
             {post.comments.map((cmt) => (
-              <div
-                key={cmt.id}
-                className="flex flex-wrap items-center gap-1 mt-3"
-              >
+              <div key={cmt.id} className="flex gap-1 mt-2">
                 <CustomAvatar
                   imgUrl={cmt.user.image as string}
                   name={cmt.user.name as string}
                 />
-                <p className="text-sm font-semibold">{cmt.user.username}</p>
-                <p className="text-sm">{cmt.text}</p>
+                <div className="flex flex-wrap self-start ">
+                  <p className="text-sm font-semibold hover:text-gray-400 cursor-pointer">
+                    {cmt.user.username}
+                  </p>
+                </div>
+                <div className="flex flex-wrap self-start ">
+                  <p className="text-sm">{cmt.text}</p>
+                </div>
               </div>
             ))}
           </div>
 
-          <hr className="border-0 block w-full h-px mr-4 mt-2 bg-slate-700" />
+          <hr className="border-0 block w-full h-px mr-4 bg-slate-700" />
           <div className="flex flex-col h-[20%] gap-4">
             {/* //? button group */}
-            <div className="flex">
-              <Heart className="h-6 w-6 mr-2 " />
-              <MessageCircle className="h-6 w-6 mr-2 transform scale-x-[-1]" />
-              {/* prolly add share btn */}
-            </div>
+            {user ? (
+              <div className="flex">
+                {post.likes.some((like) => like.userId !== user.id) ? (
+                  <Heart className="h-6 w-6 mr-2 " />
+                ) : null}
+                <MessageCircle className="h-6 w-6 mr-2 transform scale-x-[-1]" />
+                {/* prolly add share btn */}
+              </div>
+            ) : null}
             {/* //? no. of likes here */}
+
+            <div className="flex">
+              <p className="text-sm font-semibold">
+                {post.likes.length} {post.likes.length === 1 ? 'like' : 'likes'}
+              </p>
+            </div>
+
             {/* //? formatTime here */}
 
-            <hr className="border-0 block w-full h-px mr-4 mt-2 bg-slate-700" />
             {/* //* comment form here */}
-            <div className="flex gap-4">
-              <CustomAvatar
-                imgUrl={post.user.image as string}
-                name={post.user.name as string}
-              />
-              <AddComment postId={post.id} />
-            </div>
+            {user ? (
+              <div className="flex gap-4">
+                <CustomAvatar
+                  imgUrl={user.image as string}
+                  name={post.user.name as string}
+                />
+                <AddComment postId={post.id} />
+              </div>
+            ) : (
+              <p className="text-sm">Log in to like or add a comment</p>
+            )}
           </div>
         </div>
       </div>
