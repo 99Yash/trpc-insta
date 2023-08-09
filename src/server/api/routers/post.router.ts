@@ -61,7 +61,11 @@ export const postRouter = createTRPCRouter({
               name: true,
             },
           },
-          likes: true,
+          likes: {
+            select: {
+              userId: true,
+            },
+          },
         },
       });
       return retrievedPost;
@@ -74,7 +78,7 @@ export const postRouter = createTRPCRouter({
       include: {
         images: true,
         likes: true,
-        // comments: true,
+        comments: true,
       },
     });
     return posts;

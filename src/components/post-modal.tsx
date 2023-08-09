@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import AddComment from './forms/add-comment';
 import CustomAvatar from './utilities/custom-avatar';
 import PostImage from './utilities/post-image';
+import { formatTimeToNow } from '@/lib/utils';
 
 //? the contents of the post modal
 const PostModal = async ({ postId }: { postId: string }) => {
@@ -110,15 +111,17 @@ const PostModal = async ({ postId }: { postId: string }) => {
                 {/* prolly add share btn */}
               </div>
             ) : null}
-            {/* //? no. of likes here */}
 
-            <div className="flex">
+            <div className="flex gap-2">
+              {/* //? no. of likes here */}
               <p className="text-sm font-semibold">
                 {post.likes.length} {post.likes.length === 1 ? 'like' : 'likes'}
               </p>
+              {/* //? formatTime here */}
+              <p className="text-xs text-gray-400">
+                • {formatTimeToNow(post.createdAt).toUpperCase()} AGO
+              </p>
             </div>
-
-            {/* //? formatTime here */}
 
             {/* //* comment form here */}
             {user ? (

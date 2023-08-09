@@ -27,7 +27,7 @@ export async function generateMetadata({
     description: user.bio,
     openGraph: {
       title: `
-      ${user.name} (@${user.username}) ● Trinsta.
+      ${user.name} (@${user.username}) • Trinsta.
       `,
       description: user.bio ? user.bio : '',
       url: '',

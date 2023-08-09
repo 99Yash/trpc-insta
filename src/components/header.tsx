@@ -9,7 +9,7 @@ const Header = async () => {
 
   return (
     <header className={`${inter.className} sticky z-30`}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="mx-auto max-w-full px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">
           <Link
             href="/"
@@ -24,7 +24,7 @@ const Header = async () => {
           {/* //? Search bar */}
           {/* Desktop navigation */}
 
-          <nav className="flex grow">
+          <nav className="md:flex hidden grow">
             {/* Desktop sign in links */}
             <ul className="flex grow flex-wrap items-center justify-end gap-4">
               <li>
@@ -42,7 +42,7 @@ const Header = async () => {
             </ul>
           </nav>
         </div>
-        {/* <hr className=" text-center" /> */}
+        <hr className="border-0 md:hidden block h-px mb-2 bg-slate-700" />
       </div>
     </header>
   );

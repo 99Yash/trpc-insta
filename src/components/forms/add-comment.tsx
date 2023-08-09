@@ -1,7 +1,7 @@
 'use client';
 import { toast } from '@/components/ui/use-toast';
 import { api } from '@/lib/api/api';
-import { cn, customToastError } from '@/lib/utils';
+import { customToastError } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
@@ -52,16 +52,21 @@ const AddComment = ({ postId }: { postId: string }) => {
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         onKeyDown={handleKeyDown}
-        className={cn(
-          'border-none border-transparent focus-visible:border-transparent focus-visible:border-none mr-3 '
-        )}
+        className=" px-0 focus:border-transparent !bg-transparent !border-none !outline-none focus:ring-0 placeholder-gray-500 flex-grow "
         placeholder="Add a comment..."
+        style={{
+          background: 'transparent !important', // Set background to transparent
+          border: 'none !important',
+          boxShadow: 'none !important',
+          outline: 'none !important',
+        }}
       />
       {comment.length > 0 ? (
         <Button
           disabled={addCommentMutation.isLoading}
           onClick={onSubmit}
           variant={'ghost'}
+          className="text-blue-400  "
         >
           {addCommentMutation.isLoading && (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />

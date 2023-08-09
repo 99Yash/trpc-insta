@@ -72,7 +72,7 @@ export default function RootLayout({
         <head />
         <body className={` min-h-screen ${inter.className}`}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            <div className="container max-w-[90rem] h-screen">
+            <div className="container md:max-w-[90vw] sm:max-w-full h-screen">
               <Header />
               {children}
             </div>

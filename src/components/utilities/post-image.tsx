@@ -5,6 +5,7 @@ import { AspectRatio } from '../ui/aspect-ratio';
 import { toast } from '../ui/use-toast';
 import { customToastError } from '@/lib/utils';
 
+//? image for the post Modal
 const PostImage = ({
   imageUrl,
   postId,

@@ -54,7 +54,7 @@ function formatDistance(token: string, count: number, options?: any): string {
       return 'in ' + result;
     } else {
       if (result === 'just now') return result;
-      return result + ' ago';
+      return result;
     }
   }
   return result;
