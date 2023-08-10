@@ -42,6 +42,7 @@ const Post = async ({ post, userId }: PostProps) => {
         alt={post.caption || 'Cant preview image'}
         width={740}
         height={740}
+        className="border w-screen border-slate-700 "
       />
       <PostButtons userId={userId} post={post} />
       <div className="flex flex-wrap items-baseline gap-1 ">

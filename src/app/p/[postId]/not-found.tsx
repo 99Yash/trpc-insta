@@ -1,0 +1,15 @@
+import Link from 'next/link';
+
+export default function NotFound() {
+  return (
+    <div className="flex flex-col gap-4">
+      <h2 className="text-2xl font-semibold">
+        Sorry, this page isn&apos;t available.
+      </h2>
+      <p className="text-sm">
+        The link you followed may be broken, or the page may have been removed.
+      </p>
+      <Link href="/">Go back home.</Link>
+    </div>
+  );
+}

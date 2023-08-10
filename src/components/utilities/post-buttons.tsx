@@ -9,22 +9,22 @@ import { toast } from '../ui/use-toast';
 type PostButtonProps = {
   post: {
     id: string;
-    user: {
+    user?: {
       image: string | null;
       name: string | null;
       username: string | null;
     };
-    comments: Array<{
+    comments?: Array<{
       id: string;
     }>;
     likes: Array<{
       userId: string;
     }>;
-    images: Array<{
+    images?: Array<{
       url: string;
     }>;
-    caption: string | null;
-    createdAt: Date;
+    caption?: string | null;
+    createdAt?: Date;
   };
   userId?: string;
 };
@@ -62,18 +62,18 @@ const PostButtons = ({ post, userId }: PostButtonProps) => {
         {userId && post.likes.some((like) => like.userId === userId) ? (
           <Heart
             onClick={addOrRemoveLike}
-            className="h-8 w-8 mr-2 fill-pink-600 text-pink-600"
+            className="md:h-8 md:w-8 h-6 w-6 mr-2 fill-pink-600 text-pink-600"
           />
         ) : (
           <Heart
             onClick={addOrRemoveLike}
-            className="h-8 w-8 mr-2 hover:text-gray-400"
+            className="md:h-8 md:w-8 h-6 w-6 mr-2 hover:text-gray-400"
           />
         )}
         {/* //? open post modal on clicking here */}
         <MessageCircle
           onClick={() => router.push(`/p/${post.id}`)}
-          className="h-8 w-8 mr-2 transform scale-x-[-1] hover:text-gray-400"
+          className="md:h-8 md:w-8 h-6 w-6 mr-2 transform scale-x-[-1] hover:text-gray-400"
         />
       </div>
       {post.likes && post.likes.length > 0 ? (

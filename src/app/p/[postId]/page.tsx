@@ -1,11 +1,12 @@
-import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import AddComment from '@/components/forms/add-comment';
 import CustomAvatar from '@/components/utilities/custom-avatar';
+import PostButtons from '@/components/utilities/post-buttons';
+import { getCurrentUser } from '@/lib/session';
+import { formatTimeToNow } from '@/lib/utils';
 import { prisma } from '@/server/db';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import React from 'react';
 
 type PostIdPageProps = {
   params: {
@@ -30,7 +31,7 @@ export async function generateMetadata({
       },
     },
   });
-  if (!post) return notFound();
+  if (!post) notFound();
   return {
     title: `${post.caption} • @${post.user.username}`,
     description: post.caption,
@@ -42,8 +43,6 @@ export async function generateMetadata({
       images: [
         {
           url: post.user.image as string,
-          width: 400,
-          height: 400,
         },
       ],
     },
@@ -52,15 +51,31 @@ export async function generateMetadata({
 
 const PostPage = async ({ params }: PostIdPageProps) => {
   const { postId } = params;
+  const user = await getCurrentUser().catch((err) => {
+    console.error(err.message);
+    return null;
+  });
 
   const post = await prisma.post.findUnique({
     where: {
       id: postId,
     },
     include: {
-      //todo uncomment
-      // comments: true,
-      // likes: true,
+      comments: {
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          user: {
+            select: {
+              username: true,
+              image: true,
+              name: true,
+            },
+          },
+        },
+      },
+      likes: true,
       images: true,
       user: {
         select: {
@@ -72,51 +87,112 @@ const PostPage = async ({ params }: PostIdPageProps) => {
     },
   });
 
-  if (!post) return notFound();
+  if (!post) notFound();
 
   return (
-    <div className="max-h-fit min-w-max">
-      <div className="flex flex-[1] justify-center w-2/3 ">
-        <AspectRatio
-          className=" flex-[3] max-h-full items-center flex relative"
-          ratio={1}
-        >
-          <Image
-            src={post?.images[0]?.url as string}
-            alt={post?.caption}
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
-            fill
-          />
-          <div className="absolute top-0 right-0 h-full w-px bg-gray-500"></div>
-        </AspectRatio>
-        {/* //?right side */}
-        <div className="self-stretch flex-[2] bg-black ">
-          {/* //? header -- user info */}
-          <div className="flex pl-4 pt-2 gap-2 items-center">
+    <div className="flex border border-gray-800 flex-col md:items-center md:h-[62vh] md:w-[100vw] lg:w-[90vw] xl:w-[80vw] md:gap-6 gap-3 h-[50vh] mb-2 ">
+      {/* //? mobile header user info */}
+      <div className="flex md:hidden items-center flex-wrap gap-1 ">
+        <CustomAvatar
+          imgUrl={post.user.image as string}
+          name={post.user.name as string}
+        />
+        <p className="text-xs inline-block font-semibold">
+          {post?.user.username}
+        </p>
+        <p className="text-sm text-gray-400">
+          {formatTimeToNow(post.createdAt)}
+        </p>
+      </div>
+      <div className="flex md:hidden">
+        <Image
+          src={post.images[0]?.url as string}
+          className="block w-screen md:hidden"
+          alt={`${post.caption} • @${post.user.username}`}
+          width={450}
+          height={450}
+        />
+      </div>
+      {/* //? this includes no. of likes */}
+      <div className="flex md:hidden">
+        <PostButtons post={post} />
+      </div>
+      <div className="md:flex self-start hidden md:bg-black gap-3 h-full w-full ">
+        <Image
+          src={post.images[0]?.url as string}
+          width={650}
+          height={650}
+          alt={`${post.caption} • @${post.user.username}`}
+          className="h-full object-cover md:block hidden"
+        />
+        <hr className="border-0 hidden md:block w-px h-full bg-slate-700" />
+        <div className="md:flex h-full hidden flex-col py-2 flex-grow">
+          {/* //? post author header */}
+          <div className="flex items-center gap-2">
             <CustomAvatar
               imgUrl={post.user.image as string}
               name={post.user.name as string}
             />
-            {/* //todo make the user pic and the username clickable, push to the profile of user. greyed on hover */}
-            <p className="text-sm">{post?.user.username}</p>
-            {/* //todo paste formatTimeToNow here for the post */}
+            <p className="text-sm font-semibold">{post.user.username}</p>
           </div>
-          <hr className="border-0 block w-full h-px mr-4 mt-2 bg-slate-700" />
-          {/* //? comments section */}
-          <div className="flex flex-col gap-2 w-full pl-4">
-            {/* //? first: user's caption ,if any */}
-            <div className="flex mt-3">
-              {/* //todo replace post user with comment author */}
+          <hr className="border-0 w-full h-px mt-2 bg-slate-700" />
+          {/* //? post author caption */}
+          <div className="flex flex-wrap items-center gap-1 mt-2 pb-4 ">
+            <CustomAvatar
+              imgUrl={post.user.image as string}
+              name={post.user.name as string}
+            />
+            <p className="text-xs inline-block font-semibold">
+              {post?.user.username}
+            </p>
+            <p className="text-sm text-gray-400">
+              {formatTimeToNow(post.createdAt)}
+            </p>
+            <p className="text-sm">{post?.caption}</p>
+          </div>
+          {/* //?comments */}
+          <div className="overflow-y-auto scrollbar-hide h-4/5 ">
+            {post.comments.length > 0 &&
+              post.comments.map((cmt) => (
+                <div
+                  key={cmt.id}
+                  className="flex flex-wrap items-center gap-1 mt-2 "
+                >
+                  <CustomAvatar
+                    imgUrl={cmt.user.image as string}
+                    name={cmt.user.name as string}
+                  />
+                  <p className="text-xs inline-block font-semibold">
+                    {cmt?.user.username}
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    {formatTimeToNow(cmt.createdAt)}
+                  </p>
+                  <p className="text-sm">{cmt?.text}</p>
+                </div>
+              ))}
+          </div>
+          <hr className="border-0 w-full h-px bg-slate-700" />
+          <div className="py-3 flex flex-col gap-2 ">
+            {user ? (
+              <PostButtons userId={user.id} post={post} />
+            ) : (
+              <PostButtons post={post} />
+            )}
+            <p className=" text-sm text-gray-500">
+              {formatTimeToNow(post.createdAt)} ago
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {/* //! dont remove this div */}
+            {/* //? add a comment input */}
+            {user ? (
               <CustomAvatar
-                imgUrl={post.user.image as string}
-                name={post.user.name as string}
+                imgUrl={user.image as string}
+                name={user.name ?? ''}
               />
-            </div>
-            <div className="flex gap-2 flex-wrap h-full">
-              <p className="text-sm">{post?.user.username}</p>
-              <p className="text-sm">{post?.caption}</p>
-            </div>
+            ) : null}
+            <AddComment postId={post.id} />
           </div>
         </div>
       </div>

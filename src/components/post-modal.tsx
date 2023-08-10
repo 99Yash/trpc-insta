@@ -42,7 +42,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
 
   const user = await getCurrentUser();
 
-  if (!post) return notFound();
+  if (!post) notFound();
 
   return (
     <div className="flex max-h-[90vh] max-w-[80vw]">

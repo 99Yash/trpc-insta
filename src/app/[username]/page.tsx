@@ -21,7 +21,7 @@ export async function generateMetadata({
       username: params.username,
     },
   });
-  if (!user) return notFound();
+  if (!user) notFound();
   return {
     title: `${user.name} (@${user.username})`,
     description: user.bio,
@@ -55,7 +55,7 @@ const UserProfile = async ({ username }: { username: string }) => {
     },
   });
 
-  if (!user) return notFound();
+  if (!user) notFound();
   const session = await getSession();
   //todo if this is not the user's profile page, add following/follow buttons
   return (
