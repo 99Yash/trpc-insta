@@ -6,6 +6,7 @@ import AddComment from './forms/add-comment';
 import CustomAvatar from './utilities/custom-avatar';
 import PostImage from './utilities/post-image';
 import { formatTimeToNow } from '@/lib/utils';
+import { User } from 'next-auth';
 
 //? the contents of the post modal
 const PostModal = async ({ postId }: { postId: string }) => {
@@ -124,17 +125,13 @@ const PostModal = async ({ postId }: { postId: string }) => {
             </div>
 
             {/* //* comment form here */}
-            {user ? (
-              <div className="flex gap-4">
-                <CustomAvatar
-                  imgUrl={user.image as string}
-                  name={post.user.name as string}
-                />
-                <AddComment postId={post.id} />
-              </div>
-            ) : (
-              <p className="text-sm">Log in to like or add a comment</p>
-            )}
+            <div className="flex gap-4">
+              <CustomAvatar
+                imgUrl={user?.image ?? null}
+                name={user?.name ?? null}
+              />
+              <AddComment postId={post.id} />
+            </div>
           </div>
         </div>
       </div>

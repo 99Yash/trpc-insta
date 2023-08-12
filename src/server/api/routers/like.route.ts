@@ -13,7 +13,7 @@ export const likesRouter = createTRPCRouter({
       const likingUser = ctx.session.user;
       if (!likingUser)
         throw new TRPCError({
-          code: 'FORBIDDEN',
+          code: 'UNAUTHORIZED',
           message: 'User not authenticated',
         });
       const isLiked = await ctx.prisma.like.findUnique({

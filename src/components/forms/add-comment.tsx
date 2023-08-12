@@ -15,17 +15,15 @@ const AddComment = ({ postId }: { postId: string }) => {
     onSuccess: async (input) => {
       await apiUtils.post.fetchPost.invalidate({ postId: input.postId });
       toast({
-        title: 'Done!',
         description: 'Comment added successfully',
         duration: 1200,
       });
     },
     onError: () => {
       toast({
-        title: 'Error!',
         description: 'An error occurred while adding your comment',
         variant: 'destructive',
-        duration: 1800,
+        duration: 800,
       });
     },
   });

@@ -37,12 +37,11 @@ const PostButtons = ({ post, userId }: PostButtonProps) => {
     onSuccess: async () => {
       await apiUtils.post.fetchPost.invalidate({ postId: post.id });
     },
-    onError: () => {
+    onError: (err) => {
       toast({
-        title: 'Error!',
-        description: 'Could not like this post',
+        description: err.message,
         variant: 'destructive',
-        duration: 1800,
+        duration: 800,
       });
     },
   });

@@ -34,14 +34,15 @@ const SearchBar = () => {
     enabled: searchInput.length > 0,
   });
 
+  const debounceRefetch = useRef(
+    debounce(async (value) => {
+      await refetch();
+    }, 200)
+  );
+
   const request = debounce(async () => {
     await refetch();
   }, 200);
-
-  const debounceReq = useCallback(() => {
-    request();
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useOnClickOutside(commandRef, () => {
     setSearchInput(``);
@@ -55,16 +56,18 @@ const SearchBar = () => {
         className="outline-none border-none focus:border-none focus:outline-none ring-0 "
         placeholder="Search users by name or username..."
         value={searchInput}
-        onValueChange={(value) => {
+        onValueChange={async (value) => {
           setSearchInput(value);
-          debounceReq();
+          await debounceRefetch.current(value);
         }}
       />
 
       {searchInput.length > 0 ? (
         <CommandList className="absolute top-full inset-x-0 shadow rounded-b-md bg-black ">
           {isFetched && users?.length === 0 && (
-            <CommandEmpty>No users found.</CommandEmpty>
+            <CommandEmpty className="flex p-4 justify-center">
+              No users found.
+            </CommandEmpty>
           )}
           {(users?.length ?? 0) > 0 ? (
             <CommandGroup heading="Users">
@@ -79,7 +82,14 @@ const SearchBar = () => {
                   }}
                 >
                   <Users className="mr-2 h-4 w-4 " />
-                  <span className="">{user.name ?? user.username}</span>
+                  <div className="flex gap-2">
+                    <span className="font-medium">
+                      {user.name ?? user.username}
+                    </span>
+                    {user.username && user.name && (
+                      <span className="text-gray-500">{user.username}</span>
+                    )}
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>

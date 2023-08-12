@@ -70,14 +70,16 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <head />
-        <body className={` min-h-screen ${inter.className}`}>
+        <body className={cn(`min-h-screen ${inter.className}`)}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            <div className="container md:max-w-[90vw] sm:max-w-full h-screen">
+            <TailwindIndicator />
+            <main
+              className={cn('container md:max-w-[90vw] sm:max-w-full h-screen')}
+            >
               <Header />
               {children}
-            </div>
+            </main>
             <Toaster />
-            <TailwindIndicator />
           </ThemeProvider>
         </body>
       </html>

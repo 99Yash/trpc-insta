@@ -20,10 +20,7 @@ export const userRouter = createTRPCRouter({
   search: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     const retrievedUsers = await ctx.prisma.user.findMany({
       where: {
-        OR: [
-          { name: { startsWith: input } },
-          { username: { startsWith: input } },
-        ],
+        OR: [{ name: { contains: input } }, { username: { contains: input } }],
       },
       select: { username: true, name: true, id: true },
       take: 5,
