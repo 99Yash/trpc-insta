@@ -17,6 +17,20 @@ export const userRouter = createTRPCRouter({
       });
       return retrievedUser;
     }),
+  search: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    const retrievedUsers = await ctx.prisma.user.findMany({
+      where: {
+        OR: [
+          { name: { startsWith: input } },
+          { username: { startsWith: input } },
+        ],
+      },
+      select: { username: true, name: true, id: true },
+      take: 5,
+      //todo: maybe sort by desc followers
+    });
+    return retrievedUsers ?? [];
+  }),
   updateUserProfile: protectedProcedure
     .input(userProfileSchema)
     .mutation(async ({ ctx, input }) => {

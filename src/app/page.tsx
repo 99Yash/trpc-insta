@@ -26,7 +26,7 @@ interface PostProps {
 
 const Post = async ({ post, userId }: PostProps) => {
   return (
-    <div key={post.id} className="flex flex-col gap-3">
+    <div key={post.id} className="flex flex-col gap-3 ">
       <div className="flex items-center gap-2">
         <CustomAvatar
           imgUrl={post.user.image as string}
@@ -42,7 +42,7 @@ const Post = async ({ post, userId }: PostProps) => {
         alt={post.caption || 'Cant preview image'}
         width={740}
         height={740}
-        className="border w-screen border-slate-700 "
+        className="border sm:w-screen md:w-full border-slate-700 "
       />
       <PostButtons userId={userId} post={post} />
       <div className="flex flex-wrap items-baseline gap-1 ">
@@ -63,7 +63,7 @@ const Post = async ({ post, userId }: PostProps) => {
         {/* //? add a comment input */}
         <AddComment postId={post.id} />
       </div>
-      <hr className="border-0 hidden md:block w-full h-px mt-2 bg-slate-700" />
+      <hr className="border-0 hidden md:block w-full h-px mt-2 bg-slate-700 " />
     </div>
   );
 };
@@ -93,7 +93,7 @@ export default async function Index() {
     });
     return (
       <div className="flex flex-col items-center gap-6 mb-2">
-        {randomPosts.map((post) => (
+        {randomPosts.map((post, idx) => (
           <Post post={post} key={post.id} />
         ))}
       </div>

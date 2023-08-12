@@ -38,10 +38,13 @@
     "@uploadthing/react": "^5.2.0",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
+    "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "embla-carousel-react": "^8.0.0-rc11",
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
+    "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.260.0",
     "next": "^13.4.12",
     "next-auth": "^4.22.3",
@@ -62,6 +65,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.7",
     "@types/react-dropzone": "^5.1.0",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.26",
