@@ -113,9 +113,11 @@ const PostModal = async ({ postId }: { postId: string }) => {
             {/* //? button group */}
             {user ? (
               <div className="flex">
-                {post.likes.some((like) => like.userId !== user.id) ? (
+                {post.likes.some((like) => like.userId === user.id) ? (
+                  <Heart className="h-6 w-6 mr-2 fill-pink-600 text-pink-600" />
+                ) : (
                   <Heart className="h-6 w-6 mr-2 " />
-                ) : null}
+                )}
                 <MessageCircle className="h-6 w-6 mr-2 transform scale-x-[-1]" />
                 {/* prolly add share btn */}
               </div>

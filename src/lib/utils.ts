@@ -76,6 +76,10 @@ export function isArrayOfFile(files: unknown): files is File[] {
   return files.every((file) => file instanceof File);
 }
 
+export function isFile(input: unknown): input is File {
+  return input instanceof File;
+}
+
 export function customToastError(err: unknown) {
   if (err instanceof z.ZodError) {
     const errors = err.issues.map((issue) => {

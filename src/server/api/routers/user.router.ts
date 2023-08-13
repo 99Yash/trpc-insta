@@ -1,4 +1,4 @@
-import { userProfileSchema } from '@/lib/validators';
+import { imageSchema, userProfileSchema } from '@/lib/validators';
 import { protectedProcedure, publicProcedure } from '@/server/api/trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
@@ -28,6 +28,37 @@ export const userRouter = createTRPCRouter({
     });
     return retrievedUsers ?? [];
   }),
+  changeProfilePic: protectedProcedure
+    .input(imageSchema)
+    .mutation(async ({ ctx, input }) => {
+      const requestingUser = ctx.session.user;
+      if (!requestingUser)
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'User not authenticated',
+        });
+      const userToUpdate = await ctx.prisma.user.findUnique({
+        where: { id: requestingUser.id },
+      });
+      if (!userToUpdate)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found',
+        });
+      if (userToUpdate.id !== ctx.session.user.id) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'User not authenticated',
+        });
+      }
+      const updatedUser = await ctx.prisma.user.update({
+        where: { id: requestingUser.id },
+        data: {
+          image: input.url,
+        },
+      });
+      return updatedUser;
+    }),
   updateUserProfile: protectedProcedure
     .input(userProfileSchema)
     .mutation(async ({ ctx, input }) => {
@@ -45,6 +76,12 @@ export const userRouter = createTRPCRouter({
           code: 'NOT_FOUND',
           message: 'User not found',
         });
+      if (userToUpdate.id !== ctx.session.user.id) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'User not authenticated',
+        });
+      }
       const updatedUser = await ctx.prisma.user.update({
         where: { id: requestingUser.id },
         data: {

@@ -2,6 +2,7 @@ import CreatePost from '@/components/forms/create-post';
 import EditProfile from '@/components/forms/edit-profile';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import AddPostButton from '@/components/utilities/add-post-button';
+import EditProfilePhoto from '@/components/utilities/edit-dp';
 import UserPost from '@/components/utilities/user-post';
 import { getCurrentUser, getSession } from '@/lib/session';
 import { prisma } from '@/server/db';
@@ -76,9 +77,13 @@ const UserProfile = async ({ username }: { username: string }) => {
               <div className="flex gap-2">
                 <CreatePost />
                 <EditProfile
-                  name={user.name as string}
-                  username={username as string}
+                  name={user.name ?? ''}
+                  username={username}
                   bio={(user?.bio as string) || ''}
+                />
+                <EditProfilePhoto
+                  photoUrl={user.image as string}
+                  name={user.name ?? ''}
                 />
               </div>
             )}
@@ -127,6 +132,10 @@ const UserProfile = async ({ username }: { username: string }) => {
                 name={user.name as string}
                 username={username}
                 bio={(user?.bio as string) || ''}
+              />
+              <EditProfilePhoto
+                photoUrl={user.image as string}
+                name={user.name ?? ''}
               />
             </div>
           )}

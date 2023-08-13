@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isArrayOfFile } from './utils';
+import { isArrayOfFile, isFile } from './utils';
 
 export const imageSchema = z.object({
   id: z.string(),
@@ -34,6 +34,10 @@ export const addPostSchema = z.object({
     .refine(isArrayOfFile, 'Must be an array of File')
     .nullable()
     .default(null),
+});
+
+export const imageFileSchema = z.object({
+  image: z.unknown().refine(isFile, 'Must be a file').nullable().default(null),
 });
 
 export type PublicMetadata = z.infer<typeof userProfileSchema.shape.username>;

@@ -5,8 +5,8 @@ const CustomAvatar = ({
   name,
   imgUrl,
 }: {
-  name: string | null;
-  imgUrl: string | null;
+  name?: string | null;
+  imgUrl?: string | null;
 }) => {
   return (
     <Avatar>

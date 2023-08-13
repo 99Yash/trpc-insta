@@ -21,6 +21,14 @@ export const ourFileRouter = {
 
       console.log('Completed upload');
     }),
+  profilePicUploader: f({
+    image: {
+      maxFileSize: '8MB',
+      maxFileCount: 1,
+    },
+  }).onUploadComplete(() => {
+    console.log('Completed dp upload');
+  }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

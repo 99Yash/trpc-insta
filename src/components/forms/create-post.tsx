@@ -70,7 +70,7 @@ const CreatePost = () => {
         title: 'Uh oh..',
         description: err.message,
         variant: 'destructive',
-        duration: 8900,
+        duration: 900,
       }),
   });
   const onSubmit: SubmitHandler<AddPostSchema> = async (
