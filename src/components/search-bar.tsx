@@ -1,7 +1,7 @@
 'use client';
 
 import { Users } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Command,
   CommandEmpty,
@@ -30,15 +30,13 @@ const SearchBar = () => {
     data: users,
     isFetched,
     refetch,
-  } = api.user.search.useQuery(searchInput, {
-    enabled: searchInput.length > 0,
-  });
+  } = api.user.search.useQuery(searchInput);
 
-  const debounceRefetch = useRef(
-    debounce(async (value) => {
-      await refetch();
-    }, 200)
-  );
+  // const debounceRefetch = useRef(
+  //   debounce(async (value) => {
+  //     await refetch();
+  //   }, 200)
+  // );
 
   const request = debounce(async () => {
     await refetch();
@@ -56,9 +54,9 @@ const SearchBar = () => {
         className="outline-none border-none focus:border-none focus:outline-none ring-0 "
         placeholder="Search users by name or username..."
         value={searchInput}
-        onValueChange={async (value) => {
+        onValueChange={(value) => {
           setSearchInput(value);
-          await debounceRefetch.current(value);
+          request();
         }}
       />
 

@@ -1,12 +1,11 @@
 import { getCurrentUser } from '@/lib/session';
+import { formatTimeToNow } from '@/lib/utils';
 import { prisma } from '@/server/db';
 import { Heart, MessageCircle } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import AddComment from './forms/add-comment';
 import CustomAvatar from './utilities/custom-avatar';
 import PostImage from './utilities/post-image';
-import { formatTimeToNow } from '@/lib/utils';
-import { User } from 'next-auth';
 
 //? the contents of the post modal
 const PostModal = async ({ postId }: { postId: string }) => {
@@ -52,7 +51,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
 
       {/* //?right side */}
       {/* //todo hide this on smaller screens */}
-      <div className="flex flex-grow flex-col h-[90vh] w-[45vw] bg-black ">
+      <div className="flex flex-grow flex-col h-[90vh] w-[45vw] bg-black items-stretch">
         {/* //? header -- user info */}
         <div className="flex pl-4 pt-2 gap-2 h-[10%] items-center">
           <CustomAvatar
@@ -64,7 +63,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
         </div>
         <hr className="border-0 block w-full h-px mr-4 bg-slate-700" />
         {/* //? comments section */}
-        <div className="flex flex-col justify-between h-[70%] gap-2 w-full pl-4 ">
+        <div className="flex flex-col justify-between h-[85%] gap-2 w-full pl-4 ">
           {/* //? first: user's caption ,if any */}
           <div className="flex mt-3">
             {/* //todo replace post user with comment author */}
@@ -74,10 +73,12 @@ const PostModal = async ({ postId }: { postId: string }) => {
             />
             {/* //? user caption */}
             <div className="flex gap-1 pt-2 flex-wrap ">
-              <p className="text-sm font-semibold hover:text-gray-400 cursor-pointer">
+              <p className="text-sm font-semibold flex-none hover:text-gray-400 cursor-pointer">
                 {post?.user.username}
               </p>
-              <p className="text-sm">{post?.caption}</p>
+              <p className="text-sm whitespace-pre-line flex-grow ">
+                {post?.caption}
+              </p>
             </div>
           </div>
           {/* //? comments */}
@@ -88,13 +89,20 @@ const PostModal = async ({ postId }: { postId: string }) => {
                   imgUrl={cmt.user.image as string}
                   name={cmt.user.name as string}
                 />
-                <div className="flex flex-wrap self-start ">
-                  <p className="text-sm font-semibold hover:text-gray-400 cursor-pointer">
-                    {cmt.user.username}
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <div className="flex self-start gap-x-2 ">
+                      <h3 className="text-sm inline-flex shrink-0 font-semibold hover:text-gray-400 cursor-pointer">
+                        {cmt.user.username}
+                      </h3>
+                      <p className="text-sm whitespace-pre-line overflow-hidden text-ellipsis break-words ">
+                        {cmt.text}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 ">
+                    {formatTimeToNow(cmt.createdAt)}
                   </p>
-                </div>
-                <div className="flex flex-wrap self-start ">
-                  <p className="text-sm">{cmt.text}</p>
                 </div>
               </div>
             ))}
@@ -113,14 +121,14 @@ const PostModal = async ({ postId }: { postId: string }) => {
               </div>
             ) : null}
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               {/* //? no. of likes here */}
-              <p className="text-sm font-semibold">
+              <p className="text-sm font-medium">
                 {post.likes.length} {post.likes.length === 1 ? 'like' : 'likes'}
               </p>
               {/* //? formatTime here */}
               <p className="text-xs text-gray-400">
-                • {formatTimeToNow(post.createdAt).toUpperCase()} AGO
+                • {formatTimeToNow(post.createdAt)} ago
               </p>
             </div>
 
