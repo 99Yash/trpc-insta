@@ -4,7 +4,6 @@ import {
   protectedProcedure,
   publicProcedure,
 } from '@/server/api/trpc';
-import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 export const postRouter = createTRPCRouter({
@@ -16,12 +15,6 @@ export const postRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const requestingUser = ctx.session.user;
-      if (!requestingUser)
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'User not authenticated',
-        });
       const newPost = await ctx.prisma.post.create({
         data: {
           caption: input.caption,
@@ -35,6 +28,27 @@ export const postRouter = createTRPCRouter({
         },
       });
       return newPost;
+    }),
+  getWithLikeCount: publicProcedure
+    .input(
+      z.object({
+        postId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const post = await ctx.prisma.post.findUnique({
+        where: {
+          id: input.postId,
+        },
+        include: {
+          likes: {
+            select: {
+              userId: true,
+            },
+          },
+        },
+      });
+      return post;
     }),
   fetchPost: publicProcedure
     .input(

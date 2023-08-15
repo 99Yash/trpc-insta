@@ -115,7 +115,7 @@ const PostPage = async ({ params }: PostIdPageProps) => {
       </div>
       {/* //? this includes no. of likes */}
       <div className="flex md:hidden">
-        <PostButtons post={post} />
+        <PostButtons postId={postId} />
       </div>
       <div className="md:flex self-start hidden md:bg-black gap-3 h-full w-full ">
         <Image
@@ -175,9 +175,9 @@ const PostPage = async ({ params }: PostIdPageProps) => {
           <hr className="border-0 w-full h-px bg-slate-700" />
           <div className="py-3 flex flex-col gap-2 ">
             {user ? (
-              <PostButtons userId={user.id} post={post} />
+              <PostButtons userId={user.id} postId={postId} />
             ) : (
-              <PostButtons post={post} />
+              <PostButtons postId={postId} />
             )}
             <p className=" text-sm text-gray-500">
               {formatTimeToNow(post.createdAt)} ago

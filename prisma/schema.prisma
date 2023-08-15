@@ -16,7 +16,7 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
 
-  bio      String? @db.Text
+  bio      String?   @db.Text
   username String?   @unique @default(cuid())
   accounts Account[]
   sessions Session[]
@@ -29,34 +29,36 @@ model User {
 
 model Like {
   id        String   @id @default(cuid())
-  userId    String   @unique
+  userId    String   
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId    String
   createdAt DateTime @default(now())
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([postId, userId], map: "Like_PostId_UserId_Index")
+  @@index([postId])
+  @@index([userId])
 }
 
 model Comment {
   id        String   @id @default(cuid())
-  userId    String   
-  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId    String
-  text      String @db.Text
+  text      String   @db.Text
   likes     Int
   createdAt DateTime @default(now())
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@index([postId, userId], map: "Comment_PostId_userId_Index")
-   @@index([userId, postId], map: "Comment_UserId_PostId_Index") 
+  @@index([userId, postId], map: "Comment_UserId_PostId_Index")
 }
 
 model Post {
   id        String    @id @default(cuid())
   userId    String
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  caption   String @db.Text
+  caption   String    @db.Text
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   likes     Like[]

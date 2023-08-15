@@ -5,37 +5,19 @@ import { Heart, MessageCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from '../ui/use-toast';
 
-//! next/router not supported in app-dir.
 type PostButtonProps = {
-  post: {
-    id: string;
-    user?: {
-      image: string | null;
-      name: string | null;
-      username: string | null;
-    };
-    comments?: Array<{
-      id: string;
-    }>;
-    likes: Array<{
-      userId: string;
-    }>;
-    images?: Array<{
-      url: string;
-    }>;
-    caption?: string | null;
-    createdAt?: Date;
-  };
+  postId: string;
   userId?: string;
 };
 
-const PostButtons = ({ post, userId }: PostButtonProps) => {
-  const apiUtils = api.useContext();
+const PostButtons = ({ postId, userId }: PostButtonProps) => {
   const router = useRouter();
+  const apiUtils = api.useContext();
+  const likes = api.like.getLikesCount.useQuery({ postId });
 
   const addLikeMutation = api.like.addLike.useMutation({
     onSuccess: async () => {
-      await apiUtils.post.fetchPost.invalidate({ postId: post.id });
+      await apiUtils.like.getLikesCount.invalidate({ postId });
     },
     onError: (err) => {
       toast({
@@ -48,7 +30,7 @@ const PostButtons = ({ post, userId }: PostButtonProps) => {
 
   const addOrRemoveLike = async () => {
     try {
-      addLikeMutation.mutate({ postId: post.id });
+      addLikeMutation.mutateAsync({ postId });
     } catch (err) {
       customToastError(err);
     }
@@ -58,7 +40,9 @@ const PostButtons = ({ post, userId }: PostButtonProps) => {
       {/* //? heart and comment icons */}
       <div className="flex gap-2 ">
         {/* //? clicking in the comment icon will open post modal */}
-        {userId && post.likes.some((like) => like.userId === userId) ? (
+        {userId &&
+        likes.data &&
+        likes.data.some((like) => like.userId === userId) ? (
           <Heart
             onClick={addOrRemoveLike}
             className="md:h-8 md:w-8 h-6 w-6 mr-2 fill-pink-600 text-pink-600"
@@ -69,16 +53,15 @@ const PostButtons = ({ post, userId }: PostButtonProps) => {
             className="md:h-8 md:w-8 h-6 w-6 mr-2 hover:text-gray-400"
           />
         )}
-        {/* //? open post modal on clicking here */}
         <MessageCircle
-          onClick={() => router.push(`/p/${post.id}`)}
+          onClick={() => router.push(`/p/${postId}`)}
           className="md:h-8 md:w-8 h-6 w-6 mr-2 transform scale-x-[-1] hover:text-gray-400"
         />
       </div>
-      {post.likes && post.likes.length > 0 ? (
+      {likes.data && likes.data.length > 0 ? (
         <span className="text-sm font-semibold">
-          {post.likes?.length}{' '}
-          {post.likes && post.likes.length > 1 ? 'likes' : 'like'}{' '}
+          {likes.data?.length}{' '}
+          {likes.data && likes.data.length > 1 ? 'likes' : 'like'}{' '}
         </span>
       ) : null}
     </div>

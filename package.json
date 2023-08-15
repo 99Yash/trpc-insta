@@ -49,6 +49,7 @@
     "next-auth": "^4.22.3",
     "next-themes": "^0.2.1",
     "react": "18.2.0",
+    "react-alice-carousel": "^2.7.1",
     "react-cropper": "^2.3.3",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",

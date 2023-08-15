@@ -85,13 +85,22 @@ export function customToastError(err: unknown) {
     const errors = err.issues.map((issue) => {
       return issue.message;
     });
-    return toast({ description: errors.join('\n'), variant: 'destructive' });
+    return toast({
+      description: errors.join('\n'),
+      variant: 'destructive',
+      duration: 3000,
+    });
   } else if (err instanceof Error) {
-    return toast({ description: err.message, variant: 'destructive' });
+    return toast({
+      description: err.message,
+      variant: 'destructive',
+      duration: 3000,
+    });
   } else {
     return toast({
       description: 'Something went wrong, please try again later.',
       variant: 'destructive',
+      duration: 3000,
     });
   }
 }

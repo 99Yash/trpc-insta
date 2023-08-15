@@ -1,5 +1,13 @@
 'use client';
+import { api } from '@/lib/api/api';
+import { customToastError, manualDialogClose } from '@/lib/utils';
+import { imageFileSchema, imageSchema } from '@/lib/validators';
+import { useUploadThing } from '@/utils/uploadthing';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { ChangeEvent, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -7,18 +15,10 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '../ui/dialog';
-import { Input } from '../ui/input';
-import CustomAvatar from './custom-avatar';
-import { customToastError, manualDialogClose } from '@/lib/utils';
-import { useUploadThing } from '@/utils/uploadthing';
-import { z } from 'zod';
-import { addPostSchema, imageFileSchema, imageSchema } from '@/lib/validators';
 import { Form } from '../ui/form';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { api } from '@/lib/api/api';
+import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
-import { Loader2 } from 'lucide-react';
+import CustomAvatar from './custom-avatar';
 
 type ImageFileSchema = z.infer<typeof imageFileSchema>;
 
@@ -86,6 +86,9 @@ const EditProfilePhoto = ({
           id: profilePic!.id,
           url: profilePic!.url,
         });
+        const oldPicUrl = new URL(photoUrl);
+        if (oldPicUrl.hostname === 'uploadthing.com') {
+        }
         form.reset();
       } catch (err) {
         customToastError(err);

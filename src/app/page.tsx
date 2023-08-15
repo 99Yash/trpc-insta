@@ -44,7 +44,7 @@ const Post = async ({ post, userId }: PostProps) => {
         height={740}
         className="border sm:w-screen md:w-full border-slate-700 "
       />
-      <PostButtons userId={userId} post={post} />
+      <PostButtons userId={userId} postId={post.id} />
       <div className="flex flex-wrap items-baseline gap-1 ">
         <p className="text-xs inline-block font-semibold">
           {post?.user.username}

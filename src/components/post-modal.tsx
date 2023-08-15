@@ -1,10 +1,10 @@
 import { getCurrentUser } from '@/lib/session';
 import { formatTimeToNow } from '@/lib/utils';
 import { prisma } from '@/server/db';
-import { Heart, MessageCircle } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import AddComment from './forms/add-comment';
 import CustomAvatar from './utilities/custom-avatar';
+import PostButtons from './utilities/post-buttons';
 import PostImage from './utilities/post-image';
 
 //? the contents of the post modal
@@ -101,7 +101,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
                     </div>
                   </div>
                   <p className="text-xs text-gray-500 ">
-                    {formatTimeToNow(cmt.createdAt)}
+                    • {formatTimeToNow(cmt.createdAt)}
                   </p>
                 </div>
               </div>
@@ -111,25 +111,9 @@ const PostModal = async ({ postId }: { postId: string }) => {
           <hr className="border-0 block w-full h-px mr-4 bg-slate-700" />
           <div className="flex flex-col h-[20%] gap-4">
             {/* //? button group */}
-            {user ? (
-              <div className="flex">
-                {post.likes.some((like) => like.userId === user.id) ? (
-                  <Heart className="h-6 w-6 mr-2 fill-pink-600 text-pink-600" />
-                ) : (
-                  <Heart className="h-6 w-6 mr-2 " />
-                )}
-                <MessageCircle className="h-6 w-6 mr-2 transform scale-x-[-1]" />
-                {/* prolly add share btn */}
-              </div>
-            ) : null}
-
-            <div className="flex gap-2 items-center">
-              {/* //? no. of likes here */}
-              <p className="text-sm font-medium">
-                {post.likes.length} {post.likes.length === 1 ? 'like' : 'likes'}
-              </p>
-              {/* //? formatTime here */}
-              <p className="text-xs text-gray-400">
+            <div className="flex gap-2">
+              <PostButtons postId={post.id} userId={user?.id} />
+              <p className="text-xs text-gray-400 self-center">
                 • {formatTimeToNow(post.createdAt)} ago
               </p>
             </div>

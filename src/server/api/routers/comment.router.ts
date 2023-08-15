@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
-import { TRPCError } from '@trpc/server';
 
 export const commentRouter = createTRPCRouter({
   addComment: protectedProcedure
@@ -11,12 +10,6 @@ export const commentRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const commentingUser = ctx.session.user;
-      if (!commentingUser)
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'User not authenticated',
-        });
       const addedCmt = await ctx.prisma.comment.create({
         data: {
           text: input.text,

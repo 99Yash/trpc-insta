@@ -1,4 +1,3 @@
-import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 
@@ -10,12 +9,6 @@ export const likesRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const likingUser = ctx.session.user;
-      if (!likingUser)
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'User not authenticated',
-        });
       const isLiked = await ctx.prisma.like.findUnique({
         where: {
           postId_userId: {
@@ -42,5 +35,44 @@ export const likesRouter = createTRPCRouter({
         },
       });
       return addedLike;
+    }),
+  getLikedUsers: protectedProcedure
+    .input(
+      z.object({
+        postId: z.string().min(1),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const likes = await ctx.prisma.like.findMany({
+        where: {
+          postId: input.postId,
+        },
+        include: {
+          user: {
+            select: {
+              image: true,
+              username: true,
+            },
+          },
+        },
+      });
+      return likes;
+    }),
+  getLikesCount: protectedProcedure
+    .input(
+      z.object({
+        postId: z.string().min(1),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const likesCount = await ctx.prisma.like.findMany({
+        where: {
+          postId: input.postId,
+        },
+        select: {
+          userId: true,
+        },
+      });
+      return likesCount;
     }),
 });
