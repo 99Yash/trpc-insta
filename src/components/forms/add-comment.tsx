@@ -13,7 +13,9 @@ const AddComment = ({ postId }: { postId: string }) => {
 
   const addCommentMutation = api.comment.addComment.useMutation({
     onSuccess: async (input) => {
-      await apiUtils.post.fetchPost.invalidate({ postId: input.postId });
+      // await apiUtils.comment.fetchCommentsOfPost.invalidate({
+      //   postId,
+      // });
       toast({
         description: 'Comment added successfully',
         duration: 1200,
@@ -53,7 +55,7 @@ const AddComment = ({ postId }: { postId: string }) => {
         className=" px-0 focus:border-transparent !bg-transparent !border-none !outline-none focus:ring-0 placeholder-gray-500 flex-grow "
         placeholder="Add a comment..."
         style={{
-          background: 'transparent !important', // Set background to transparent
+          background: 'transparent !important',
           border: 'none !important',
           boxShadow: 'none !important',
           outline: 'none !important',

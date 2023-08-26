@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { inter } from '@/styles/fonts';
-import { LogOut, UserIcon } from 'lucide-react';
+import { Loader2, LogOut, UserIcon } from 'lucide-react';
 import { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -23,6 +23,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
+import { useState } from 'react';
 
 interface UserButtonProps {
   user: Pick<User, 'name' | 'image' | 'username' | 'email'>;
@@ -31,6 +32,18 @@ interface UserButtonProps {
 export const UserButton = ({ user }: UserButtonProps) => {
   const router = useRouter();
 
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  const handleSignOut = async () => {
+    try {
+      setIsSigningOut(true); // Set the loading state
+      await signOut();
+    } catch (error) {
+      console.error('Error signing out', error);
+    } finally {
+      setIsSigningOut(false); // Reset the loading state
+    }
+  };
   return (
     <Dialog>
       <DropdownMenu>
@@ -97,13 +110,10 @@ export const UserButton = ({ user }: UserButtonProps) => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button
-            onClick={() => {
-              signOut();
-            }}
-            type="submit"
-          >
-            Log out
+          <Button onClick={handleSignOut} disabled={isSigningOut} type="submit">
+            {/* //? if signing out, show spinner */}
+            {isSigningOut ? <Loader2 className="h-4 w-4 mr-2" /> : null}
+            {isSigningOut ? <p>Logging out...</p> : <p>Log out</p>}
           </Button>
         </DialogFooter>
       </DialogContent>

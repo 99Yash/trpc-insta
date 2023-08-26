@@ -1,7 +1,4 @@
-import { buttonVariants } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
-import React from 'react';
 
 const loading = () => {
   return (
@@ -11,7 +8,7 @@ const loading = () => {
           <Skeleton className="md:h-36 md:w-36 h-20 w-20 border border-slate-950 mb-5 rounded-full "></Skeleton>
           <div className="md:hidden flex flex-col ">
             <div className="flex flex-col gap-3 ">
-              <Skeleton className="h-4 w-[12px]" />
+              <Skeleton className="h-6 w-[12px]" />
               <div className="flex gap-2">
                 <Skeleton className="h-10 w-20" />
                 <Skeleton className="h-10 w-20" />
@@ -20,6 +17,7 @@ const loading = () => {
           </div>
         </div>
 
+        {/* //? mobile view */}
         <div className="flex flex-col md:hidden gap-2">
           <Skeleton className="h-4 self-start w-[370px]" />
           <Skeleton className="text-sm self-start h-6 w-[500px]" />
@@ -42,31 +40,34 @@ const loading = () => {
           </div>
           <hr className="border-0 h-px mt-2 bg-gradient-to-r from-gray-900 via-slate-500 to-gray-900" />
         </div>
+
+        {/* //? non mobile view */}
         <div className="hidden md:flex md:w-1/2 md:flex-col gap-4">
           <div className="flex md:flex-row gap-10 items-baseline">
-            <Skeleton className="h-4 w-12" />
+            <Skeleton className="h-4 w-28" />
             <div className="flex gap-2 justify-end ">
-              <Skeleton className="h-6 w-6" />
-              <Skeleton className="h-6 w-6" />
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-6 w-16" />
             </div>
           </div>
           <div className="flex gap-8 items-center ">
             <div className="flex gap-2 justify-center items-center  ">
               <Skeleton className="h-4 w-4 " />
-              <Skeleton className="h-4 w-12 "></Skeleton>
+              posts
             </div>
             <div className="flex gap-2 justify-center items-center ">
               <Skeleton className="h-4 w-4"></Skeleton>
-              <Skeleton className="h-6 w-20 "></Skeleton>
+              followers
             </div>
             <div className="flex gap-2 justify-center items-center  ">
               <Skeleton className="h-4 w-4"></Skeleton>
-              <Skeleton className="h-6 w-20 "></Skeleton>
+              following
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <Skeleton className="h-4 w-12"></Skeleton>
-            <Skeleton className="h-4 w-12 "></Skeleton>
+            <Skeleton className="h-4 w-20"></Skeleton>
+            <Skeleton className="h-6 w-40"></Skeleton>
           </div>
         </div>
       </div>

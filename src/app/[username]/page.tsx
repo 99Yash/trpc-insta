@@ -3,6 +3,7 @@ import EditProfile from '@/components/forms/edit-profile';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import AddPostButton from '@/components/utilities/add-post-button';
 import EditProfilePhoto from '@/components/utilities/edit-dp';
+import FollowUnfollowBtn from '@/components/utilities/follow-unfollow';
 import UserPost from '@/components/utilities/user-post';
 import { getCurrentUser, getSession } from '@/lib/session';
 import { prisma } from '@/server/db';
@@ -30,7 +31,7 @@ export async function generateMetadata({
       title: `
       ${user.name} (@${user.username}) • Trinsta.
       `,
-      description: user.bio ? user.bio : '',
+      description: user.bio ?? '',
       url: '',
       images: [
         {
@@ -50,6 +51,18 @@ const UserProfile = async ({ username }: { username: string }) => {
     },
   });
 
+  const userFollowerCount = await prisma.followers.count({
+    where: {
+      followingId: user?.id,
+    },
+  });
+
+  const userFollowingCount = await prisma.followers.count({
+    where: {
+      followerId: user?.id,
+    },
+  });
+
   const numberOfPosts = await prisma.post.count({
     where: {
       userId: user?.id,
@@ -66,13 +79,14 @@ const UserProfile = async ({ username }: { username: string }) => {
         <Avatar className="md:h-36 md:w-36 h-20 w-20 border rounded-full border-slate-950 mb-5">
           <AvatarImage src={user?.image as string} alt="You" />
           <AvatarFallback>{`${user.name?.split(' ')[0]![0]}${
-            user.name?.split(' ')[1] ? user.name?.split(' ')[1]![0] : ''
+            user.name?.split(' ')[1] ? user.name?.split(' ')[1] : ''
           }`}</AvatarFallback>
         </Avatar>
         {/* //? mobile view */}
         <div className="md:hidden flex flex-col ">
           <div className="flex flex-col gap-3 ">
             <h5 className="text-lg font-semibold">{user?.username}</h5>
+            {/* //? edit profile, add post, edit dp buttons */}
             {session?.user?.id === user?.id && (
               <div className="flex gap-2">
                 <CreatePost />
@@ -86,6 +100,10 @@ const UserProfile = async ({ username }: { username: string }) => {
                   name={user.name ?? ''}
                 />
               </div>
+            )}
+            {/* // ? following/follow btns for non-mobile view */}
+            {session?.user?.id !== user?.id && (
+              <FollowUnfollowBtn userId={user.id} />
             )}
           </div>
         </div>
@@ -110,11 +128,11 @@ const UserProfile = async ({ username }: { username: string }) => {
           </div>
 
           <div className="flex flex-col items-center ">
-            <h5 className="text-md font-semibold ">0</h5>
+            <h5 className="text-md font-semibold ">{userFollowerCount}</h5>
             <p className="text-sm text-gray-400">Followers</p>
           </div>
           <div className="flex flex-col items-center ">
-            <h5 className="text-md font-semibold ">0</h5>
+            <h5 className="text-md font-semibold ">{userFollowingCount}</h5>
             <p className="text-sm text-gray-400">Following</p>
           </div>
         </div>
@@ -138,6 +156,10 @@ const UserProfile = async ({ username }: { username: string }) => {
                 name={user.name ?? ''}
               />
             </div>
+          )}
+          {/* //? following/follow btns for non-mobile view */}
+          {session?.user?.id !== user?.id && (
+            <FollowUnfollowBtn userId={user.id} />
           )}
         </div>
         <div className="flex gap-8 items-center ">

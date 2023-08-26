@@ -1,7 +1,14 @@
 import { Icons } from '@/components/icons';
 import LoginButton from '@/components/login-button';
+import { getCurrentUser } from '@/lib/session';
+import { redirect } from 'next/navigation';
 
-const SignIn = () => {
+const SignIn = async () => {
+  const user = await getCurrentUser();
+
+  if (user) {
+    return redirect('/');
+  }
   return (
     <div className="container mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
       <div className="flex flex-col space-y-2 text-center">

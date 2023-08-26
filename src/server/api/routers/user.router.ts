@@ -28,6 +28,70 @@ export const userRouter = createTRPCRouter({
     });
     return retrievedUsers ?? [];
   }),
+  followOrUnfollow: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (ctx.session.user.id === input.id) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'You cannot follow yourself',
+        });
+      }
+      const userToFollow = await ctx.prisma.user.findUnique({
+        where: { id: input.id },
+      });
+      if (!userToFollow) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found',
+        });
+      }
+      const requestingUser = ctx.session.user;
+      if (!requestingUser)
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'User not authenticated',
+        });
+      const alreadyFollowing = await ctx.prisma.followers.findFirst({
+        where: {
+          followerId: requestingUser.id,
+          followingId: userToFollow.id,
+        },
+      });
+      if (alreadyFollowing) {
+        await ctx.prisma.followers.delete({
+          where: {
+            followerId: requestingUser.id,
+            followingId: userToFollow.id,
+          },
+        });
+        return null;
+      }
+      const updatedUser = await ctx.prisma.followers.create({
+        data: {
+          followerId: requestingUser.id,
+          followingId: userToFollow.id,
+        },
+      });
+      return updatedUser;
+    }),
+  fetchFollowerIds: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const retrievedFollowerIds = await ctx.prisma.followers.findMany({
+        where: { followingId: input.id },
+        select: { followerId: true },
+      });
+      return retrievedFollowerIds;
+    }),
   changeProfilePic: protectedProcedure
     .input(imageSchema)
     .mutation(async ({ ctx, input }) => {
@@ -85,7 +149,7 @@ export const userRouter = createTRPCRouter({
       const updatedUser = await ctx.prisma.user.update({
         where: { id: requestingUser.id },
         data: {
-          username: input.username,
+          id: input.username,
           bio: input.bio,
           name: input.name,
         },

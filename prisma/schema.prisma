@@ -79,7 +79,9 @@ model Image {
 }
 
 model Followers {
+  // who the user follows
   followingId String @unique
+  //who follows the user
   followerId  String
 }
 

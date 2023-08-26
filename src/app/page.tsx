@@ -6,6 +6,7 @@ import { getCurrentUser } from '@/lib/session';
 import { formatTimeToNow } from '@/lib/utils';
 import { prisma } from '@/server/db';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface PostProps {
   post: {
@@ -32,7 +33,12 @@ const Post = async ({ post, userId }: PostProps) => {
           imgUrl={post.user.image as string}
           name={post?.user.name as string}
         />
-        <p className="text-sm font-semibold">{post?.user.username}</p>
+        <Link
+          href={`/${post.user.username}`}
+          className="text-sm font-semibold hover:text-gray-400"
+        >
+          {post?.user.username}
+        </Link>
         <p className="text-sm text-gray-400">
           • {formatTimeToNow(post.createdAt)}
         </p>
@@ -101,7 +107,7 @@ export default async function Index() {
   }
 
   //todo: if user has no posts  & follows no one, show random posts.
-  const feedPosts = await prisma.post.findMany({
+  const selfPosts = await prisma.post.findMany({
     where: {
       userId: user.id,
     },
@@ -128,8 +134,46 @@ export default async function Index() {
         },
       },
     },
-    take: 5,
   });
+
+  const following = await prisma.followers.findMany({
+    where: {
+      followerId: user.id,
+    },
+  });
+
+  const followingPosts = await prisma.post.findMany({
+    where: {
+      userId: {
+        in: following.map((f) => f.followingId),
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      images: true,
+      likes: {
+        select: {
+          userId: true,
+        },
+      },
+      comments: {
+        select: {
+          id: true,
+        },
+      },
+      user: {
+        select: {
+          username: true,
+          image: true,
+          name: true,
+        },
+      },
+    },
+  });
+
+  const feedPosts = [...selfPosts, ...followingPosts];
 
   //?skeleton
   if (!feedPosts) {
