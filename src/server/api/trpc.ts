@@ -28,7 +28,6 @@ import { prisma } from '@/server/db';
 import { TRPCError, initTRPC } from '@trpc/server';
 import { type CreateNextContextOptions } from '@trpc/server/adapters/next';
 import { type Session } from 'next-auth';
-import { GetServerSidePropsContext, NextApiRequest } from 'next';
 
 import superjson from 'superjson';
 import { ZodError } from 'zod';
