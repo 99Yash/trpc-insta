@@ -7,8 +7,7 @@ import { customToastError } from '@/lib/utils';
 
 const FollowUnfollowBtn = ({ userId }: { userId: string }) => {
   const apiUtils = api.useContext();
-  //? see if user follows user, if yes, show unfollow btn, else show follow btn
-  //? add onClick handlers to both buttons
+  //todo see if user follows user, if yes, show unfollow btn, else show follow btn
   //? this userId prop doesnt refer to the current user, it refers to the user whose profile is being viewed
 
   const followerIds = api.user.fetchFollowerIds.useQuery({
@@ -41,7 +40,18 @@ const FollowUnfollowBtn = ({ userId }: { userId: string }) => {
   };
 
   return (
-    <Button onClick={followUserHandler} variant={'secondary'}>
+    <Button
+      onClick={followUserHandler}
+      variant={
+        followerIds.data &&
+        followerIds.data.length > 0 &&
+        followerIds.data?.some(
+          (followerIdObj) => followerIdObj.followerId === userId
+        )
+          ? 'link'
+          : 'secondary'
+      }
+    >
       {followerIds.data &&
       followerIds.data.length > 0 &&
       followerIds.data?.some(

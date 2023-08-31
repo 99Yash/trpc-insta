@@ -47,7 +47,6 @@ const PostModal = async ({ postId }: { postId: string }) => {
   return (
     <div className="flex max-h-[90vh] max-w-[80vw]">
       <PostImage imageUrl={post.images[0]?.url as string} postId={post.id} />
-      {/* //?line separate */}
 
       {/* //?right side */}
       {/* //todo hide this on smaller screens */}

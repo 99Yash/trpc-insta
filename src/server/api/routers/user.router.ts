@@ -69,17 +69,16 @@ export const userRouter = createTRPCRouter({
             followingId: userToFollow.id,
           },
         });
-        return null;
+      } else {
+        await ctx.prisma.followers.create({
+          data: {
+            followerId: requestingUser.id,
+            followingId: userToFollow.id,
+          },
+        });
       }
-      const updatedUser = await ctx.prisma.followers.create({
-        data: {
-          followerId: requestingUser.id,
-          followingId: userToFollow.id,
-        },
-      });
-      return updatedUser;
     }),
-  fetchFollowerIds: publicProcedure
+  fetchFollowerIds: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -87,7 +86,7 @@ export const userRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const retrievedFollowerIds = await ctx.prisma.followers.findMany({
-        where: { followingId: input.id },
+        where: { followingId: ctx.session?.user.id },
         select: { followerId: true },
       });
       return retrievedFollowerIds;
