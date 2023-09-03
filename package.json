@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate--no-engine && next build",
     "start": "next start",
     "lint": "next lint",
     "format": "npx prisma format",
-    "generate": "npx prisma generate",
+    "postinstall": "npx prisma generate",
     "push": "npx prisma db push",
     "studio": "npx prisma studio"
   },
