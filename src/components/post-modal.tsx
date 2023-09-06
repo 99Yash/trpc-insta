@@ -91,7 +91,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
                 <div className="flex flex-col gap-2">
                   <div className="flex gap-2">
                     <div className="flex">
-                      <div className="text-sm  whitespace-pre-line overflow-hidden text-ellipsis break-words ">
+                      <div className="text-sm whitespace-pre-line overflow-hidden text-ellipsis ">
                         <h3 className="text-sm inline-flex shrink-0 font-semibold hover:text-gray-400 mr-2 cursor-pointer">
                           {cmt.user.username}
                         </h3>
