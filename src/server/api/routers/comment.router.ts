@@ -14,7 +14,6 @@ export const commentRouter = createTRPCRouter({
         data: {
           text: input.text,
           postId: input.postId,
-          likes: 0,
           userId: ctx.session.user.id,
         },
       });
