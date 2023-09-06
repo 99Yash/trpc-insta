@@ -6,11 +6,11 @@ import { toast } from '../ui/use-toast';
 import { customToastError } from '@/lib/utils';
 
 const FollowUnfollowBtn = ({ userId }: { userId: string }) => {
+  //* this userId prop refers to the user whose profile is being viewed, not the current user
   const apiUtils = api.useContext();
   //todo see if user follows user, if yes, show unfollow btn, else show follow btn
-  //? this userId prop doesnt refer to the current user, it refers to the user whose profile is being viewed
-
-  const followerIds = api.user.fetchFollowerIds.useQuery({
+  const currentUser = api.user.fetchCurrentUser.useQuery();
+  const { data } = api.user.fetchFollowerIds.useQuery({
     id: userId,
   });
   const followMutation = api.user.followOrUnfollow.useMutation({
@@ -43,19 +43,19 @@ const FollowUnfollowBtn = ({ userId }: { userId: string }) => {
     <Button
       onClick={followUserHandler}
       variant={
-        followerIds.data &&
-        followerIds.data.length > 0 &&
-        followerIds.data?.some(
-          (followerIdObj) => followerIdObj.followerId === userId
+        data &&
+        data.length > 0 &&
+        data?.some(
+          (followerIdObj) => followerIdObj.followerId === currentUser.data?.id
         )
           ? 'link'
           : 'secondary'
       }
     >
-      {followerIds.data &&
-      followerIds.data.length > 0 &&
-      followerIds.data?.some(
-        (followerIdObj) => followerIdObj.followerId === userId
+      {data &&
+      data.length > 0 &&
+      data?.some(
+        (followerIdObj) => followerIdObj.followerId === currentUser.data?.id
       )
         ? 'Following'
         : 'Follow'}

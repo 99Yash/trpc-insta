@@ -17,6 +17,12 @@ export const userRouter = createTRPCRouter({
       });
       return retrievedUser;
     }),
+  fetchCurrentUser: protectedProcedure.query(async ({ ctx }) => {
+    const retrievedUser = await ctx.prisma.user.findUnique({
+      where: { id: ctx.session.user?.id },
+    });
+    return retrievedUser;
+  }),
   search: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     const retrievedUsers = await ctx.prisma.user.findMany({
       where: {
@@ -86,7 +92,7 @@ export const userRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const retrievedFollowerIds = await ctx.prisma.followers.findMany({
-        where: { followingId: ctx.session?.user.id },
+        where: { followingId: input.id },
         select: { followerId: true },
       });
       return retrievedFollowerIds;
@@ -148,7 +154,7 @@ export const userRouter = createTRPCRouter({
       const updatedUser = await ctx.prisma.user.update({
         where: { id: requestingUser.id },
         data: {
-          id: input.username,
+          username: input.username,
           bio: input.bio,
           name: input.name,
         },

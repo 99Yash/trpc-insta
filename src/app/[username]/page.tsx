@@ -101,7 +101,7 @@ const UserProfile = async ({ username }: { username: string }) => {
                 />
               </div>
             )}
-            {/* // ? following/follow btns for non-mobile view */}
+            {/* // ? following/follow btns for mobile view */}
             {session?.user?.id !== user?.id && (
               <FollowUnfollowBtn userId={user.id} />
             )}
@@ -129,7 +129,9 @@ const UserProfile = async ({ username }: { username: string }) => {
 
           <div className="flex flex-col items-center ">
             <h5 className="text-md font-semibold ">{userFollowerCount}</h5>
-            <p className="text-sm text-gray-400">Followers</p>
+            <p className="text-sm text-gray-400">
+              {userFollowerCount === 1 ? 'Follower' : 'Followers'}
+            </p>
           </div>
           <div className="flex flex-col items-center ">
             <h5 className="text-md font-semibold ">{userFollowingCount}</h5>
@@ -170,11 +172,13 @@ const UserProfile = async ({ username }: { username: string }) => {
             </p>
           </div>
           <div className="flex gap-2 justify-center items-center ">
-            <h5 className="text-md font-semibold ">0</h5>
-            <p className="text-sm text-gray-400">followers</p>
+            <h5 className="text-md font-semibold ">{userFollowerCount}</h5>
+            <p className="text-sm text-gray-400">
+              {userFollowerCount === 1 ? 'follower' : 'followers'}
+            </p>
           </div>
           <div className="flex gap-2 justify-center items-center  ">
-            <h5 className="text-md font-semibold ">0</h5>
+            <h5 className="text-md font-semibold ">{userFollowingCount}</h5>
             <p className="text-sm text-gray-400">following</p>
           </div>
         </div>
