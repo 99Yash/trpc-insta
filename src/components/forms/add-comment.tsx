@@ -12,10 +12,13 @@ const AddComment = ({ postId }: { postId: string }) => {
   const apiUtils = api.useContext();
 
   const addCommentMutation = api.comment.addComment.useMutation({
-    onSuccess: async (input) => {
-      // await apiUtils.comment.fetchCommentsOfPost.invalidate({
-      //   postId,
-      // });
+    onSuccess: async () => {
+      await apiUtils.comment.fetchCommentsOfPost.invalidate({
+        postId,
+      });
+      await apiUtils.post.fetchPost.invalidate({
+        postId,
+      });
       toast({
         description: 'Comment added successfully',
         duration: 1200,

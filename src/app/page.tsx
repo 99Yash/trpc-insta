@@ -1,5 +1,4 @@
 import AddComment from '@/components/forms/add-comment';
-import { Skeleton } from '@/components/ui/skeleton';
 import CustomAvatar from '@/components/utilities/custom-avatar';
 import PostButtons from '@/components/utilities/post-buttons';
 import { getCurrentUser } from '@/lib/session';
@@ -174,24 +173,6 @@ export default async function Index() {
   });
 
   const feedPosts = [...selfPosts, ...followingPosts];
-
-  //?skeleton
-  if (!feedPosts) {
-    return (
-      <div className="flex flex-col items-center gap-6 mb-2">
-        <div className="flex items-center ">
-          <Skeleton className="rounded-full self-center h-8 w-8 " />
-          <Skeleton className="h-6 w-20 " />
-        </div>
-        <Skeleton className="absolute inset-0 h-full w-full" />
-        <div className="flex flex-wrap items-center gap-1 px-2">
-          <Skeleton className="h-6 w-20"></Skeleton>
-          <Skeleton className="h-6 w-60"></Skeleton>
-        </div>
-        <hr className="border-0 hidden md:block h-px mt-2 bg-slate-700" />
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col items-center gap-6 mb-2 ">
