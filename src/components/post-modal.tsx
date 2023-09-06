@@ -6,6 +6,7 @@ import AddComment from './forms/add-comment';
 import CustomAvatar from './utilities/custom-avatar';
 import PostButtons from './utilities/post-buttons';
 import PostImage from './utilities/post-image';
+import Link from 'next/link';
 
 //? the contents of the post modal
 const PostModal = async ({ postId }: { postId: string }) => {
@@ -92,9 +93,12 @@ const PostModal = async ({ postId }: { postId: string }) => {
                   <div className="flex gap-2">
                     <div className="flex">
                       <div className="text-sm whitespace-pre-line overflow-hidden text-ellipsis ">
-                        <h3 className="text-sm inline-flex shrink-0 font-semibold hover:text-gray-400 mr-2 cursor-pointer">
+                        <Link
+                          href={`/${cmt.user.username}`}
+                          className="text-sm inline-flex shrink-0 font-semibold hover:text-gray-400 mr-2 cursor-pointer"
+                        >
                           {cmt.user.username}
-                        </h3>
+                        </Link>
                         {cmt.text}
                       </div>
                     </div>
