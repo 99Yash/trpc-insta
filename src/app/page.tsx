@@ -5,6 +5,7 @@ import PostImage from '@/components/utilities/post-image';
 import { getCurrentUser } from '@/lib/session';
 import { formatTimeToNow } from '@/lib/utils';
 import { prisma } from '@/server/db';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface PostProps {
@@ -42,7 +43,16 @@ const Post = async ({ post, userId }: PostProps) => {
           • {formatTimeToNow(post.createdAt)}
         </p>
       </div>
-      <PostImage imageUrl={post.images[0]?.url as string} postId={post.id} />
+      <div className="hidden md:block">
+        <PostImage imageUrl={post.images[0]?.url as string} postId={post.id} />
+      </div>
+      <Image
+        src={post.images[0]?.url as string}
+        alt="Cant preview image"
+        width={700}
+        height={700}
+        className="block md:hidden"
+      />
       <PostButtons userId={userId} postId={post.id} />
       <div className="flex flex-wrap">
         <div className="whitespace-pre-line overflow-hidden text-ellipsis">
