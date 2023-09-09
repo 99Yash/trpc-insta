@@ -73,9 +73,7 @@ export default function RootLayout({
         <body className={cn(`min-h-screen ${inter.className}`)}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <TailwindIndicator />
-            <main
-              className={cn('container md:max-w-[90vw] sm:max-w-full h-screen')}
-            >
+            <main className={cn('container sm:max-w-full h-screen')}>
               <Header />
               {children}
             </main>

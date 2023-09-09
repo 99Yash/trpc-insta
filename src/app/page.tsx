@@ -1,10 +1,10 @@
 import AddComment from '@/components/forms/add-comment';
 import CustomAvatar from '@/components/utilities/custom-avatar';
 import PostButtons from '@/components/utilities/post-buttons';
+import PostImage from '@/components/utilities/post-image';
 import { getCurrentUser } from '@/lib/session';
 import { formatTimeToNow } from '@/lib/utils';
 import { prisma } from '@/server/db';
-import Image from 'next/image';
 import Link from 'next/link';
 
 interface PostProps {
@@ -26,7 +26,7 @@ interface PostProps {
 
 const Post = async ({ post, userId }: PostProps) => {
   return (
-    <div key={post.id} className="flex flex-col gap-3 ">
+    <div key={post.id} className="flex flex-col gap-3 container ">
       <div className="flex items-center gap-2">
         <CustomAvatar
           imgUrl={post.user.image as string}
@@ -42,19 +42,15 @@ const Post = async ({ post, userId }: PostProps) => {
           • {formatTimeToNow(post.createdAt)}
         </p>
       </div>
-      <Image
-        src={post.images[0]?.url as string}
-        alt={post.caption || 'Cant preview image'}
-        width={740}
-        height={740}
-        className="border sm:w-screen md:w-full border-slate-700 "
-      />
+      <PostImage imageUrl={post.images[0]?.url as string} postId={post.id} />
       <PostButtons userId={userId} postId={post.id} />
-      <div className="flex flex-wrap items-baseline gap-1 ">
-        <p className="text-xs inline-block font-semibold">
-          {post?.user.username}
-        </p>
-        <p className="text-sm">{post?.caption}</p>
+      <div className="flex flex-wrap">
+        <div className="whitespace-pre-line overflow-hidden text-ellipsis">
+          <span className="text-xs mr-2 inline-flex font-semibold">
+            {post?.user.username}
+          </span>
+          {post?.caption}
+        </div>
       </div>
       {post.comments && post.comments.length > 0 ? (
         <span className="text-gray-500">
@@ -68,7 +64,6 @@ const Post = async ({ post, userId }: PostProps) => {
         {/* //? add a comment input */}
         <AddComment postId={post.id} />
       </div>
-      <hr className="border-0 hidden md:block w-full h-px mt-2 bg-slate-700 " />
     </div>
   );
 };
@@ -105,7 +100,7 @@ export default async function Index() {
     );
   }
 
-  //todo: if user has no posts  & follows no one, show random posts.
+  //todo: arrange overall posts in the desc order.
   const selfPosts = await prisma.post.findMany({
     where: {
       userId: user.id,
@@ -175,10 +170,23 @@ export default async function Index() {
   const feedPosts = [...selfPosts, ...followingPosts];
 
   return (
-    <div className="flex flex-col items-center gap-6 mb-2 ">
+    <div className="flex flex-col items-center gap-6 mb-2 container md:max-w-[70%]">
       {feedPosts.map((post) => (
         <Post userId={user.id} post={post} key={post.id} />
       ))}
+      <hr className="border-0 hidden md:block w-full h-px mt-2 bg-slate-700 " />
+
+      <span className="italic text-gray-600">
+        Follow users to see more posts or create one of your own
+      </span>
+      <footer>
+        <div className="flex items-center mb-2 justify-center gap-2">
+          <p className="text-sm text-gray-500">
+            Copyright &copy; {new Date().getUTCFullYear()} Trinsta Corp.
+          </p>
+          <p className="text-sm text-gray-500">All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }
