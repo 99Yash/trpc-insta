@@ -66,6 +66,9 @@ export const postRouter = createTRPCRouter({
             include: {
               user: true,
             },
+            orderBy: {
+              createdAt: 'desc',
+            },
           },
           images: true,
           user: {

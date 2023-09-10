@@ -7,6 +7,7 @@ import AddComment from './forms/add-comment';
 import CustomAvatar from './utilities/custom-avatar';
 import PostButtons from './utilities/post-buttons';
 import PostImage from './utilities/post-image';
+import PostComments from './post-comments';
 
 //? the contents of the post modal
 const PostModal = async ({ postId }: { postId: string }) => {
@@ -16,17 +17,8 @@ const PostModal = async ({ postId }: { postId: string }) => {
     },
     include: {
       comments: {
-        include: {
-          user: {
-            select: {
-              username: true,
-              name: true, //? for fallback image
-              image: true,
-            },
-          },
-        },
-        orderBy: {
-          createdAt: 'desc',
+        select: {
+          id: true,
         },
       },
       images: true,
@@ -51,7 +43,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
 
       {/* //?right side */}
       {/* //todo hide this on smaller screens */}
-      <div className="flex flex-grow flex-col h-[90vh] w-[45vw] bg-black items-stretch">
+      <div className="flex flex-grow flex-col h-[90vh] w-[45vw] bg-black items-stretch ml-2">
         {/* //? header -- user info */}
         <div className="flex pl-4 pt-2 gap-2 h-[10%] items-center">
           <CustomAvatar
@@ -87,33 +79,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
             </div>
             {/* //? comments */}
             <div className="flex-grow flex flex-col gap-4 ">
-              {post.comments.map((cmt) => (
-                <div key={cmt.id} className="flex gap-1 mt-2">
-                  <CustomAvatar
-                    imgUrl={cmt.user.image as string}
-                    name={cmt.user.name as string}
-                  />
-                  <div className="flex flex-col gap-2">
-                    <div className="flex gap-2">
-                      {/* //?comment and its author */}
-                      <div className="flex">
-                        <div className="text-sm whitespace-pre-line overflow-hidden text-ellipsis ">
-                          <Link
-                            href={`/${cmt.user.username}`}
-                            className="text-sm inline-flex shrink-0 font-semibold hover:text-gray-400 mr-2 cursor-pointer"
-                          >
-                            {cmt.user.username}
-                          </Link>
-                          {cmt.text}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-xs text-gray-500 ">
-                      {formatTimeToNow(cmt.createdAt)}
-                    </p>
-                  </div>
-                </div>
-              ))}
+              <PostComments postId={post.id} />
             </div>
           </div>
         </div>

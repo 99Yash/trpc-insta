@@ -17,7 +17,7 @@ const PostImage = ({
 
   const addLikeMutation = api.like.addLike.useMutation({
     onSuccess: async () => {
-      await apiUtils.post.fetchPost.invalidate({ postId });
+      await apiUtils.like.getLikesCount.invalidate({ postId });
     },
     onError: () => {
       toast({

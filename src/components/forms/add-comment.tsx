@@ -16,9 +16,7 @@ const AddComment = ({ postId }: { postId: string }) => {
       await apiUtils.comment.fetchCommentsOfPost.invalidate({
         postId,
       });
-      await apiUtils.post.fetchPost.invalidate({
-        postId,
-      });
+
       toast({
         description: 'Comment added successfully',
         duration: 1200,

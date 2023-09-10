@@ -71,13 +71,13 @@ const UserProfile = async ({ username }: { username: string }) => {
 
   if (!user) notFound();
   const session = await getSession();
-  //todo if this is not the user's profile page, add following/follow buttons
+
   return (
-    <div className="min-h-[9/10] flex flex-col md:flex-row md:items-start sm:justify-center sm:items-center md:justify-evenly gap-4 text-gray-300">
+    <div className=" flex flex-col w-full md:flex-row md:items-start sm:justify-center sm:items-center md:justify-evenly gap-4 text-gray-300">
       {/* //? avatar and username and buttons */}
       <div className="flex self-start gap-4">
         <Avatar className="md:h-36 md:w-36 h-20 w-20 border rounded-full border-slate-950 mb-5">
-          <AvatarImage src={user?.image as string} alt="You" />
+          <AvatarImage src={user?.image as string} alt="User" />
           <AvatarFallback>{`${user.name?.split(' ')[0]![0]}${
             user.name?.split(' ')[1] ? user.name?.split(' ')[1] : ''
           }`}</AvatarFallback>
@@ -111,7 +111,7 @@ const UserProfile = async ({ username }: { username: string }) => {
 
       {/* //? just for mobile */}
       <div className="flex flex-col md:hidden gap-2">
-        <h5 className="text-md self-start md:hidden  font-semibold ">
+        <h5 className="text-md self-start md:hidden font-semibold ">
           {user?.name}
         </h5>
         <p className="text-sm self-start md:hidden  text-gray-300">
@@ -141,7 +141,7 @@ const UserProfile = async ({ username }: { username: string }) => {
         <hr className="border-0 h-[1px] mt-2 bg-gradient-to-r from-gray-900 via-slate-500 to-gray-900" />
       </div>
       {/* //? non-mobile view */}
-      {/* //todo show post, following and followers */}
+
       <div className="hidden md:flex md:w-1/2 md:flex-col gap-4">
         <div className="flex md:flex-row gap-10 items-baseline">
           <h5 className="text-md font-medium ">{user?.username}</h5>
@@ -222,7 +222,6 @@ const page = async ({
           <p className="text-sm text-gray-300 ">
             When you share photos, they will appear on your profile.
           </p>
-          {/* //?add 1st post button */}
           <AddPostButton
             variant={'ghost'}
             className="text-blue-400"
@@ -255,7 +254,7 @@ const page = async ({
   };
 
   return (
-    <div className=" flex flex-col justify-center w-full gap-4 h-full">
+    <div className=" flex flex-col container gap-4 h-full">
       <UserProfile username={username} />
       <hr className="border-0 hidden md:block h-px mt-2 bg-slate-700" />
       <UserPosts />

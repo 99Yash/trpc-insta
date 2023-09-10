@@ -33,6 +33,9 @@ export const commentRouter = createTRPCRouter({
         include: {
           user: true,
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       });
       return comments;
     }),
