@@ -7,13 +7,13 @@ import { toast } from '../ui/use-toast';
 
 type PostButtonProps = {
   postId: string;
-  userId?: string;
 };
 
-const PostButtons = ({ postId, userId }: PostButtonProps) => {
+const PostButtons = ({ postId }: PostButtonProps) => {
   const router = useRouter();
   const apiUtils = api.useContext();
-  const likes = api.like.getLikesCount.useQuery({ postId });
+  const { data: user } = api.user.fetchCurrentUser.useQuery();
+  const { data: likes } = api.like.getLikesCount.useQuery({ postId });
 
   const addLikeMutation = api.like.addLike.useMutation({
     onSuccess: async () => {
@@ -40,9 +40,7 @@ const PostButtons = ({ postId, userId }: PostButtonProps) => {
       {/* //? heart and comment icons */}
       <div className="flex gap-2 ">
         {/* //? clicking in the comment icon will open post modal */}
-        {userId &&
-        likes.data &&
-        likes.data.some((like) => like.userId === userId) ? (
+        {user?.id && likes && likes.some((like) => like.userId === user?.id) ? (
           <Heart
             onClick={addOrRemoveLike}
             className="md:h-8 md:w-8 h-6 w-6 mr-2 fill-pink-600 text-pink-600"
@@ -58,10 +56,9 @@ const PostButtons = ({ postId, userId }: PostButtonProps) => {
           className="md:h-8 md:w-8 h-6 w-6 mr-2 transform scale-x-[-1] hover:text-gray-400"
         />
       </div>
-      {likes.data && likes.data.length > 0 ? (
+      {likes && likes.length > 0 ? (
         <span className="text-sm font-semibold">
-          {likes.data?.length}{' '}
-          {likes.data && likes.data.length > 1 ? 'likes' : 'like'}{' '}
+          {likes?.length} {likes && likes.length > 1 ? 'likes' : 'like'}{' '}
         </span>
       ) : null}
     </div>

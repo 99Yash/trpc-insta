@@ -22,10 +22,9 @@ interface PostProps {
     caption: string | null;
     createdAt: Date;
   };
-  userId?: string;
 }
 
-const Post = async ({ post, userId }: PostProps) => {
+const Post = async ({ post }: PostProps) => {
   return (
     <div key={post.id} className="flex flex-col gap-3 container ">
       <div className="flex items-center gap-2">
@@ -53,7 +52,7 @@ const Post = async ({ post, userId }: PostProps) => {
         height={700}
         className="block md:hidden"
       />
-      <PostButtons userId={userId} postId={post.id} />
+      <PostButtons postId={post.id} />
       <div className="flex flex-wrap">
         <div className="whitespace-pre-line overflow-hidden text-ellipsis">
           <span className="text-xs mr-2 inline-flex font-semibold">
@@ -102,55 +101,36 @@ export default async function Index() {
       },
     });
     return (
-      <div className="flex flex-col items-center gap-6 mb-2">
+      <div className="flex flex-col items-center container md:max-w-[63%] gap-6 mb-2">
         {randomPosts.map((post, idx) => (
-          <Post post={post} key={post.id} />
-        ))}
+          <Post post={post} key={idx} />
+        ))}{' '}
+        <hr className="border-0 hidden md:block w-full h-px mt-2 bg-slate-700 " />
+        <span className="italic text-gray-600">
+          Follow users to see more posts or create one of your own
+        </span>
+        <footer>
+          <div className="flex items-center mb-2 justify-center gap-2">
+            <p className="text-sm text-gray-500">
+              Copyright &copy; {new Date().getUTCFullYear()} Trinsta Corp.
+            </p>
+            <p className="text-sm text-gray-500">All rights reserved.</p>
+          </div>
+        </footer>
       </div>
     );
   }
-
-  //todo: arrange overall posts in the desc order.
-  const selfPosts = await prisma.post.findMany({
-    where: {
-      userId: user.id,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-    include: {
-      images: true,
-      likes: {
-        select: {
-          userId: true,
-        },
-      },
-      comments: {
-        select: {
-          id: true,
-        },
-      },
-      user: {
-        select: {
-          username: true,
-          image: true,
-          name: true,
-        },
-      },
-    },
-  });
-
   const following = await prisma.followers.findMany({
     where: {
       followerId: user.id,
     },
   });
-
-  const followingPosts = await prisma.post.findMany({
+  const posts = await prisma.post.findMany({
     where: {
-      userId: {
-        in: following.map((f) => f.followingId),
-      },
+      OR: [
+        { userId: user.id },
+        { userId: { in: following.map((f) => f.followingId) } },
+      ],
     },
     orderBy: {
       createdAt: 'desc',
@@ -177,12 +157,12 @@ export default async function Index() {
     },
   });
 
-  const feedPosts = [...selfPosts, ...followingPosts];
+  const feedPosts = [...posts];
 
   return (
-    <div className="flex flex-col items-center gap-6 mb-2 container md:max-w-[70%]">
+    <div className="flex flex-col items-center gap-6 mb-2 container md:max-w-[63%]">
       {feedPosts.map((post) => (
-        <Post userId={user.id} post={post} key={post.id} />
+        <Post post={post} key={post.id} />
       ))}
       <hr className="border-0 hidden md:block w-full h-px mt-2 bg-slate-700 " />
 
