@@ -175,7 +175,7 @@ const PostPage = async ({ params }: PostIdPageProps) => {
           <hr className="border-0 w-full h-px bg-slate-700" />
           <div className="py-3 flex flex-col gap-2 ">
             {user ? (
-              <PostButtons userId={user.id} postId={postId} />
+              <PostButtons postId={postId} />
             ) : (
               <PostButtons postId={postId} />
             )}

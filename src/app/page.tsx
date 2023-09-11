@@ -107,7 +107,7 @@ export default async function Index() {
         ))}{' '}
         <hr className="border-0 hidden md:block w-full h-px mt-2 bg-slate-700 " />
         <span className="italic text-gray-600">
-          Follow users to see more posts or create one of your own
+          Sign in to see more Posts, or create one of your own
         </span>
         <footer>
           <div className="flex items-center mb-2 justify-center gap-2">
