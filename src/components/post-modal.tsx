@@ -87,7 +87,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
         <div className="flex flex-col h-[20%] gap-4 ">
           {/* //? button group */}
           <div className="flex gap-2  ">
-            <PostButtons postId={post.id} userId={user?.id} />
+            <PostButtons postId={post.id} />
             <p className="text-xs pt-2 text-gray-400 ">
               • {formatTimeToNow(post.createdAt)}
             </p>
