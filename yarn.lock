@@ -902,6 +902,11 @@
   resolved "https://registry.yarnpkg.com/@uploadthing/shared/-/shared-5.1.0.tgz#aa116e4e022c2876ea716e0dd22c60ee70f78db5"
   integrity sha512-3pt9PFN0QuAvCv2LZyC66Bcn+zDUbh8Ws3noYHIlr2BFIvsH0zs2oVG+WXhb+9Nunu8+DER6iol7frza5rldIA==
 
+"@vercel/analytics@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.0.2.tgz#7af719a1bf33734840aee6f04eb548d2cedab9ec"
+  integrity sha512-BZFxVrv24VbNNl5xMxqUojQIegEeXMI6rX3rg1uVLYUEXsuKNBSAEQf4BWEcjQDp/8aYJOj6m8V4PUA3x/cxgg==
+
 acorn-jsx@^5.3.2:
   version "5.3.2"
   resolved "https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-5.3.2.tgz"

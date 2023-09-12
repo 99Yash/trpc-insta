@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/toaster';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { DM_Sans } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 const dm_sans = DM_Sans({
   display: 'swap',
   subsets: ['latin-ext', 'latin'],
@@ -74,7 +75,9 @@ export default function RootLayout({
         )}
         suppressHydrationWarning
       >
-        <head />
+        <head>
+          <Analytics />
+        </head>
         <body className={cn(`min-h-screen ${dm_sans.className} `)}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <TailwindIndicator />
