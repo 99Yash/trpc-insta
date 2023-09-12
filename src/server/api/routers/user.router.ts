@@ -97,6 +97,30 @@ export const userRouter = createTRPCRouter({
       });
       return retrievedFollowerIds;
     }),
+  fetchFollowerCount: publicProcedure
+    .input(
+      z.object({
+        username: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const retrievedFollowerCount = await ctx.prisma.followers.count({
+        where: { followingId: input.username },
+      });
+      return retrievedFollowerCount;
+    }),
+  fetchFollowingCount: publicProcedure
+    .input(
+      z.object({
+        username: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const retrievedFollowingCount = await ctx.prisma.followers.count({
+        where: { followerId: input.username },
+      });
+      return retrievedFollowingCount;
+    }),
   changeProfilePic: protectedProcedure
     .input(imageSchema)
     .mutation(async ({ ctx, input }) => {

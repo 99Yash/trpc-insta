@@ -2,12 +2,17 @@ import Header from '@/components/header';
 import TailwindIndicator from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
 import TRPCProvider from '@/context/trpc-provider';
-import { inter } from '@/styles/fonts';
 import type { Metadata } from 'next';
 import '../styles/globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { DM_Sans } from 'next/font/google';
+const dm_sans = DM_Sans({
+  display: 'swap',
+  subsets: ['latin-ext', 'latin'],
+  weight: ['400', '500', '700'],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -70,7 +75,7 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <head />
-        <body className={cn(`min-h-screen ${inter.className}`)}>
+        <body className={cn(`min-h-screen ${dm_sans.className} `)}>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
             <TailwindIndicator />
             <main className={cn('container sm:max-w-full h-screen')}>

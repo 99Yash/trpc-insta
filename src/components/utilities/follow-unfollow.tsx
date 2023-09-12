@@ -8,7 +8,6 @@ import { customToastError } from '@/lib/utils';
 const FollowUnfollowBtn = ({ userId }: { userId: string }) => {
   //* this userId prop refers to the user whose profile is being viewed, not the current user
   const apiUtils = api.useContext();
-  //todo see if user follows user, if yes, show unfollow btn, else show follow btn
   const currentUser = api.user.fetchCurrentUser.useQuery();
   const { data } = api.user.fetchFollowerIds.useQuery({
     id: userId,
@@ -16,9 +15,6 @@ const FollowUnfollowBtn = ({ userId }: { userId: string }) => {
   const followMutation = api.user.followOrUnfollow.useMutation({
     onSuccess: async () => {
       await apiUtils.user.fetchFollowerIds.invalidate({ id: userId });
-      toast({
-        description: `You are now following!`,
-      });
     },
     onError: (err) => {
       toast({

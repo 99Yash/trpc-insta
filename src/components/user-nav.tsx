@@ -7,7 +7,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { inter } from '@/styles/fonts';
 import { Loader2, LogOut, UserIcon } from 'lucide-react';
 import { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
@@ -58,7 +57,7 @@ export const UserButton = ({ user }: UserButtonProps) => {
             }`}</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className={` ${inter.className} `} align="end">
+        <DropdownMenuContent className={`  `} align="end">
           <div className="flex items-center justify-start gap-2 p-2">
             <div className="flex flex-col space-y-1 leading-none">
               {user?.name && <p className="font-medium">{user.name}</p>}

@@ -87,7 +87,7 @@ export const postRouter = createTRPCRouter({
       });
       return retrievedPost;
     }),
-  fetchAll: protectedProcedure.query(async ({ ctx, input }) => {
+  fetchAll: protectedProcedure.query(async ({ ctx }) => {
     const posts = await ctx.prisma.post.findMany({
       where: {
         userId: ctx.session.user.id,
@@ -100,4 +100,39 @@ export const postRouter = createTRPCRouter({
     });
     return posts;
   }),
+  fetchPostCount: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const postCount = await ctx.prisma.post.count({
+        where: {
+          userId: input.userId,
+        },
+      });
+      return postCount;
+    }),
+  fetchAllOfUser: publicProcedure
+    .input(
+      z.object({
+        username: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const posts = await ctx.prisma.post.findMany({
+        where: {
+          user: {
+            username: input.username,
+          },
+        },
+        include: {
+          images: true,
+          likes: true,
+          comments: true,
+        },
+      });
+      return posts;
+    }),
 });

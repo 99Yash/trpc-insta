@@ -1,5 +1,4 @@
 import { getSession } from '@/lib/session';
-import { inter } from '@/styles/fonts';
 import Link from 'next/link';
 import { Icons } from './icons';
 import SearchBar from './search-bar';
@@ -9,7 +8,7 @@ const Header = async () => {
   const session = await getSession();
 
   return (
-    <header className={`${inter.className} sticky z-30`}>
+    <header className={`sticky z-30`}>
       <div className="mx-auto max-w-full px-4 sm:px-6">
         <div className="flex h-16 items-center justify-between md:h-20">
           <Link

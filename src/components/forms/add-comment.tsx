@@ -53,6 +53,7 @@ const AddComment = ({ postId }: { postId: string }) => {
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         onKeyDown={handleKeyDown}
+        disabled={addCommentMutation.isLoading}
         className=" px-0 focus:border-transparent !bg-transparent !border-none !outline-none focus:ring-0 placeholder-gray-500 flex-grow "
         placeholder="Add a comment..."
         style={{
