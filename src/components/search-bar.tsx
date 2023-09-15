@@ -52,7 +52,7 @@ const SearchBar = () => {
     >
       <CommandInput
         className="outline-none border-none focus:border-none focus:outline-none ring-0 "
-        placeholder="Search users by name or username..."
+        placeholder="Type a name or username..."
         value={searchInput}
         onValueChange={(value) => {
           setSearchInput(value);

@@ -40,14 +40,16 @@ const EditProfile = ({
   name: string;
   bio: string;
 }) => {
+  const { toast } = useToast();
+  const router = useRouter();
+  const apiCtx = api.useContext();
+
+  const { data: user } = api.user.fetchUser.useQuery({ username });
   const defaultValues: UsernameBioMetadata = {
     username,
     bio,
     name,
   };
-  const { toast } = useToast();
-  const router = useRouter();
-  const apiCtx = api.useContext();
 
   const form = useForm<UsernameBioMetadata>({
     resolver: zodResolver(userProfileSchema),
@@ -58,11 +60,10 @@ const EditProfile = ({
 
   const updateProfileMutation = api.user.updateUserProfile.useMutation({
     onSuccess: async () => {
-      //! fix invalidate user error.
       await apiCtx.user.fetchUser.invalidate();
       toast({
         title: 'Profile updated',
-        description: 'Your profile data has been updated',
+        description: 'Profile updated with latest credentials.',
         variant: 'default',
         duration: 1300,
       });
@@ -72,14 +73,13 @@ const EditProfile = ({
         title: 'Uh oh..',
         description: err.message,
         variant: 'destructive',
-        duration: 8900,
+        duration: 1300,
       }),
   });
 
   const onSubmit: SubmitHandler<UsernameBioMetadata> = async (
     inputs: UsernameBioMetadata
   ) => {
-    //todo if form is unmodified, stop. isDirty not working
     try {
       await updateProfileMutation.mutateAsync({
         username: inputs.username,

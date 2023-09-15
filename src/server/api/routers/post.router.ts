@@ -4,6 +4,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from '@/server/api/trpc';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 export const postRouter = createTRPCRouter({
@@ -103,16 +104,31 @@ export const postRouter = createTRPCRouter({
   fetchPostCount: publicProcedure
     .input(
       z.object({
-        userId: z.string(),
+        username: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const postCount = await ctx.prisma.post.count({
+      const postAuthor = await ctx.prisma.user.findUnique({
         where: {
-          userId: input.userId,
+          username: input.username,
         },
       });
-      return postCount;
+      if (!postAuthor)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found',
+        });
+      if (postAuthor) {
+        // Fetch posts associated with the postAuthor's ID
+        const posts = await ctx.prisma.post.findMany({
+          where: {
+            userId: postAuthor.id,
+          },
+        });
+        return posts.length;
+      } else {
+        return 0;
+      }
     }),
   fetchAllOfUser: publicProcedure
     .input(

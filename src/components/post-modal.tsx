@@ -53,6 +53,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
           <Link href={`/${post.user.username}`} className="text-sm">
             {post?.user.username}
           </Link>
+          <p className="text-gray-400">{formatTimeToNow(post.createdAt)}</p>
         </div>
         <hr className="border-0 block w-full h-px mr-4 bg-slate-700" />
         {/* //? comments section */}
@@ -86,12 +87,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
         <hr className="border-0 block w-full h-px mb-4 bg-slate-700" />
         <div className="flex flex-col h-[20%] gap-4 ">
           {/* //? button group */}
-          <div className="flex gap-2  ">
-            <PostButtons postId={post.id} />
-            <p className="text-xs pt-2 text-gray-400 ">
-              • {formatTimeToNow(post.createdAt)}
-            </p>
-          </div>
+          <PostButtons postId={post.id} />
 
           {/* //* comment form here */}
           <div className="flex gap-4">
