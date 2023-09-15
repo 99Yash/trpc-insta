@@ -9,7 +9,9 @@ export default function NotFound() {
       <p className="text-sm">
         The link you followed may be broken, or the page may have been removed.
       </p>
-      <Link href="/">Go back home.</Link>
+      <Link href="/" className="text-blue-500">
+        Go back home
+      </Link>
     </div>
   );
 }

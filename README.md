@@ -1,6 +1,6 @@
 <h1 align="center">Trinsta</h1>
 
-> A clone of Instagram made using Next.js, Tailwind CSS and Server Components: Using the uploadThing API and components from Shadcn-ui
+> A clone of Instagram made using Next.js, Tailwind CSS and Server Components: Using the uploadThing API and components from Shadcn-ui with added metadata tags.
 
 ## 📸 Screenshots
 
@@ -22,6 +22,10 @@
 
 ![Post Loading](./public/Screenshot_20230915_074312.png)
 ![Post View](./public/Screenshot_20230915_101011.png)
+
+#### Custom Errors
+
+![Custom Errors](./public/Screenshot_20230915_073526.png)
 
 ## Tech Used
 
