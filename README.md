@@ -10,9 +10,15 @@
 
 ![User Search](./public/Screenshot_20230909_082846.png)
 
+### Double tap to like a post
+
 #### Skeleton UI for major pages
 
 ![Skeleton UI](./public/Screenshot_20230909_083109.png)
+
+#### Fallback UI for loading user dp
+
+![Fallback User](./public/Screenshot_20230916_095515.png)
 
 #### Edit Profile
 

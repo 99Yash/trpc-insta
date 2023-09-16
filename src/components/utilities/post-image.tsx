@@ -40,7 +40,7 @@ const PostImage = ({
   return (
     <AspectRatio
       onDoubleClick={addLike}
-      className="max-w-[55vw] self-center"
+      className="md:max-w-[55vw] self-center"
       ratio={16 / 9}
     >
       <Image

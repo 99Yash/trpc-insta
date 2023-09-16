@@ -32,12 +32,6 @@ const SearchBar = () => {
     refetch,
   } = api.user.search.useQuery(searchInput);
 
-  // const debounceRefetch = useRef(
-  //   debounce(async (value) => {
-  //     await refetch();
-  //   }, 200)
-  // );
-
   const request = debounce(async () => {
     await refetch();
   }, 200);
@@ -51,7 +45,7 @@ const SearchBar = () => {
       className="relative rounded-lg max-w-md z-50 overflow-visible "
     >
       <CommandInput
-        className="outline-none border-none focus:border-none focus:outline-none ring-0 "
+        className="outline-none border-none placeholder:text-xs focus:border-none focus:outline-none ring-0 "
         placeholder="Type a name or username..."
         value={searchInput}
         onValueChange={(value) => {

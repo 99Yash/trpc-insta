@@ -10,6 +10,7 @@ import PostImage from './utilities/post-image';
 import PostComments from './post-comments';
 
 //? the contents of the post modal
+//! Fix this view for phone
 const PostModal = async ({ postId }: { postId: string }) => {
   const post = await prisma.post.findUnique({
     where: {

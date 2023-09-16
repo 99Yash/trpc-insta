@@ -8,18 +8,16 @@ import CustomAvatar from './utilities/custom-avatar';
 
 const CommentSkeleton = () => {
   return (
-    <div className="flex gap-1 mt-2">
+    <div className="flex items-center gap-1 mt-2">
       <Skeleton className="rounded-full w-10 h-10" />
       <div className="flex flex-col gap-2">
         <div className="flex gap-2">
           {/* //?comment and its author */}
-          <div className="flex gap-2">
-            <Skeleton className="text-sm inline-flex shrink-0 w-12 font-semibold hover:text-gray-400 mr-2 cursor-pointer">
-              {' '}
-            </Skeleton>{' '}
+          <div className="flex items-center gap-2">
+            <Skeleton className="text-sm inline-flex shrink-0 w-12 font-semibold hover:text-gray-400 mr-2 cursor-pointer" />
           </div>
         </div>
-        <Skeleton className="text-xs w-40 h-8 text-gray-500 "> </Skeleton>
+        <Skeleton className="text-xs w-40 h-8 text-gray-500 " />
       </div>
     </div>
   );
@@ -45,10 +43,10 @@ const PostComments = ({ postId }: { postId: string }) => {
             <div className="flex gap-2">
               {/* //?comment and its author */}
               <div className="flex">
-                <div className="text-sm whitespace-pre-line overflow-hidden text-ellipsis ">
+                <div className=" text-xs md:text-sm whitespace-pre-line overflow-hidden text-ellipsis ">
                   <Link
                     href={`/${cmt.user.username}`}
-                    className="text-sm inline-flex shrink-0 font-semibold hover:text-gray-400 mr-2 cursor-pointer"
+                    className=" text-xs md:text-sm inline-flex shrink-0 font-semibold hover:text-gray-400 mr-2 cursor-pointer"
                   >
                     {cmt.user.username}
                   </Link>

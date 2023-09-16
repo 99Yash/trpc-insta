@@ -97,6 +97,7 @@ export const postRouter = createTRPCRouter({
         images: true,
         likes: true,
         comments: true,
+        // user: true,
       },
     });
     return posts;
