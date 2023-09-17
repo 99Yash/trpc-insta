@@ -66,12 +66,13 @@ const PostImage = ({
           className="text-green-500 absolute left-0 cursor-pointer h-6 w-6 z-30 "
         />
       )}
-      {imageUrls.length > 1 && imageUrls.indexOf(imageUrl) !== 2 && (
-        <Icons.rightCircle
-          onClick={handleNextImage}
-          className=" absolute right-0 text-green-500 cursor-pointer h-6 w-6 z-30"
-        />
-      )}
+      {imageUrls.length > 1 &&
+        imageUrls.indexOf(imageUrl) !== imageUrls.length - 1 && (
+          <Icons.rightCircle
+            onClick={handleNextImage}
+            className=" absolute right-0 text-green-500 cursor-pointer h-6 w-6 z-30"
+          />
+        )}
       <Image
         src={imageUrl as string}
         alt={'Cannot preview image'}
