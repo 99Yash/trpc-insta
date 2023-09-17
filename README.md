@@ -6,6 +6,10 @@
 
 [![Trinsta](./public/Screenshot_20230909_082347.png)](https://trpc-insta.vercel.app)
 
+#### Carousel
+
+![Carousel](./public/Screenshot_20230917_084103.png)
+
 #### Search by User or Username
 
 ![User Search](./public/Screenshot_20230909_082846.png)

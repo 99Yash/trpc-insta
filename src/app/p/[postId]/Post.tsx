@@ -9,6 +9,7 @@ import { api } from '@/lib/api/api';
 
 import { formatTimeToNow } from '@/lib/utils';
 
+//? a single post on the feed page
 export default function Post({ postId }: { postId: string }) {
   const { data: user } = api.user.fetchCurrentUser.useQuery();
   const { data: post } = api.post.fetchPost.useQuery({ postId });
@@ -36,7 +37,10 @@ export default function Post({ postId }: { postId: string }) {
           width={450}
           height={450}
         /> */}
-        <PostImage imageUrl={post.images[0]?.url as string} postId={post.id} />
+        <PostImage
+          imageUrls={post.images.map((i) => i.url) as string[]}
+          postId={post.id}
+        />
       </div>
       <div className="flex flex-col gap-3 md:hidden">
         <PostButtons postId={postId} />
@@ -51,7 +55,10 @@ export default function Post({ postId }: { postId: string }) {
         <PostComments postId={postId} />
       </div>
       <div className="md:flex hidden md:bg-black gap-3 h-full w-full ">
-        <PostImage imageUrl={post!.images[0]?.url as string} postId={postId} />
+        <PostImage
+          imageUrls={post.images.map((i) => i.url) as string[]}
+          postId={postId}
+        />
 
         <hr className="border-0 hidden md:block w-px h-full bg-slate-700" />
         <div className="md:flex hidden flex-col py-2">

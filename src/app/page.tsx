@@ -43,7 +43,10 @@ const Post = async ({ post }: PostProps) => {
         </p>
       </div>
       <div className="hidden md:block">
-        <PostImage imageUrl={post.images[0]?.url as string} postId={post.id} />
+        <PostImage
+          imageUrls={post.images.map((i) => i.url) as string[]}
+          postId={post.id}
+        />
       </div>
       <Image
         src={post.images[0]?.url as string}
