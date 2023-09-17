@@ -7,10 +7,11 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Loader2, LogOut, UserIcon } from 'lucide-react';
 import { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Icons } from './icons';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import {
@@ -22,7 +23,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
-import { useState } from 'react';
 
 interface UserButtonProps {
   user: Pick<User, 'name' | 'image' | 'username' | 'email'>;
@@ -77,7 +77,7 @@ export const UserButton = ({ user }: UserButtonProps) => {
             onClick={() => void router.push(`/${user.username}`)}
             className="cursor-pointer"
           >
-            <UserIcon className="mr-2 h-4 w-4" />
+            <Icons.user className="mr-2 h-4 w-4" />
             <span className="font-normal text-gray-300">
               {/* user's first name -- profile */}
               {user?.name?.split(' ')[0]}&apos;s Profile
@@ -91,7 +91,7 @@ export const UserButton = ({ user }: UserButtonProps) => {
           {/* <DropdownMenuSeparator /> */}
           <DialogTrigger asChild>
             <DropdownMenuItem className="cursor-pointer mt-2">
-              <LogOut className="mr-2 h-4 w-4" />
+              <Icons.logOut className="mr-2 h-4 w-4" />
               <span className="font-normal text-gray-300">Log out</span>
               <DropdownMenuShortcut className="font-semibold">
                 ⇧⌘Q
@@ -111,7 +111,7 @@ export const UserButton = ({ user }: UserButtonProps) => {
         <DialogFooter>
           <Button onClick={handleSignOut} disabled={isSigningOut} type="submit">
             {/* //? if signing out, show spinner */}
-            {isSigningOut ? <Loader2 className="h-4 w-4 mr-2" /> : null}
+            {isSigningOut ? <Icons.spinner className="h-4 w-4 mr-2" /> : null}
             {isSigningOut ? <p>Logging out...</p> : <p>Log out</p>}
           </Button>
         </DialogFooter>

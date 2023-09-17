@@ -1,8 +1,8 @@
 import SignIn from '@/components/auth/signin';
+import { Icons } from '@/components/icons';
 import { buttonVariants } from '@/components/ui/button';
 import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
-import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { FC } from 'react';
@@ -23,7 +23,7 @@ const SignInPage: FC = async () => {
             'self-start -mt-20'
           )}
         >
-          <ChevronLeft className="mr-2 h-4 w-4" />
+          <Icons.left className="mr-2 h-4 w-4" />
           Home
         </Link>
 

@@ -5,11 +5,12 @@ import { addPostSchema } from '@/lib/validators';
 import { FileWithPreview } from '@/types';
 import { useUploadThing } from '@/utils/uploadthing';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ImagePlus, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { FileDialog } from '../file-dialog';
+import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -31,7 +32,6 @@ import {
 import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
 import { Zoom } from '../zoom-image';
-import { z } from 'zod';
 
 type AddPostSchema = z.infer<typeof addPostSchema>;
 
@@ -107,7 +107,7 @@ const CreatePost = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button id="createPostButton" className="mb-2" variant={'secondary'}>
-          <ImagePlus className="h-4 w-4 mr-2 " /> New Post
+          <Icons.imagePlus className="h-4 w-4 mr-2 " /> New Post
         </Button>
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">
@@ -182,7 +182,7 @@ const CreatePost = () => {
                 className="m-2 w-full"
               >
                 {addPostMutation.isLoading && (
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  <Icons.spinner className="h-4 w-4 animate-spin mr-2" />
                 )}
                 {addPostMutation.isLoading ? (
                   <p>Saving your Post</p>

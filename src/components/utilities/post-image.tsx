@@ -1,11 +1,11 @@
 'use client';
 import { api } from '@/lib/api/api';
 import { customToastError } from '@/lib/utils';
-import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
+import { Icons } from '../icons';
 import { AspectRatio } from '../ui/aspect-ratio';
 import { toast } from '../ui/use-toast';
-import { useState } from 'react';
 
 const PostImage = ({
   imageUrls,
@@ -61,13 +61,13 @@ const PostImage = ({
       ratio={16 / 9}
     >
       {imageUrls.length > 1 && imageUrls.indexOf(imageUrl) !== 0 && (
-        <ChevronLeftCircle
+        <Icons.leftCircle
           onClick={handlePrevImage}
           className="text-green-500 absolute left-0 cursor-pointer h-6 w-6 z-30 "
         />
       )}
       {imageUrls.length > 1 && imageUrls.indexOf(imageUrl) !== 2 && (
-        <ChevronRightCircle
+        <Icons.rightCircle
           onClick={handleNextImage}
           className=" absolute right-0 text-green-500 cursor-pointer h-6 w-6 z-30"
         />

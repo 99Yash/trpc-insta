@@ -1,8 +1,8 @@
 'use client';
 import { api } from '@/lib/api/api';
 import { customToastError } from '@/lib/utils';
-import { Heart, MessageCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Icons } from '../icons';
 import { toast } from '../ui/use-toast';
 
 type PostButtonProps = {
@@ -41,17 +41,17 @@ const PostButtons = ({ postId }: PostButtonProps) => {
       <div className="flex gap-2 ">
         {/* //? clicking in the comment icon will open post modal */}
         {user?.id && likes && likes.some((like) => like.userId === user?.id) ? (
-          <Heart
+          <Icons.heart
             onClick={addOrRemoveLike}
             className="md:h-8 md:w-8 h-6 w-6 mr-2 fill-pink-600 text-pink-600"
           />
         ) : (
-          <Heart
+          <Icons.heart
             onClick={addOrRemoveLike}
             className="md:h-8 md:w-8 h-6 w-6 mr-2 hover:text-gray-400"
           />
         )}
-        <MessageCircle
+        <Icons.comment
           onClick={() => router.push(`/p/${postId}`)}
           className="md:h-8 md:w-8 h-6 w-6 mr-2 transform scale-x-[-1] hover:text-gray-400"
         />

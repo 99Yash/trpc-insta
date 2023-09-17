@@ -1,5 +1,6 @@
-import * as React from 'react';
 import type { FileWithPreview } from '@/types';
+import 'cropperjs/dist/cropper.css';
+import * as React from 'react';
 import Cropper, { type ReactCropperElement } from 'react-cropper';
 import {
   useDropzone,
@@ -13,11 +14,10 @@ import type {
   PathValue,
   UseFormSetValue,
 } from 'react-hook-form';
-import 'cropperjs/dist/cropper.css';
 
 import Image from 'next/image';
 
-import { cn, formatBytes } from '@/lib/utils';
+import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -25,9 +25,8 @@ import {
   DialogContent,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Icons } from '@/components/icons';
+import { cn, formatBytes } from '@/lib/utils';
 import { toast } from './ui/use-toast';
-import { Loader2 } from 'lucide-react';
 
 // FIXME Your proposed upload exceeds the maximum allowed size, this should trigger toast.error too
 
@@ -117,7 +116,9 @@ export function FileDialog<TFieldValues extends FieldValues>({
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" disabled={disabled}>
-          {isUploading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+          {isUploading && (
+            <Icons.spinner className="h-4 w-4 animate-spin mr-2" />
+          )}
           {isUploading ? <p>Uploading Images</p> : <p>Upload Images</p>}
           <span className="sr-only">Upload Images</span>
         </Button>

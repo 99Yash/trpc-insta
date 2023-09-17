@@ -1,8 +1,8 @@
+import { Icons } from '@/components/icons';
 import AddPostButton from '@/components/utilities/add-post-button';
 import UserPost from '@/components/utilities/user-post';
 import { getCurrentUser } from '@/lib/session';
 import { prisma } from '@/server/db';
-import { Instagram } from 'lucide-react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { UserProfile } from './UserProfile';
@@ -66,7 +66,7 @@ const page = async ({
     if (postsByUser.length === 0 && user?.username === username)
       return (
         <div className="h-1/2 flex flex-col gap-4 justify-center items-center">
-          <Instagram className="h-10 w-10 text-gray-400 " />
+          <Icons.instagram className="h-10 w-10 text-gray-400 " />
           <h1 className="text-4xl font-bold text-gray-300 ">Share Photos</h1>
           <p className="text-sm text-gray-300 ">
             When you share photos, they will appear on your profile.
@@ -81,7 +81,7 @@ const page = async ({
     if (postsByUser.length === 0 && user?.username !== username)
       return (
         <div className="h-1/2 flex flex-col gap-4 justify-center items-center ">
-          <Instagram className="h-10 w-10 text-gray-400 " />
+          <Icons.instagram className="h-10 w-10 text-gray-400 " />
           <h1 className="text-4xl font-bold text-gray-300 ">Share Photos</h1>
           <p className="text-sm text-gray-300 ">
             When {username} shares photos, they will appear on their profile.

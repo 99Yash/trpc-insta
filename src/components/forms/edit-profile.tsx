@@ -1,11 +1,12 @@
 'use client';
 import { api } from '@/lib/api/api';
+import { customToastError, manualDialogClose } from '@/lib/utils';
 import { userProfileSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertTriangle, Loader2, Settings2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -27,7 +28,6 @@ import {
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
-import { customToastError, manualDialogClose } from '@/lib/utils';
 
 type UsernameBioMetadata = z.infer<typeof userProfileSchema>;
 
@@ -102,7 +102,7 @@ const EditProfile = ({
     <Dialog>
       <DialogTrigger asChild>
         <Button className="mb-2" variant={'secondary'}>
-          <Settings2Icon className="h-4 w-4 mr-2" /> Edit Profile
+          <Icons.settings className="h-4 w-4 mr-2" /> Edit Profile
         </Button>
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">
@@ -175,7 +175,7 @@ const EditProfile = ({
                     />
                   </FormControl>
                   <FormDescription className=" flex gap-2 items-center text-yellow-600">
-                    <AlertTriangle className="h-4 w-4 " />
+                    <Icons.alertTriangle className="h-4 w-4 " />
                     Your username. Changing this will reload this page.
                   </FormDescription>
                   <FormMessage className="text-red-300" />
@@ -190,7 +190,7 @@ const EditProfile = ({
                 className="m-2"
               >
                 {updateProfileMutation.isLoading && (
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  <Icons.spinner className="h-4 w-4 animate-spin mr-2" />
                 )}
                 Save Changes
               </Button>

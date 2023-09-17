@@ -4,10 +4,10 @@ import { customToastError, manualDialogClose } from '@/lib/utils';
 import { imageFileSchema, imageSchema } from '@/lib/validators';
 import { useUploadThing } from '@/utils/uploadthing';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
 import { ChangeEvent, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -133,7 +133,7 @@ const EditProfilePhoto = ({
             variant={'link'}
           >
             {changePictureMutation.isLoading && (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              <Icons.spinner className="h-4 w-4 animate-spin mr-2" />
             )}
             Upload Photo
             <span className="text-xs text-gray-500">&nbsp;(max. 8MB)</span>

@@ -2,8 +2,8 @@
 import { toast } from '@/components/ui/use-toast';
 import { api } from '@/lib/api/api';
 import { customToastError } from '@/lib/utils';
-import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
+import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
@@ -71,7 +71,7 @@ const AddComment = ({ postId }: { postId: string }) => {
           className="text-blue-400  "
         >
           {addCommentMutation.isLoading && (
-            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            <Icons.spinner className="h-4 w-4 mr-2 animate-spin" />
           )}
           Post
         </Button>

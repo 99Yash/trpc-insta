@@ -1,6 +1,5 @@
 'use client';
 
-import { Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import {
   Command,
@@ -15,6 +14,7 @@ import { api } from '@/lib/api/api';
 import { useOnClickOutside } from '@/lib/hooks/use-on-click-outside';
 import debounce from 'lodash.debounce';
 import { usePathname, useRouter } from 'next/navigation';
+import { Icons } from './icons';
 
 const SearchBar = () => {
   const [searchInput, setSearchInput] = useState('');
@@ -73,7 +73,7 @@ const SearchBar = () => {
                     router.refresh();
                   }}
                 >
-                  <Users className="mr-2 h-4 w-4 " />
+                  <Icons.users className="mr-2 h-4 w-4 " />
                   <div className="flex gap-2">
                     <span className="font-medium">
                       {user.name ?? user.username}
