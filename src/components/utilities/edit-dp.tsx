@@ -27,7 +27,7 @@ const EditProfilePhoto = ({
   name,
 }: {
   photoUrl: string;
-  name?: string | null;
+  name?: string;
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const apiCtx = api.useContext();
@@ -95,12 +95,9 @@ const EditProfilePhoto = ({
       } finally {
         manualDialogClose();
       }
-      // Do something with the selected image file (e.g., upload to server)
     } else {
-      // Handle the case where the selected file is not an image
-      alert('Please select an image file.');
+      alert('Please only select an image file.');
     }
-    //todo Do something with the selected file (e.g., upload to server)
   };
 
   return (

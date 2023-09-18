@@ -70,6 +70,7 @@ model Post {
 }
 
 model Image {
+  //? This id is the uploadThing fileKey
   id        String   @id
   postId    String
   url       String   @unique

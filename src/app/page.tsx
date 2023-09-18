@@ -1,5 +1,6 @@
 import AddComment from '@/components/forms/add-comment';
 import CustomAvatar from '@/components/utilities/custom-avatar';
+import PostActions from '@/components/utilities/post-actions';
 import PostButtons from '@/components/utilities/post-buttons';
 import PostImage from '@/components/utilities/post-image';
 import { getCurrentUser } from '@/lib/session';
@@ -12,6 +13,7 @@ interface PostProps {
   post: {
     id: string;
     user: {
+      id: string | null;
       image: string | null;
       name: string | null;
       username: string | null;
@@ -25,6 +27,7 @@ interface PostProps {
 }
 
 const Post = async ({ post }: PostProps) => {
+  const user = await getCurrentUser();
   return (
     <div key={post.id} className="flex flex-col gap-3 container ">
       <div className="flex items-center gap-2">
@@ -41,6 +44,7 @@ const Post = async ({ post }: PostProps) => {
         <p className="text-sm text-gray-400">
           • {formatTimeToNow(post.createdAt)}
         </p>
+        {user?.id === post.user.id && <PostActions postId={post.id} />}
       </div>
       <div className="hidden md:block">
         <PostImage
@@ -153,6 +157,7 @@ export default async function Index() {
       user: {
         select: {
           username: true,
+          id: true,
           image: true,
           name: true,
         },

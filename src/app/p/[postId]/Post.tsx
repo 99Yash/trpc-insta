@@ -15,7 +15,7 @@ export default function Post({ postId }: { postId: string }) {
   const { data: post } = api.post.fetchPost.useQuery({ postId });
   if (!post) return null;
   return (
-    <div className="flex mt-6 md:mt-0 md:border border-gray-800 flex-col md:items-center  md:w-[100vw] lg:w-[90vw] xl:w-[80vw] md:gap-6 gap-3 h-fit mb-2 ">
+    <div className="flex mt-6 md:mt-0 md:border border-gray-800 flex-col md:items-center  md:w-[100vw] lg:w-[90vw] xl:w-[80vw]  gap-3 h-fit mb-2 ">
       {/* //? mobile header user info */}
       <div className="flex md:hidden items-center flex-wrap gap-1 ">
         <CustomAvatar
@@ -54,13 +54,12 @@ export default function Post({ postId }: { postId: string }) {
 
         <PostComments postId={postId} />
       </div>
-      <div className="md:flex hidden md:bg-black gap-3 h-full w-full ">
+      <div className="md:flex hidden md:bg-black h-full w-full ">
         <PostImage
           imageUrls={post.images.map((i) => i.url) as string[]}
           postId={postId}
         />
-
-        <hr className="border-0 hidden md:block w-px h-full bg-slate-700" />
+        {/* <hr className="border-0 hidden md:block w-px h-full bg-slate-700" /> */}
         <div className="md:flex hidden flex-col py-2">
           {/* //? post author header */}
           <div className="flex items-center gap-2">

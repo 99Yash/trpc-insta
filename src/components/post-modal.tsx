@@ -4,10 +4,11 @@ import { prisma } from '@/server/db';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import AddComment from './forms/add-comment';
+import PostComments from './post-comments';
 import CustomAvatar from './utilities/custom-avatar';
+import PostActions from './utilities/post-actions';
 import PostButtons from './utilities/post-buttons';
 import PostImage from './utilities/post-image';
-import PostComments from './post-comments';
 
 //? the contents of the post modal
 //! Fix this view for phone
@@ -26,7 +27,8 @@ const PostModal = async ({ postId }: { postId: string }) => {
       likes: true,
       user: {
         select: {
-          name: true, //? for rendering fallback image
+          name: true,
+          id: true, //? for rendering fallback image
           username: true,
           image: true,
         },
@@ -40,6 +42,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
 
   return (
     <div className="flex max-h-[90vh] max-w-[80vw]">
+      {/* //? image on the left and comments in right. at least on big devices */}
       <PostImage
         imageUrls={post.images.map((i) => i.url) as string[]}
         postId={post.id}
@@ -49,7 +52,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
       {/* //todo hide this on smaller screens */}
       <div className="flex flex-grow flex-col h-[90vh] w-[45vw] bg-black items-stretch ml-2">
         {/* //? header -- user info */}
-        <div className="flex pl-4 pt-2 gap-2 h-[10%] items-center">
+        <div className="flex pl-4 pt-2 gap-2 h-[10%] items-center w-full">
           <CustomAvatar
             imgUrl={post.user.image as string}
             name={post.user.name as string}
@@ -58,6 +61,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
             {post?.user.username}
           </Link>
           <p className="text-gray-400">{formatTimeToNow(post.createdAt)}</p>
+          {user?.id === post.user.id && <PostActions postId={postId} />}
         </div>
         <hr className="border-0 block w-full h-px mr-4 bg-slate-700" />
         {/* //? comments section */}

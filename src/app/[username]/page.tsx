@@ -51,7 +51,7 @@ const page = async ({
   const user = await getCurrentUser();
 
   const UserPosts = async () => {
-    // todo invalidate posts on creation.
+    // todo invalidate posts on creation/ deletion
     const postsByUser = await prisma.post.findMany({
       where: {
         user: {
@@ -90,8 +90,8 @@ const page = async ({
       );
     return (
       <div className="grid grid-cols-3 md:gap-4 sm:gap-2 md:mb-4 sm:mb-2 ">
-        {/* //todo on clicking the image navigate to a route having a carousel */}
         {postsByUser.map((post) => (
+          //? userPost is the trigger for the post-modal
           <UserPost
             key={post.id}
             postId={post.id}

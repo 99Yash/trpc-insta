@@ -5,6 +5,7 @@ import {
   publicProcedure,
 } from '@/server/api/trpc';
 import { TRPCError } from '@trpc/server';
+import { utapi } from 'uploadthing/server';
 import { z } from 'zod';
 
 export const postRouter = createTRPCRouter({
@@ -151,5 +152,41 @@ export const postRouter = createTRPCRouter({
         },
       });
       return posts;
+    }),
+  delete: protectedProcedure
+    .input(
+      z.object({
+        postId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const post = await ctx.prisma.post.findUnique({
+        where: {
+          id: input.postId,
+        },
+        include: {
+          images: true,
+        },
+      });
+      if (!post)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Post not found',
+        });
+      if (post.userId !== ctx.session.user.id)
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'You are not authorized to delete this post',
+        });
+      const deletedPost = await ctx.prisma.post.delete({
+        where: {
+          id: input.postId,
+        },
+        include: {
+          images: true,
+        },
+      });
+      await utapi.deleteFiles(deletedPost.images.map((image) => image.id));
+      return deletedPost;
     }),
 });
