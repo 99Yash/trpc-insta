@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc';
 
 export const likesRouter = createTRPCRouter({
   addLike: protectedProcedure
@@ -36,7 +36,7 @@ export const likesRouter = createTRPCRouter({
       });
       return addedLike;
     }),
-  getLikedUsers: protectedProcedure
+  getLikedUsers: publicProcedure
     .input(
       z.object({
         postId: z.string().min(1),
@@ -58,7 +58,7 @@ export const likesRouter = createTRPCRouter({
       });
       return likes;
     }),
-  getLikesCount: protectedProcedure
+  getLikesCount: publicProcedure
     .input(
       z.object({
         postId: z.string().min(1),

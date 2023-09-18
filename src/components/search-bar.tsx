@@ -29,6 +29,7 @@ const SearchBar = () => {
   const {
     data: users,
     isFetched,
+    isLoading,
     refetch,
   } = api.user.search.useQuery(searchInput);
 
@@ -56,6 +57,11 @@ const SearchBar = () => {
 
       {searchInput.length > 0 ? (
         <CommandList className="absolute top-full inset-x-0 shadow rounded-b-md bg-black ">
+          {isLoading && (
+            <CommandEmpty className="flex p-4 justify-center">
+              <Icons.spinner className="h-6 w-6 animate-spin" />
+            </CommandEmpty>
+          )}
           {isFetched && users?.length === 0 && (
             <CommandEmpty className="flex p-4 justify-center">
               No users found.

@@ -89,6 +89,7 @@ export const postRouter = createTRPCRouter({
       });
       return retrievedPost;
     }),
+  //? fetchAllOfCurrentUser, hence protectedProcedure
   fetchAll: protectedProcedure.query(async ({ ctx }) => {
     const posts = await ctx.prisma.post.findMany({
       where: {
@@ -101,7 +102,7 @@ export const postRouter = createTRPCRouter({
         // user: true,
       },
     });
-    return posts;
+    return posts ?? null;
   }),
   fetchPostCount: publicProcedure
     .input(

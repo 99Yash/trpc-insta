@@ -23,17 +23,22 @@ export const userRouter = createTRPCRouter({
     });
     return retrievedUser;
   }),
-  search: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
-    const retrievedUsers = await ctx.prisma.user.findMany({
-      where: {
-        OR: [{ name: { contains: input } }, { username: { contains: input } }],
-      },
-      select: { username: true, name: true, id: true },
-      take: 5,
-      //todo: maybe sort by desc followers
-    });
-    return retrievedUsers ?? [];
-  }),
+  search: publicProcedure
+    .input(z.string().min(1))
+    .query(async ({ ctx, input }) => {
+      const retrievedUsers = await ctx.prisma.user.findMany({
+        where: {
+          OR: [
+            { name: { contains: input } },
+            { username: { contains: input } },
+          ],
+        },
+        select: { username: true, name: true, id: true },
+        take: 5,
+        //todo: maybe sort by desc followers
+      });
+      return retrievedUsers ?? [];
+    }),
   followOrUnfollow: protectedProcedure
     .input(
       z.object({
