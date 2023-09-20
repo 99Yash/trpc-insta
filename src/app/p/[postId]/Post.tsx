@@ -3,11 +3,13 @@
 import AddComment from '@/components/forms/add-comment';
 import PostComments from '@/components/post-comments';
 import CustomAvatar from '@/components/utilities/custom-avatar';
+import PostActions from '@/components/utilities/post-actions';
 import PostButtons from '@/components/utilities/post-buttons';
 import PostImage from '@/components/utilities/post-image';
 import { api } from '@/lib/api/api';
 
 import { formatTimeToNow } from '@/lib/utils';
+import Link from 'next/link';
 
 //? a single post on the feed page
 export default function Post({ postId }: { postId: string }) {
@@ -54,12 +56,12 @@ export default function Post({ postId }: { postId: string }) {
 
         <PostComments postId={postId} />
       </div>
-      <div className="md:flex hidden md:bg-black h-full w-full ">
+      <div className="md:flex hidden md:bg-black h-full w-full gap-2 ">
         <PostImage
           imageUrls={post.images.map((i) => i.url) as string[]}
           postId={postId}
         />
-        {/* <hr className="border-0 hidden md:block w-px h-full bg-slate-700" /> */}
+        <hr className="border-0 w-px bg-slate-700" />
         <div className="md:flex hidden flex-col py-2">
           {/* //? post author header */}
           <div className="flex items-center gap-2">
@@ -67,23 +69,35 @@ export default function Post({ postId }: { postId: string }) {
               imgUrl={post!.user.image as string}
               name={post!.user.name as string}
             />
-            <p className="text-sm font-semibold">{post!.user.username}</p>
+            <Link
+              href={`/${post.user.username}`}
+              className="text-sm font-semibold hover:text-gray-400 duration-150"
+            >
+              {post!.user.username}
+            </Link>
             <p className=" text-sm text-gray-500">
               {formatTimeToNow(post!.createdAt)}
             </p>
+            {user?.id === post.userId && <PostActions postId={post.id} />}
           </div>
           <hr className="border-0 w-full h-px mt-2 bg-slate-700" />
           {/* //? post author caption */}
-          <div className="flex flex-wrap items-center gap-1 mt-2 pb-4 ">
+          <div className="flex items-center gap-1 mt-2 pb-4 ">
             <CustomAvatar
               imgUrl={post!.user.image as string}
               name={post!.user.name as string}
             />
-            <p className="text-xs inline-block font-semibold">
-              {post?.user.username}
-            </p>
-
-            <p className="text-sm">{post?.caption}</p>
+            <div className="flex pt-2">
+              <div className="whitespace-pre-line overflow-hidden text-sm text-ellipsis">
+                <Link
+                  href={`/${post.user.username}`}
+                  className=" inline-block font-semibold mr-2 hover:text-gray-400 duration-150"
+                >
+                  {post?.user.username}
+                </Link>
+                {post?.caption}
+              </div>
+            </div>
           </div>
           {/* //?comments */}
           <div className="overflow-y-auto scrollbar-hide h-full ">
