@@ -3,8 +3,7 @@
  */
 
 import { type AsyncLocalStorage } from 'async_hooks';
-import { requestAsyncStorage as asyncStorage } from 'next/dist/client/components/request-async-storage';
-
+import { requestAsyncStorage as asyncStorage } from 'next/dist/client/components/request-async-storage.external';
 function throwError(msg: string) {
   throw new Error(msg);
 }
