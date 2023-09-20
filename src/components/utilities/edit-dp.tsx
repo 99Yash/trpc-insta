@@ -24,7 +24,7 @@ type ImageFileSchema = z.infer<typeof imageFileSchema>;
 
 const EditProfilePhoto = ({
   photoUrl,
-  name,
+  name, //? for fallback img
 }: {
   photoUrl: string;
   name?: string;
