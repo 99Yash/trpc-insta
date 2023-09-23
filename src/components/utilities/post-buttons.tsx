@@ -37,30 +37,38 @@ const PostButtons = ({ postId }: PostButtonProps) => {
   };
   return (
     <div className="flex flex-col gap-3">
-      {/* //? heart and comment icons */}
       <div className="flex gap-2 ">
-        {/* //? clicking in the comment icon will open post modal */}
-        {user?.id && likes && likes.some((like) => like.userId === user?.id) ? (
-          <Icons.heart
-            onClick={addOrRemoveLike}
-            className="md:h-8 md:w-8 h-6 w-6 mr-2 cursor-pointer fill-pink-600 text-pink-600"
-          />
+        {!likes ? (
+          <p className="text-gray-400 animate-pulse ">Fetching likes...</p>
+        ) : user?.id && likes?.some((like) => like.userId === user?.id) ? (
+          <>
+            <Icons.heart
+              onClick={addOrRemoveLike}
+              className="md:h-8 md:w-8 h-6 w-6 mr-2 cursor-pointer fill-pink-600 text-pink-600"
+            />
+            <Icons.comment
+              onClick={() => router.push(`/post/${postId}`)}
+              className="md:h-8 md:w-8 h-6 w-6 cursor-pointer hover:text-gray-400"
+            />
+          </>
         ) : (
-          <Icons.heart
-            onClick={addOrRemoveLike}
-            className="md:h-8 md:w-8 h-6 w-6 mr-2 cursor-pointer hover:text-gray-400"
-          />
+          <>
+            <Icons.heart
+              onClick={addOrRemoveLike}
+              className="md:h-8 md:w-8 h-6 w-6 mr-2 cursor-pointer hover:text-gray-400"
+            />
+            <Icons.comment
+              onClick={() => router.push(`/post/${postId}`)}
+              className="md:h-8 md:w-8 h-6 w-6 cursor-pointer hover:text-gray-400"
+            />
+          </>
         )}
-        <Icons.comment
-          onClick={() => router.push(`/p/${postId}`)}
-          className="md:h-8 md:w-8 h-6 w-6 mr-2 transform cursor-pointer scale-x-[-1] hover:text-gray-400"
-        />
       </div>
-      {likes && likes.length > 0 ? (
+      {likes && (
         <span className="text-sm font-semibold">
           {likes?.length} {likes && likes.length > 1 ? 'likes' : 'like'}{' '}
         </span>
-      ) : null}
+      )}
     </div>
   );
 };
