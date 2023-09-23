@@ -47,7 +47,7 @@ const PostButtons = ({ postId }: PostButtonProps) => {
               className="md:h-8 md:w-8 h-6 w-6 mr-2 cursor-pointer fill-pink-600 text-pink-600"
             />
             <Icons.comment
-              onClick={() => router.push(`/post/${postId}`)}
+              onClick={() => router.push(`/p/${postId}`)}
               className="md:h-8 md:w-8 h-6 w-6 cursor-pointer hover:text-gray-400"
             />
           </>
@@ -58,7 +58,7 @@ const PostButtons = ({ postId }: PostButtonProps) => {
               className="md:h-8 md:w-8 h-6 w-6 mr-2 cursor-pointer hover:text-gray-400"
             />
             <Icons.comment
-              onClick={() => router.push(`/post/${postId}`)}
+              onClick={() => router.push(`/p/${postId}`)}
               className="md:h-8 md:w-8 h-6 w-6 cursor-pointer hover:text-gray-400"
             />
           </>
