@@ -56,13 +56,12 @@ export default function Post({ postId }: { postId: string }) {
 
         <PostComments postId={postId} />
       </div>
-      <div className="md:flex hidden md:bg-black h-full w-full gap-2 ">
+      <div className="md:flex hidden bg-black h-full w-full ">
         <PostImage
           imageUrls={post.images.map((i) => i.url) as string[]}
           postId={postId}
         />
-        <hr className="border-0 w-px bg-slate-700" />
-        <div className="md:flex hidden flex-col py-2">
+        <div className="flex flex-col py-2">
           {/* //? post author header */}
           <div className="flex items-center gap-2">
             <CustomAvatar

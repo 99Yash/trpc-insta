@@ -41,9 +41,10 @@ export const UserProfile = async ({ username }: { username: string }) => {
       <div className="flex self-start gap-4">
         <Avatar className="md:h-36 md:w-36 h-20 w-20 border rounded-full border-slate-950 mb-5">
           <AvatarImage src={user?.image as string} alt="User" />
-          <AvatarFallback>{`${user.name?.split(' ')[0]![0]}${
-            user.name?.split(' ')[1] ? user.name?.split(' ')[1] : ''
-          }`}</AvatarFallback>
+          <AvatarFallback>
+            {user.name?.split(' ')[0]![0]}
+            {user.name?.split(' ')[1] ? user.name?.split(' ')[1]![0] : ''}
+          </AvatarFallback>
         </Avatar>
         {/* //? mobile view */}
         <div className="md:hidden flex flex-col ">

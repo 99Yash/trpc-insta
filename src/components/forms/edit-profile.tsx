@@ -102,7 +102,7 @@ const EditProfile = ({
     <Dialog>
       <DialogTrigger asChild>
         <Button className="mb-2" variant={'secondary'}>
-          <Icons.settings className="h-4 w-4 mr-2" /> Edit Profile
+          <Icons.settings className="h-4 w-4 mr-2" /> Profile
         </Button>
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">

@@ -103,7 +103,7 @@ const EditProfilePhoto = ({
   return (
     <Dialog modal>
       <DialogTrigger asChild>
-        <Button variant="link">Change profile photo</Button>
+        <Button variant="link">Change photo</Button>
       </DialogTrigger>
       <DialogContent className="max-w-[475px]">
         <DialogHeader className="flex flex-col justify-center items-center gap-2">

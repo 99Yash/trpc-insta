@@ -107,7 +107,7 @@ const CreatePost = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button id="createPostButton" className="mb-2" variant={'secondary'}>
-          <Icons.imagePlus className="h-4 w-4 mr-2 " /> New Post
+          <Icons.imagePlus className="h-4 w-4 mr-2 " /> New!
         </Button>
       </DialogTrigger>
       <DialogContent className=" sm:max-w-[475px]">

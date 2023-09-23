@@ -5,6 +5,7 @@ import EditProfilePhoto from '@/components/utilities/edit-dp';
 import FollowUnfollowBtn from '@/components/utilities/follow-unfollow';
 import { api } from '@/lib/api/api';
 
+//? This has the 3 buttons seen in the profile page, for mobile view
 const SmProfile = ({ username }: { username: string }) => {
   const { data: user } = api.user.fetchCurrentUser.useQuery();
 
@@ -14,7 +15,7 @@ const SmProfile = ({ username }: { username: string }) => {
         <h5 className="text-lg font-bold">{user?.username}</h5>
         {/* //? edit profile, add post, edit dp buttons */}
         {user?.username === username && (
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 gap-2">
             <CreatePost />
             <EditProfile
               name={user?.name ?? ''}
