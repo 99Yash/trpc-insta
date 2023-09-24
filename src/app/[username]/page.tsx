@@ -5,7 +5,7 @@ import { getCurrentUser } from '@/lib/session';
 import { prisma } from '@/server/db';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { UserProfile } from './UserProfile';
+import { UserProfile } from './user-profile';
 
 export async function generateMetadata({
   params,
@@ -17,6 +17,12 @@ export async function generateMetadata({
   const user = await prisma.user.findUnique({
     where: {
       username: params.username,
+    },
+    select: {
+      name: true,
+      username: true,
+      bio: true,
+      image: true,
     },
   });
   if (!user) notFound();

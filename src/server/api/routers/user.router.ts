@@ -14,6 +14,13 @@ export const userRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const retrievedUser = await ctx.prisma.user.findUnique({
         where: { username: input.username },
+        select: {
+          bio: true,
+          id: true,
+          image: true,
+          name: true,
+          username: true,
+        },
       });
       return retrievedUser;
     }),
@@ -89,7 +96,7 @@ export const userRouter = createTRPCRouter({
         });
       }
     }),
-  fetchFollowerIds: protectedProcedure
+  fetchFollowerIds: publicProcedure
     .input(
       z.object({
         id: z.string(),
@@ -146,7 +153,7 @@ export const userRouter = createTRPCRouter({
       if (userToUpdate.id !== ctx.session.user.id) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
-          message: 'User not authenticated',
+          message: 'You are not authorized for this operation.',
         });
       }
       const updatedUser = await ctx.prisma.user.update({

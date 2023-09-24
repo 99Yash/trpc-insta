@@ -12,6 +12,13 @@ export const UserProfile = async ({ username }: { username: string }) => {
     where: {
       username,
     },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+      image: true,
+      bio: true,
+    },
   });
 
   const userFollowerCount = await prisma.followers.count({

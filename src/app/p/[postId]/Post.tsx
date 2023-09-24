@@ -17,7 +17,7 @@ export default function Post({ postId }: { postId: string }) {
   const { data: post } = api.post.fetchPost.useQuery({ postId });
   if (!post) return null;
   return (
-    <div className="flex mt-6 md:mt-0 md:border border-gray-800 flex-col md:items-center  md:w-[100vw] lg:w-[90vw] xl:w-[80vw]  gap-3 h-fit mb-2 ">
+    <div className="flex mt-6 md:mt-0 md:border border-gray-800 flex-col md:items-center md:w-[95vw] 2xl:w-[80vw] gap-3 h-fit mb-2 ">
       {/* //? mobile header user info */}
       <div className="flex md:hidden items-center flex-wrap gap-1 ">
         <CustomAvatar
@@ -32,13 +32,6 @@ export default function Post({ postId }: { postId: string }) {
         </p>
       </div>
       <div className="md:hidden">
-        {/* <Image
-          src={post!.images[0]?.url as string}
-          className="block w-screen md:hidden"
-          alt={`${post!.caption} • @${post!.user.username}`}
-          width={450}
-          height={450}
-        /> */}
         <PostImage
           imageUrls={post.images.map((i) => i.url) as string[]}
           postId={post.id}
@@ -61,7 +54,7 @@ export default function Post({ postId }: { postId: string }) {
           imageUrls={post.images.map((i) => i.url) as string[]}
           postId={postId}
         />
-        <div className="flex flex-col py-2">
+        <div className="flex flex-col py-2 ml-2 w-[45%]">
           {/* //? post author header */}
           <div className="flex items-center gap-2">
             <CustomAvatar

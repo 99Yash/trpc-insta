@@ -62,9 +62,12 @@ const Post = async ({ post }: PostProps) => {
       <PostButtons postId={post.id} />
       <div className="flex flex-wrap">
         <div className="whitespace-pre-line overflow-hidden text-ellipsis">
-          <span className="text-xs mr-2 inline-flex font-semibold">
-            {post?.user.username}
-          </span>
+          <Link
+            href={`/${post.user.username}`}
+            className="text-sm font-semibold hover:text-gray-400 duration-150 mr-2"
+          >
+            {post!.user.username}
+          </Link>
           {post?.caption}
         </div>
       </div>
@@ -75,9 +78,8 @@ const Post = async ({ post }: PostProps) => {
           {post.comments && post.comments.length > 1 ? 'comments' : 'comment'}{' '}
         </span>
       ) : null}
-      <div className="flex">
+      <div>
         {/* //! dont remove this div */}
-        {/* //? add a comment input */}
         <AddComment postId={post.id} />
       </div>
     </div>
