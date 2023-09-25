@@ -41,7 +41,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
   if (!post) notFound();
 
   return (
-    <div className="flex max-h-[90vh] max-w-[80vw]">
+    <div className="flex flex-col md:flex-row max-w-screen h-[90vh] md:max-w-[80vw]">
       {/* //? image on the left and comments in right. at least on big devices */}
       <PostImage
         imageUrls={post.images.map((i) => i.url) as string[]}
@@ -49,8 +49,8 @@ const PostModal = async ({ postId }: { postId: string }) => {
       />
 
       {/* //?right side */}
-      {/* //todo hide this on smaller screens */}
-      <div className="flex flex-grow flex-col h-[90vh] w-[45vw] bg-black items-stretch ml-2">
+
+      <div className="flex flex-grow flex-col h-[90vh] md:w-[45vw]  bg-black items-stretch ml-2">
         {/* //? header -- user info */}
         <div className="flex pl-4 pt-2 gap-2 h-[10%] items-center w-full">
           <CustomAvatar
