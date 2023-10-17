@@ -55,9 +55,7 @@ const PostPage = async ({ params }: PostIdPageProps) => {
 
   if (!post) return notFound();
 
-  return (
-    <Post postId={postId} />
-  );
+  return <Post postId={postId} />;
 };
 
 export default PostPage;

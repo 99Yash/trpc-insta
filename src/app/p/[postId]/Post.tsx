@@ -17,7 +17,7 @@ export default function Post({ postId }: { postId: string }) {
   const { data: post } = api.post.fetchPost.useQuery({ postId });
   if (!post) return null;
   return (
-    <div className="flex mt-6 md:mt-0 md:border border-gray-800 flex-col md:items-center md:w-[95vw] 2xl:w-[80vw] gap-3 h-fit mb-2 ">
+    <div className="flex mt-6 md:mt-0 md:border border-gray-800 flex-col md:items-center md:w-[95vw] 2xl:w-[80vw] gap-3 h-fit mb-2 ml-32">
       {/* //? mobile header user info */}
       <div className="flex md:hidden items-center flex-wrap gap-1 ">
         <CustomAvatar
@@ -49,7 +49,8 @@ export default function Post({ postId }: { postId: string }) {
 
         <PostComments postId={postId} />
       </div>
-      <div className="md:flex hidden bg-black h-full w-full ">
+      {/* //? this is for non mobile */}
+      <div className="md:flex hidden bg-black max-h-[90vh] ">
         <PostImage
           imageUrls={post.images.map((i) => i.url) as string[]}
           postId={postId}
@@ -83,7 +84,7 @@ export default function Post({ postId }: { postId: string }) {
               <div className="whitespace-pre-line overflow-hidden text-sm text-ellipsis">
                 <Link
                   href={`/${post.user.username}`}
-                  className=" inline-block font-semibold mr-2 hover:text-gray-400 duration-150"
+                  className="inline-block font-semibold mr-2 hover:text-gray-400 duration-150"
                 >
                   {post?.user.username}
                 </Link>
@@ -92,7 +93,7 @@ export default function Post({ postId }: { postId: string }) {
             </div>
           </div>
           {/* //?comments */}
-          <div className="overflow-y-auto scrollbar-hide h-full ">
+          <div className="overflow-y-auto scrollbar-hide ">
             <PostComments postId={postId} />
           </div>
           <hr className="border-0 w-full h-px bg-slate-700" />

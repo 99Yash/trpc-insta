@@ -67,7 +67,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
         {/* //? comments section */}
         <div className="flex  flex-col justify-between h-[85%] gap-2 w-full pl-4 scrollbar-hide overflow-auto">
           {/* //? first: user's caption ,if any */}
-          <div className="flex flex-col justify-between  gap-2 w-full pl-4 ">
+          <div className="flex flex-col justify-between gap-2 w-full pl-2 ">
             <div className="flex mt-3">
               <CustomAvatar
                 imgUrl={post.user.image as string}
@@ -93,7 +93,7 @@ const PostModal = async ({ postId }: { postId: string }) => {
           </div>
         </div>
         <hr className="border-0 block w-full h-px mb-4 bg-slate-700" />
-        <div className="flex flex-col h-[20%] gap-4 ">
+        <div className="flex flex-col h-[20%] gap-4 mx-2 ">
           {/* //? button group */}
           <PostButtons postId={post.id} />
 
