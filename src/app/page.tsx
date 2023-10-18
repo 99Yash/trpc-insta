@@ -78,7 +78,7 @@ const Post = async ({ post }: PostProps) => {
           {post.comments && post.comments.length > 1 ? 'comments' : 'comment'}{' '}
         </span>
       ) : null}
-      <div>
+      <div className="flex">
         {/* //! dont remove this div */}
         <AddComment postId={post.id} />
       </div>

@@ -64,9 +64,9 @@ const PostButtons = ({ postId }: PostButtonProps) => {
           </>
         )}
       </div>
-      {likes && (
+      {likes && likes.length > 0 && (
         <span className="text-sm font-semibold">
-          {likes?.length} {likes && likes.length > 1 ? 'likes' : 'like'}{' '}
+          {likes?.length} {likes && likes.length === 1 ? 'like' : 'likes'}{' '}
         </span>
       )}
     </div>

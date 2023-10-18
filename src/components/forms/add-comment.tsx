@@ -68,7 +68,7 @@ const AddComment = ({ postId }: { postId: string }) => {
           disabled={addCommentMutation.isLoading}
           onClick={onSubmit}
           variant={'ghost'}
-          className="text-blue-400  "
+          className="text-blue-400"
         >
           {addCommentMutation.isLoading && (
             <Icons.spinner className="h-4 w-4 mr-2 animate-spin" />

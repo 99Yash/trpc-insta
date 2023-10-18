@@ -88,9 +88,11 @@ const page = async ({
       return (
         <div className="h-1/2 flex flex-col gap-4 justify-center items-center ">
           <Icons.instagram className="h-10 w-10 text-gray-400 " />
-          <h1 className="text-4xl font-bold text-gray-300 ">Share Photos</h1>
+          <h1 className="text-4xl font-bold text-gray-300 ">
+            Nothing here. Yet.
+          </h1>
           <p className="text-sm text-gray-300 ">
-            When {username} shares photos, they will appear on their profile.
+            When {username} shares photos, they will appear on this profile.
           </p>
         </div>
       );
