@@ -12,8 +12,6 @@ export const UserProfile = ({ username }: { username: string }) => {
     username,
   });
 
-  const { data: visitingUser } = api.user.fetchCurrentUser.useQuery();
-
   const { data: userFollowerCount } = api.user.fetchFollowerCount.useQuery({
     userId: user?.id as string,
   });
@@ -25,6 +23,8 @@ export const UserProfile = ({ username }: { username: string }) => {
   const { data: numberOfPosts } = api.post.fetchPostCount.useQuery({
     username,
   });
+
+  const { data: visitingUser } = api.user.fetchCurrentUser.useQuery();
 
   //? don't use notFound() in a client component, return a  Skeleton
   if (!user)
@@ -83,40 +83,33 @@ export const UserProfile = ({ username }: { username: string }) => {
 
         <div className="hidden md:flex md:w-1/2 md:flex-col gap-4">
           <div className="flex md:flex-row gap-10 items-baseline">
-            <Skeleton className="text-md font-bold h-5 w-16 "></Skeleton>
-
+            <Skeleton className="h-4 w-28" />
             <div className="flex gap-2 justify-end ">
-              <Skeleton className="h-6 w-24" />
-              <Skeleton className="h-6 w-24" />
-              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-6 w-16" />
             </div>
-
-            {/* //? following/follow btns for non-mobile view */}
-            <Skeleton className="h-6 w-24" />
           </div>
           <div className="flex gap-8 items-center ">
             <div className="flex gap-2 justify-center items-center  ">
-              <Skeleton className="text-md font-semibold h-4 w-6 ">
-                {numberOfPosts}
-              </Skeleton>
-              <p className="text-sm text-gray-400">posts</p>
+              <Skeleton className="h-4 w-4 " />
+              posts
             </div>
             <div className="flex gap-2 justify-center items-center ">
-              <Skeleton className="text-md font-semibold h-4 w-6 ">
-                {userFollowerCount}
-              </Skeleton>
-              <p className="text-sm text-gray-400">followers</p>
+              <Skeleton className="h-4 w-4"></Skeleton>
+              followers
             </div>
             <div className="flex gap-2 justify-center items-center  ">
-              <Skeleton className="text-md font-semibold h-4 w-6"></Skeleton>
-              <p className="text-sm text-gray-400">following</p>
+              <Skeleton className="h-4 w-4"></Skeleton>
+              following
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <Skeleton className="text-md font-semibold h-5 w-1/5"></Skeleton>
-            <Skeleton className="text-sm whitespace-pre-line text-gray-300 h-5 w-2/5 "></Skeleton>
+            <Skeleton className="h-4 w-20"></Skeleton>
+            <Skeleton className="h-6 w-40"></Skeleton>
           </div>
         </div>
+        <hr className="border-0 hidden md:block h-px mt-2 bg-slate-700" />
       </div>
     );
 
@@ -136,24 +129,27 @@ export const UserProfile = ({ username }: { username: string }) => {
           <div className="flex flex-col gap-3 ">
             <h5 className="text-lg font-bold">{user?.username}</h5>
             {/* //? edit profile, add post, edit dp buttons */}
-            {visitingUser?.id === user?.id && (
-              <div className="flex gap-2">
-                <CreatePost />
-                <EditProfile
-                  name={user.name ?? ''}
-                  username={username}
-                  bio={(user?.bio as string) || ''}
-                />
-                <EditProfilePhoto
-                  photoUrl={user.image as string}
-                  name={user.name ?? ''}
-                />
-              </div>
-            )}
+            {visitingUser
+              ? visitingUser?.id === user?.id && (
+                  <div className="flex gap-2">
+                    <CreatePost />
+                    <EditProfile
+                      name={user.name ?? ''}
+                      username={username}
+                      bio={(user?.bio as string) || ''}
+                    />
+                    <EditProfilePhoto
+                      photoUrl={user.image as string}
+                      name={user.name ?? ''}
+                    />
+                  </div>
+                )
+              : null}
             {/* // ? following/follow btns for mobile view */}
-            {visitingUser?.id !== user?.id && (
-              <FollowUnfollowBtn userId={user.id} />
-            )}
+            {!visitingUser ||
+              (visitingUser?.id !== user?.id && (
+                <FollowUnfollowBtn userId={user.id} />
+              ))}
           </div>
         </div>
       </div>

@@ -69,7 +69,7 @@ const page = async ({
       },
       include: { images: true },
     });
-    if (!user) notFound();
+
     if (postsByUser.length === 0 && user?.username === username)
       return (
         <div className="min-h-1/2 flex flex-col gap-4 justify-center items-center">

@@ -30,9 +30,9 @@ export const userRouter = createTRPCRouter({
       }
       return retrievedUser;
     }),
-  fetchCurrentUser: protectedProcedure.query(async ({ ctx }) => {
+  fetchCurrentUser: publicProcedure.query(async ({ ctx }) => {
     const retrievedUser = await ctx.prisma.user.findUnique({
-      where: { id: ctx.session.user?.id },
+      where: { id: ctx.session?.user?.id },
     });
     if (!retrievedUser) {
       throw new TRPCError({
