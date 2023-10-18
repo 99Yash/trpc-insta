@@ -136,24 +136,24 @@ export const userRouter = createTRPCRouter({
   fetchFollowerCount: publicProcedure
     .input(
       z.object({
-        username: z.string(),
+        userId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
       const retrievedFollowerCount = await ctx.prisma.followers.count({
-        where: { followingId: input.username },
+        where: { followingId: input.userId },
       });
       return retrievedFollowerCount;
     }),
   fetchFollowingCount: publicProcedure
     .input(
       z.object({
-        username: z.string(),
+        userId: z.string(),
       })
     )
     .query(async ({ ctx, input }) => {
       const retrievedFollowingCount = await ctx.prisma.followers.count({
-        where: { followerId: input.username },
+        where: { followerId: input.userId },
       });
       return retrievedFollowingCount;
     }),

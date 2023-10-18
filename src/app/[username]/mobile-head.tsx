@@ -8,11 +8,11 @@ export default function MobileHead({ username }: { username: string }) {
   });
 
   const { data: userFollowerCount } = api.user.fetchFollowerCount.useQuery({
-    username,
+    userId: user?.id as string,
   });
 
   const { data: userFollowingCount } = api.user.fetchFollowingCount.useQuery({
-    username,
+    userId: user?.id as string,
   });
 
   const { data: numberOfPosts } = api.post.fetchPostCount.useQuery({

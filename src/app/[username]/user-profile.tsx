@@ -15,47 +15,16 @@ export const UserProfile = ({ username }: { username: string }) => {
   const { data: visitingUser } = api.user.fetchCurrentUser.useQuery();
 
   const { data: userFollowerCount } = api.user.fetchFollowerCount.useQuery({
-    username,
+    userId: user?.id as string,
   });
 
   const { data: userFollowingCount } = api.user.fetchFollowingCount.useQuery({
-    username,
+    userId: user?.id as string,
   });
 
   const { data: numberOfPosts } = api.post.fetchPostCount.useQuery({
     username,
   });
-
-  // const user = await prisma.user.findUnique({
-  //   where: {
-  //     username,
-  //   },
-  //   select: {
-  //     id: true,
-  //     name: true,
-  //     username: true,
-  //     image: true,
-  //     bio: true,
-  //   },
-  // });
-
-  // const userFollowerCount = await prisma.followers.count({
-  //   where: {
-  //     followingId: user?.id,
-  //   },
-  // });
-
-  // const userFollowingCount = await prisma.followers.count({
-  //   where: {
-  //     followerId: user?.id,
-  //   },
-  // });
-
-  // const numberOfPosts = await prisma.post.count({
-  //   where: {
-  //     userId: user?.id,
-  //   },
-  // });
 
   //? don't use notFound() in a client component, return a  Skeleton
   if (!user)
