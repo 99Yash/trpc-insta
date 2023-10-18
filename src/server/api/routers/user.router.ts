@@ -22,12 +22,24 @@ export const userRouter = createTRPCRouter({
           username: true,
         },
       });
+      if (!retrievedUser) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found',
+        });
+      }
       return retrievedUser;
     }),
   fetchCurrentUser: protectedProcedure.query(async ({ ctx }) => {
     const retrievedUser = await ctx.prisma.user.findUnique({
       where: { id: ctx.session.user?.id },
     });
+    if (!retrievedUser) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'User not found',
+      });
+    }
     return retrievedUser;
   }),
   search: publicProcedure
@@ -95,6 +107,18 @@ export const userRouter = createTRPCRouter({
           },
         });
       }
+    }),
+  fetchFollowerCountByUserId: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const retrievedFollowerCount = await ctx.prisma.followers.count({
+        where: { followingId: input.id },
+      });
+      return retrievedFollowerCount;
     }),
   fetchFollowerIds: publicProcedure
     .input(

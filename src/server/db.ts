@@ -1,27 +1,16 @@
-import {
-  Prisma,
-  PrismaClient as PrismaClientWithoutExtension,
-} from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 import { env } from '@/env.mjs';
-import { withAccelerate } from '@prisma/extension-accelerate';
 
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClientWithoutExtension | undefined;
+  prisma: PrismaClient | undefined;
 };
 
-const prismaOptions: Prisma.PrismaClientOptions = {};
-
-const prismaClientWithoutExtensions = new PrismaClientWithoutExtension(
-  prismaOptions
-);
-
-const prismaWithClientExtensions = prismaClientWithoutExtensions.$extends(
-  withAccelerate()
-);
-
 export const prisma =
-  ((globalThis as any).prisma as typeof prismaWithClientExtensions) ||
-  prismaWithClientExtensions;
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log:
+      env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  });
 
-if (env.NODE_ENV !== 'production') (globalForPrisma as any).prisma = prisma;
+if (env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;

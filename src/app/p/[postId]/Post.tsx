@@ -7,14 +7,13 @@ import PostActions from '@/components/utilities/post-actions';
 import PostButtons from '@/components/utilities/post-buttons';
 import PostImage from '@/components/utilities/post-image';
 import { api } from '@/lib/api/api';
-
 import { formatTimeToNow } from '@/lib/utils';
 import Link from 'next/link';
 
-//? a single post on the feed page
 export default function Post({ postId }: { postId: string }) {
   const { data: user } = api.user.fetchCurrentUser.useQuery();
   const { data: post } = api.post.fetchPost.useQuery({ postId });
+  //? don't return notFound() in a client component
   if (!post) return null;
   return (
     <div className="flex mt-6 md:mt-0 md:border border-gray-800 flex-col md:items-center md:w-[95vw] 2xl:w-[80vw] gap-3 h-fit mb-2 ml-32">
@@ -46,11 +45,10 @@ export default function Post({ postId }: { postId: string }) {
           />
           <AddComment postId={postId} />
         </div>
-
         <PostComments postId={postId} />
       </div>
       {/* //? this is for non mobile */}
-      <div className="md:flex hidden bg-black max-h-[90vh] ">
+      <div className="md:flex hidden bg-black h-full w-full ">
         <PostImage
           imageUrls={post.images.map((i) => i.url) as string[]}
           postId={postId}
@@ -93,7 +91,7 @@ export default function Post({ postId }: { postId: string }) {
             </div>
           </div>
           {/* //?comments */}
-          <div className="overflow-y-auto scrollbar-hide ">
+          <div className="overflow-y-auto scrollbar-hide h-full">
             <PostComments postId={postId} />
           </div>
           <hr className="border-0 w-full h-px bg-slate-700" />

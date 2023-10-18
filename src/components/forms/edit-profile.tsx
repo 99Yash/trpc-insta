@@ -44,7 +44,6 @@ const EditProfile = ({
   const router = useRouter();
   const apiCtx = api.useContext();
 
-  const { data: user } = api.user.fetchUser.useQuery({ username });
   const defaultValues: UsernameBioMetadata = {
     username,
     bio,

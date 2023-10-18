@@ -46,15 +46,6 @@ export async function generateMetadata({
 
 const PostPage = async ({ params }: PostIdPageProps) => {
   const { postId } = params;
-
-  const post = await prisma.post.findUnique({
-    where: {
-      id: postId,
-    },
-  });
-
-  if (!post) return notFound();
-
   return <Post postId={postId} />;
 };
 

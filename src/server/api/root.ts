@@ -2,7 +2,7 @@ import { createTRPCRouter } from '@/server/api/trpc';
 import { postRouter } from './routers/post.router';
 import { userRouter } from './routers/user.router';
 import { commentRouter } from './routers/comment.router';
-import { likesRouter } from './routers/like.route';
+import { likesRouter } from './routers/like.router';
 
 /**
  * This is the primary router for your server.
