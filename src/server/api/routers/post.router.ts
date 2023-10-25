@@ -146,10 +146,12 @@ export const postRouter = createTRPCRouter({
             username: input.username,
           },
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
         include: {
           images: true,
           likes: true,
-          comments: true,
         },
       });
       return posts;

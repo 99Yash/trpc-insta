@@ -129,22 +129,20 @@ export const UserProfile = ({ username }: { username: string }) => {
           <div className="flex flex-col gap-3 ">
             <h5 className="text-lg font-bold">{user?.username}</h5>
             {/* //? edit profile, add post, edit dp buttons */}
-            {visitingUser
-              ? visitingUser?.id === user?.id && (
-                  <div className="flex gap-2">
-                    <CreatePost />
-                    <EditProfile
-                      name={user.name ?? ''}
-                      username={username}
-                      bio={(user?.bio as string) || ''}
-                    />
-                    <EditProfilePhoto
-                      photoUrl={user.image as string}
-                      name={user.name ?? ''}
-                    />
-                  </div>
-                )
-              : null}
+            {visitingUser && visitingUser?.id === user?.id && (
+              <div className="flex gap-2">
+                <CreatePost />
+                <EditProfile
+                  name={user.name ?? ''}
+                  username={username}
+                  bio={(user?.bio as string) || ''}
+                />
+                <EditProfilePhoto
+                  photoUrl={user.image as string}
+                  name={user.name ?? ''}
+                />
+              </div>
+            )}
             {/* // ? following/follow btns for mobile view */}
             {!visitingUser ||
               (visitingUser?.id !== user?.id && (
