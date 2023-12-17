@@ -1,16 +1,23 @@
 import { PrismaClient } from '@prisma/client';
+import { env } from '../env.mjs';
+import { withAccelerate } from '@prisma/extension-accelerate';
 
-import { env } from '@/env.mjs';
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+const createAcceleratedPrismaClient = () => {
+  return new PrismaClient().$extends(withAccelerate());
 };
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log:
-      env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-  });
+export type PrismaClientAccelerated = ReturnType<
+  typeof createAcceleratedPrismaClient
+>;
 
-if (env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+const globalForPrisma = globalThis as unknown as {
+  acceleratedPrisma: PrismaClientAccelerated | undefined;
+};
+
+const acceleratedDb =
+  globalForPrisma.acceleratedPrisma ?? createAcceleratedPrismaClient();
+
+if (env.NODE_ENV !== 'production') {
+  globalForPrisma.acceleratedPrisma = acceleratedDb;
+}
+export const prisma = acceleratedDb;

@@ -1,13 +1,13 @@
-import { type GetServerSidePropsContext } from 'next';
 import { env } from '@/env.mjs';
-import { prisma } from '@/server/db';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { type GetServerSidePropsContext } from 'next';
 import {
   getServerSession,
   type DefaultSession,
-  type NextAuthOptions,
+  type AuthOptions,
 } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { customAdapter } from './next-auth-cutsom-adapter';
+import { prisma } from './db';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -31,7 +31,7 @@ declare module 'next-auth' {
  *
  * @see https://next-auth.js.org/configuration/options
  */
-export const authOptions: NextAuthOptions = {
+export const authOptions: AuthOptions = {
   callbacks: {
     session: async ({ session, user }) => ({
       ...session,
@@ -46,7 +46,8 @@ export const authOptions: NextAuthOptions = {
       return '/';
     },
   },
-  adapter: PrismaAdapter(prisma),
+  // @ts-ignore
+  adapter: customAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
