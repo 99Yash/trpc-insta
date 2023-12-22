@@ -54,10 +54,13 @@ const CreatePost = () => {
 
   const previews = form.watch('images') as FileWithPreview[] | null;
 
+  const { data: user } = api.user.fetchCurrentUser.useQuery();
+
+  if (!user) return <p>Error: User not found</p>;
+
   const addPostMutation = api.post.addPost.useMutation({
     onSuccess: async () => {
-      //! fix invalidate user error.
-      await apiCtx.post.fetchPost.invalidate();
+      await apiCtx.post.fetchAllOfUser.invalidate({ username: user.username! });
       toast({
         title: 'Post created',
         description: 'Your post has been created',
@@ -187,7 +190,7 @@ const CreatePost = () => {
                 {addPostMutation.isLoading ? (
                   <p>Saving your Post</p>
                 ) : (
-                  <p>Save Changes</p>
+                  <p>Add Post</p>
                 )}
               </Button>
             </div>
