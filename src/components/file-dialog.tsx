@@ -119,7 +119,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
           {isUploading && (
             <Icons.spinner className="h-4 w-4 animate-spin mr-2" />
           )}
-          {isUploading ? <p>Uploading Images</p> : <p>Upload Images</p>}
+          {isUploading ? <p>Uploading ...</p> : <p>Upload Images</p>}
           <span className="sr-only">Upload Images</span>
         </Button>
       </DialogTrigger>

@@ -88,6 +88,7 @@ const Post = async ({ post }: PostProps) => {
 
 export default async function Index() {
   const user = await getCurrentUser();
+
   if (!user) {
     const randomPosts = await prisma.post.findMany({
       take: 10,
@@ -109,6 +110,7 @@ export default async function Index() {
         },
       },
     });
+
     return (
       <div className="flex flex-col items-center container md:max-w-[63%] gap-6 mb-2">
         {randomPosts.map((post, idx) => (
@@ -129,12 +131,14 @@ export default async function Index() {
       </div>
     );
   }
+
   const following = await prisma.followers.findMany({
     where: {
       followerId: user.id,
     },
   });
-  const posts = await prisma.post.findMany({
+
+  const feedPosts = await prisma.post.findMany({
     where: {
       OR: [
         { userId: user.id },
@@ -166,8 +170,6 @@ export default async function Index() {
       },
     },
   });
-
-  const feedPosts = [...posts];
 
   return (
     <div className="flex flex-col items-center gap-6 mb-2 container md:max-w-[63%]">

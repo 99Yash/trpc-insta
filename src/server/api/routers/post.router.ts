@@ -78,6 +78,7 @@ export const postRouter = createTRPCRouter({
               username: true,
               image: true,
               name: true,
+              id: true,
             },
           },
           likes: {
@@ -123,12 +124,12 @@ export const postRouter = createTRPCRouter({
         });
       if (postAuthor) {
         // Fetch posts associated with the postAuthor's ID
-        const posts = await ctx.prisma.post.findMany({
+        const postCount = await ctx.prisma.post.count({
           where: {
             userId: postAuthor.id,
           },
         });
-        return posts.length;
+        return postCount;
       } else {
         return 0;
       }
@@ -149,9 +150,13 @@ export const postRouter = createTRPCRouter({
         orderBy: {
           createdAt: 'desc',
         },
-        include: {
-          images: true,
-          likes: true,
+        select: {
+          id: true,
+          images: {
+            select: {
+              url: true,
+            },
+          },
         },
       });
       return posts;

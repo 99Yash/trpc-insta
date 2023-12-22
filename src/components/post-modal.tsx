@@ -1,8 +1,8 @@
-import { getCurrentUser } from '@/lib/session';
+'use client';
+
+import { api } from '@/lib/api/api';
 import { formatTimeToNow } from '@/lib/utils';
-import { prisma } from '@/server/db';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import AddComment from './forms/add-comment';
 import PostComments from './post-comments';
 import CustomAvatar from './utilities/custom-avatar';
@@ -12,33 +12,15 @@ import PostImage from './utilities/post-image';
 
 //? the contents of the post modal
 //! Fix this view for phone
-const PostModal = async ({ postId }: { postId: string }) => {
-  const post = await prisma.post.findUnique({
-    where: {
-      id: postId,
-    },
-    include: {
-      comments: {
-        select: {
-          id: true,
-        },
-      },
-      images: true,
-      likes: true,
-      user: {
-        select: {
-          name: true,
-          id: true, //? for rendering fallback image
-          username: true,
-          image: true,
-        },
-      },
-    },
-  });
+const PostModal = ({ postId }: { postId: string }) => {
+  const { data: post } = api.post.fetchPost.useQuery({ postId });
 
-  const user = await getCurrentUser();
+  const { data: user } = api.user.fetchCurrentUser.useQuery();
 
-  if (!post) notFound();
+  if (!post)
+    return (
+      <div className="flex flex-col md:flex-row max-w-screen h-[90vh] md:max-w-[80vw]"></div>
+    );
 
   return (
     <div className="flex flex-col md:flex-row max-w-screen h-[90vh] md:max-w-[80vw]">
