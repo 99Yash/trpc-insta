@@ -156,6 +156,7 @@ export const postRouter = createTRPCRouter({
             select: {
               url: true,
             },
+            take: 1,
           },
         },
       });

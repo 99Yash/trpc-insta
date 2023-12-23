@@ -1,6 +1,7 @@
 'use client';
 
 import { Icons } from '@/components/icons';
+import { Skeleton } from '@/components/ui/skeleton';
 import AddPostButton from '@/components/utilities/add-post-button';
 import UserPost from '@/components/utilities/user-post';
 import { api } from '@/lib/api/api';
@@ -12,7 +13,16 @@ export const UserPosts = ({ username }: { username: string }) => {
 
   const { data: posts } = api.post.fetchAllOfUser.useQuery({ username });
 
-  if (!posts) return <></>;
+  if (!posts)
+    return (
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <div key={index} className="relative pb-[100%]">
+            <Skeleton className="absolute inset-0 h-full w-full" />
+          </div>
+        ))}
+      </div>
+    );
 
   if (posts.length === 0 && user?.username === username)
     return (
