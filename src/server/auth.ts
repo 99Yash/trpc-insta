@@ -1,13 +1,13 @@
-import { env } from '@/env.mjs';
-import { type GetServerSidePropsContext } from 'next';
 import {
   getServerSession,
-  type DefaultSession,
   type AuthOptions,
+  type DefaultSession,
 } from 'next-auth';
+
+import { env } from '@/env.mjs';
+import { prisma } from '@/server/db';
 import GoogleProvider from 'next-auth/providers/google';
 import { customAdapter } from './next-auth-cutsom-adapter';
-import { prisma } from './db';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -15,7 +15,6 @@ import { prisma } from './db';
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  */
-
 declare module 'next-auth' {
   interface User {
     username: string;
@@ -41,7 +40,6 @@ export const authOptions: AuthOptions = {
         username: user.username,
       },
     }),
-
     redirect() {
       return '/';
     },
@@ -70,9 +68,4 @@ export const authOptions: AuthOptions = {
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext['req'];
-  res: GetServerSidePropsContext['res'];
-}) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
-};
+export const getServerAuthSession = () => getServerSession(authOptions);
