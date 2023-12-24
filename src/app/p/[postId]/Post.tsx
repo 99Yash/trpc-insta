@@ -13,8 +13,11 @@ import Link from 'next/link';
 export default function Post({ postId }: { postId: string }) {
   const { data: user } = api.user.fetchCurrentUser.useQuery();
   const { data: post } = api.post.fetchPost.useQuery({ postId });
+
   //? don't return notFound() in a client component
+  
   if (!post) return null;
+  
   return (
     <div className="flex mt-6 md:mt-0 md:border border-gray-800 flex-col md:items-center md:w-[95vw] 2xl:w-[80vw] gap-3 h-fit mb-2 ml-32">
       {/* //? mobile header user info */}

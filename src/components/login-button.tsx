@@ -6,8 +6,8 @@ import type { FC } from 'react';
 import { Icons } from './icons';
 import { Button } from './ui/button';
  
-//eslint-disable@typescript-eslint/no-empty-interface
 interface LoginButtonProps extends React.HTMLAttributes<HTMLDivElement> {}
+
 const LoginButton: FC<LoginButtonProps> = ({ className, ...props }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

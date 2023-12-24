@@ -34,7 +34,7 @@ const MdHead = ({ username }: { username: string }) => {
             <EditProfile
               name={user?.name!}
               username={username}
-              bio={(user?.bio as string) || ''}
+              bio={user?.bio ?? ''}
             />
             <EditProfilePhoto
               photoUrl={user?.image!}

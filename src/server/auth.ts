@@ -43,7 +43,7 @@ export const authOptions: AuthOptions = {
       return '/';
     },
   },
-  // @ts-expect-error
+  // @ts-expect-error Some BS Error
   adapter: customAdapter(prisma),
   providers: [
     GoogleProvider({

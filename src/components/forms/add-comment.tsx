@@ -36,9 +36,8 @@ const AddComment = ({ postId }: { postId: string }) => {
       await addCommentMutation.mutateAsync({ postId, text: comment });
       setComment('');
     } catch (err) {
-      //  eslint-disable@typescript-eslint/no-explicit-any
-      // eslint-disable@typescript-eslint/no-unsafe-member-access
-      customToastError((err as any).message);
+    if(err instanceof Error)
+      customToastError(err.message);
     }
   };
 

@@ -34,8 +34,8 @@ const Post = async ({ post }: PostProps) => {
     <div key={post.id} className="flex flex-col gap-3 container ">
       <div className="flex items-center gap-2">
         <CustomAvatar
-          imgUrl={post.user.image!}
-          name={post?.user.name!}
+          imgUrl={post.user.image}
+          name={post?.user.name}
         />
         <Link
           href={`/${post.user.username}`}
@@ -68,15 +68,15 @@ const Post = async ({ post }: PostProps) => {
             href={`/${post.user.username}`}
             className="text-sm font-semibold hover:text-gray-400 duration-150 mr-2"
           >
-            {post!.user.username}
+            {post.user.username}
           </Link>
-          {post?.caption}
+          {post.caption}
         </div>
       </div>
       {post.comments && post.comments.length > 0 ? (
         <span className="text-gray-500">
           View {post.comments && post.comments.length > 2 ? 'all' : null}{' '}
-          {post.comments?.length}{' '}
+          {post.comments &&  post.comments.length}{' '}
           {post.comments && post.comments.length > 1 ? 'comments' : 'comment'}{' '}
         </span>
       ) : null}
@@ -104,7 +104,14 @@ export default async function Index() {
             userId: true,
           },
         },
-        user: true,
+        user: {
+          select:{
+            username: true,
+            id: true,
+            image: true,
+            name: true,
+          }
+        },
         comments: {
           select: {
             id: true,
