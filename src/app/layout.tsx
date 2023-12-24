@@ -14,7 +14,6 @@ import '../styles/globals.css';
 const dm_sans = Inter({
   display: 'swap',
   subsets: ['latin-ext', 'latin'],
-  weight: ['400', '500', '700'],
 });
 
 export const metadata: Metadata = {
@@ -83,7 +82,7 @@ export default function RootLayout({
           <TailwindIndicator />
           <main className={cn('container sm:max-w-full h-screen')}>
             <TRPCReactProvider cookies={cookies().toString()}>
-              <Header />
+              {/* <Header /> */}
               {children}
             </TRPCReactProvider>
           </main>

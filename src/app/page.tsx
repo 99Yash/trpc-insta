@@ -44,13 +44,13 @@ const Post = async ({ post }: PostProps) => {
         <p className="text-sm text-gray-400">
           • {formatTimeToNow(post.createdAt)}
         </p>
-        {user?.id === post.user.id && <PostActions postId={post.id} />}
+        {/* {user?.id === post.user.id && <PostActions postId={post.id} />} */}
       </div>
       <div className="hidden md:block">
-        <PostImage
+        {/* <PostImage
           imageUrls={post.images.map((i) => i.url) as string[]}
           postId={post.id}
-        />
+        /> */}
       </div>
       <Image
         src={post.images[0]?.url as string}
@@ -59,7 +59,7 @@ const Post = async ({ post }: PostProps) => {
         height={700}
         className="block md:hidden"
       />
-      <PostButtons postId={post.id} />
+      {/* <PostButtons postId={post.id} /> */}
       <div className="flex flex-wrap">
         <div className="whitespace-pre-line overflow-hidden text-ellipsis">
           <Link
@@ -80,7 +80,7 @@ const Post = async ({ post }: PostProps) => {
       ) : null}
       <div className="flex">
         {/* //! dont remove this div */}
-        <AddComment postId={post.id} />
+        {/* <AddComment postId={post.id} /> */}
       </div>
     </div>
   );
