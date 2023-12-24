@@ -27,13 +27,15 @@ interface PostProps {
 }
 
 const Post = async ({ post }: PostProps) => {
+
   const user = await getCurrentUser();
+
   return (
     <div key={post.id} className="flex flex-col gap-3 container ">
       <div className="flex items-center gap-2">
         <CustomAvatar
-          imgUrl={post.user.image as string}
-          name={post?.user.name as string}
+          imgUrl={post.user.image}
+          name={post?.user.name}
         />
         <Link
           href={`/${post.user.username}`}
@@ -48,12 +50,12 @@ const Post = async ({ post }: PostProps) => {
       </div>
       <div className="hidden md:block">
         <PostImage
-          imageUrls={post.images.map((i) => i.url) as string[]}
+          imageUrls={post.images.map((i) => i.url)}
           postId={post.id}
         />
       </div>
       <Image
-        src={post.images[0]?.url as string}
+        src={post.images[0]?.url!}
         alt="Cant preview image"
         width={700}
         height={700}
@@ -66,16 +68,16 @@ const Post = async ({ post }: PostProps) => {
             href={`/${post.user.username}`}
             className="text-sm font-semibold hover:text-gray-400 duration-150 mr-2"
           >
-            {post!.user.username}
+            {post.user.username}
           </Link>
-          {post?.caption}
+          {post.caption}
         </div>
       </div>
       {post.comments && post.comments.length > 0 ? (
         <span className="text-gray-500">
-          View {post.comments && post.comments.length > 2 ? 'all' : null}{' '}
-          {post.comments?.length}{' '}
-          {post.comments && post.comments.length > 1 ? 'comments' : 'comment'}{' '}
+          View {post.comments.length > 2 ? 'all' : null}{' '}
+          { post.comments.length}{' '}
+          {post.comments.length > 1 ? 'comments' : 'comment'}{' '}
         </span>
       ) : null}
       <div className="flex">
@@ -102,7 +104,14 @@ export default async function Index() {
             userId: true,
           },
         },
-        user: true,
+        user: {
+          select:{
+            username: true,
+            id: true,
+            image: true,
+            name: true,
+          }
+        },
         comments: {
           select: {
             id: true,

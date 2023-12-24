@@ -10,6 +10,10 @@ const nextConfig = {
         hostname: 'uploadthing.com',
       },
       {
+        protocol:'https',
+        hostname: 'utfs.io',
+      },
+      {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
       },

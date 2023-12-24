@@ -1,9 +1,8 @@
 'use client';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { customToastError, manualDialogClose } from '@/lib/utils';
 import { addPostSchema } from '@/lib/validators';
 import { FileWithPreview } from '@/types';
-import { useUploadThing } from '@/utils/uploadthing';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -32,6 +31,8 @@ import {
 import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
 import { Zoom } from '../zoom-image';
+import { generateReactHelpers } from '@uploadthing/react/hooks';
+import type { OurFileRouter } from '@/app/api/uploadthing/core';
 
 type AddPostSchema = z.infer<typeof addPostSchema>;
 
@@ -41,9 +42,10 @@ const CreatePost = () => {
     images: null,
   };
   const { toast } = useToast();
-  const apiCtx = api.useContext();
+  const apiCtx = api.useUtils();
   const [files, setFiles] = useState<FileWithPreview[] | null>(null);
 
+  const { useUploadThing } = generateReactHelpers<OurFileRouter>()
   const { isUploading, startUpload } = useUploadThing('postImageUploader');
 
   const form = useForm<AddPostSchema>({
@@ -79,14 +81,12 @@ const CreatePost = () => {
   const onSubmit: SubmitHandler<AddPostSchema> = async (
     inputs: AddPostSchema
   ) => {
-    //todo if form is unmodified, stop. isDirty not working
-    console.log(inputs);
     try {
       const images = inputs.images
         ? await startUpload(inputs.images).then((res) => {
             const formattedImages = res?.map((image) => ({
-              id: image.fileKey,
-              url: image.fileUrl,
+              id: image.key,
+              url: image.url,
             }));
             return formattedImages ?? [];
           })
@@ -99,8 +99,9 @@ const CreatePost = () => {
 
       form.reset();
       setFiles(null);
-    } catch (err: any) {
-      customToastError(err);
+    } catch (err) {
+      if(err instanceof Error)
+      customToastError(err.message);
     } finally {
       manualDialogClose();
     }

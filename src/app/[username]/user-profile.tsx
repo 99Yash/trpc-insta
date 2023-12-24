@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import EditProfilePhoto from '@/components/utilities/edit-dp';
 import FollowUnfollowBtn from '@/components/utilities/follow-unfollow';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 
 export const UserProfile = ({ username }: { username: string }) => {
   const { data: user } = api.user.fetchUser.useQuery({
@@ -13,11 +13,11 @@ export const UserProfile = ({ username }: { username: string }) => {
   });
 
   const { data: userFollowerCount } = api.user.fetchFollowerCount.useQuery({
-    userId: user?.id as string,
+    userId: user?.id!,
   });
 
   const { data: userFollowingCount } = api.user.fetchFollowingCount.useQuery({
-    userId: user?.id as string,
+    userId: user?.id!,
   });
 
   const { data: numberOfPosts } = api.post.fetchPostCount.useQuery({
@@ -118,7 +118,7 @@ export const UserProfile = ({ username }: { username: string }) => {
       {/* //? avatar and username and buttons */}
       <div className="flex self-start gap-4">
         <Avatar className="md:h-36 md:w-36 h-20 w-20 border rounded-full border-slate-950 mb-5">
-          <AvatarImage src={user?.image as string} alt="User" />
+          <AvatarImage src={user?.image!} alt="User" />
           <AvatarFallback>
             {user.name?.split(' ')[0]![0]}
             {user.name?.split(' ')[1] ? user.name?.split(' ')[1]![0] : ''}
@@ -135,10 +135,10 @@ export const UserProfile = ({ username }: { username: string }) => {
                 <EditProfile
                   name={user.name ?? ''}
                   username={username}
-                  bio={(user?.bio as string) || ''}
+                  bio={(user?.bio!) || ''}
                 />
                 <EditProfilePhoto
-                  photoUrl={user.image as string}
+                  photoUrl={user.image!}
                   name={user.name ?? ''}
                 />
               </div>
@@ -192,12 +192,12 @@ export const UserProfile = ({ username }: { username: string }) => {
             <div className="flex gap-2 justify-end ">
               <CreatePost />
               <EditProfile
-                name={user.name as string}
+                name={user.name!}
                 username={username}
-                bio={(user?.bio as string) || ''}
+                bio={(user?.bio!) || ''}
               />
               <EditProfilePhoto
-                photoUrl={user.image as string}
+                photoUrl={user.image!}
                 name={user.name ?? ''}
               />
             </div>

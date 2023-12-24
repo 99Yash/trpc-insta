@@ -1,6 +1,6 @@
 'use client';
 import { toast } from '@/components/ui/use-toast';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { customToastError } from '@/lib/utils';
 import { useState } from 'react';
 import { Icons } from '../icons';
@@ -9,7 +9,7 @@ import { Input } from '../ui/input';
 
 const AddComment = ({ postId }: { postId: string }) => {
   const [comment, setComment] = useState('');
-  const apiUtils = api.useContext();
+  const apiUtils = api.useUtils();
 
   const addCommentMutation = api.comment.addComment.useMutation({
     onSuccess: async () => {
@@ -35,15 +35,16 @@ const AddComment = ({ postId }: { postId: string }) => {
     try {
       await addCommentMutation.mutateAsync({ postId, text: comment });
       setComment('');
-    } catch (err: any) {
-      customToastError(err);
+    } catch (err) {
+    if(err instanceof Error)
+      customToastError(err.message);
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      onSubmit();
+     await onSubmit();
     }
   };
 

@@ -1,5 +1,5 @@
 'use client';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { customToastError, manualDialogClose } from '@/lib/utils';
 import { userProfileSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,7 +42,7 @@ const EditProfile = ({
 }) => {
   const { toast } = useToast();
   const router = useRouter();
-  const apiCtx = api.useContext();
+  const apiCtx = api.useUtils();
 
   const defaultValues: UsernameBioMetadata = {
     username,
@@ -90,7 +90,7 @@ const EditProfile = ({
       } else {
         router.push(`/${inputs.username}`);
       }
-    } catch (err: any) {
+    } catch (err) {
       customToastError(err);
     } finally {
       manualDialogClose();

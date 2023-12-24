@@ -3,7 +3,7 @@ import CreatePost from '@/components/forms/create-post';
 import EditProfile from '@/components/forms/edit-profile';
 import EditProfilePhoto from '@/components/utilities/edit-dp';
 import FollowUnfollowBtn from '@/components/utilities/follow-unfollow';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 
 //? This has the 3 buttons seen in the profile page, for mobile view
 const SmProfile = ({ username }: { username: string }) => {
@@ -20,10 +20,10 @@ const SmProfile = ({ username }: { username: string }) => {
             <EditProfile
               name={user?.name ?? ''}
               username={username}
-              bio={user?.bio || ''}
+              bio={user?.bio ?? ''}
             />
             <EditProfilePhoto
-              photoUrl={user?.image as string}
+              photoUrl={user?.image!}
               name={user?.name ?? ''}
             />
           </div>

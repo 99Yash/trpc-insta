@@ -1,13 +1,7 @@
 /** server/uploadthing.ts */
-import { getCurrentUser } from '@/lib/session';
-
 import { createUploadthing, type FileRouter } from 'uploadthing/next-legacy';
 
 const f = createUploadthing();
-
-const auth = () => {
-  return getCurrentUser();
-}; // Fake auth function
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {

@@ -5,8 +5,10 @@ import {
   publicProcedure,
 } from '@/server/api/trpc';
 import { TRPCError } from '@trpc/server';
-import { utapi } from 'uploadthing/server';
+import { UTApi } from "uploadthing/server";
+ 
 import { z } from 'zod';
+export const utapi = new UTApi();
 
 export const postRouter = createTRPCRouter({
   addPost: protectedProcedure

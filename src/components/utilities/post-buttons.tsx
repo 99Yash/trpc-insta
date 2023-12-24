@@ -1,5 +1,5 @@
 'use client';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { customToastError } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { Icons } from '../icons';
@@ -11,7 +11,7 @@ type PostButtonProps = {
 
 const PostButtons = ({ postId }: PostButtonProps) => {
   const router = useRouter();
-  const apiUtils = api.useContext();
+  const apiUtils = api.useUtils();
   const { data: user } = api.user.fetchCurrentUser.useQuery();
   const { data: likes } = api.like.getLikesCount.useQuery({ postId });
 
@@ -30,7 +30,7 @@ const PostButtons = ({ postId }: PostButtonProps) => {
 
   const addOrRemoveLike = async () => {
     try {
-      addLikeMutation.mutateAsync({ postId });
+      await addLikeMutation.mutateAsync({ postId });
     } catch (err) {
       customToastError(err);
     }

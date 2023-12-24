@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Button, ButtonProps } from '../ui/button';
+import { Button } from '../ui/button';
+import type { ButtonProps } from '../ui/button';
 import { openAddPostModal } from '@/lib/utils';
 
 interface AddPostButtonProps extends ButtonProps {

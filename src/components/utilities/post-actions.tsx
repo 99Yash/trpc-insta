@@ -1,6 +1,6 @@
 'use client';
 
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import {
@@ -15,7 +15,7 @@ import { toast } from '../ui/use-toast';
 import { manualDialogClose } from '@/lib/utils';
 
 export default function PostActions({ postId }: { postId: string }) {
-  const apiUtils = api.useContext();
+  const apiUtils = api.useUtils();
 
   const deletePostMutation = api.post.delete.useMutation({
     onSuccess: async () => {
@@ -35,13 +35,13 @@ export default function PostActions({ postId }: { postId: string }) {
     },
   });
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     try {
-      deletePostMutation.mutateAsync({
+     await deletePostMutation.mutateAsync({
         postId,
       });
       manualDialogClose();
-    } catch (err: any) {
+    } catch (err) {
       toast({
         description: 'An error occurred while deleting your post',
         variant: 'destructive',

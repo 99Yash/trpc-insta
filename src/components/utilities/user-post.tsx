@@ -17,7 +17,7 @@ const UserPost = ({ postId, firstImageUrl }: UserPostProps) => {
           className="cursor-pointer hover:opacity-70 transition-all"
         >
           <Image
-            src={firstImageUrl as string}
+            src={firstImageUrl}
             alt={'Cant preview Image'}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             fill

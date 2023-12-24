@@ -1,5 +1,6 @@
 import { toast } from '@/components/ui/use-toast';
-import { type ClassValue, clsx } from 'clsx';
+import {  clsx } from 'clsx';
+import type { ClassValue } from 'clsx';
 import { formatDistanceToNowStrict } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
 import { twMerge } from 'tailwind-merge';
@@ -13,52 +14,46 @@ export function formatBytes(
   bytes: number,
   decimals = 0,
   sizeType: 'accurate' | 'normal' = 'normal'
-) {
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  const accurateSizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB'];
-  if (bytes === 0) return '0 Byte';
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
-    sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytest' : sizes[i] ?? 'Bytes'
-  }`;
-}
+  ) {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const accurateSizes = ['Bytes', 'KiB', 'MiB', 'GiB', 'TiB'];
+    if (bytes === 0) return '0 Byte';
+    const i = Math.floor(Math.log(bytes) / Math.log(1024));
+    return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
+      sizeType === 'accurate' ? accurateSizes[i] ?? 'Bytest' : sizes[i] ?? 'Bytes'
+    }`;
+  }
+  
+  const formatDistanceLocale = {
+    lessThanXSeconds: 'just now',
+    xSeconds: 'just now',
+    halfAMinute: 'just now',
+    lessThanXMinutes: '{{count}}m',
+    xMinutes: '{{count}}m',
+    aboutXHours: '{{count}}h',
+    xHours: '{{count}}h',
+    xDays: '{{count}}d',
+    aboutXWeeks: '{{count}}w',
+    xWeeks: '{{count}}w',
+    aboutXMonths: '{{count}}M',
+    xMonths: '{{count}}M',
+    aboutXYears: '{{count}}y',
+    xYears: '{{count}}y',
+    overXYears: '{{count}}y',
+    almostXYears: '{{count}}y',
+  };
+  
+  
+  function formatDistance(token: string, count: number): string {
+    
+    const result = formatDistanceLocale[
+      token as keyof typeof formatDistanceLocale
+    ].replace('{{count}}', count.toString());
 
-const formatDistanceLocale = {
-  lessThanXSeconds: 'just now',
-  xSeconds: 'just now',
-  halfAMinute: 'just now',
-  lessThanXMinutes: '{{count}}m',
-  xMinutes: '{{count}}m',
-  aboutXHours: '{{count}}h',
-  xHours: '{{count}}h',
-  xDays: '{{count}}d',
-  aboutXWeeks: '{{count}}w',
-  xWeeks: '{{count}}w',
-  aboutXMonths: '{{count}}M',
-  xMonths: '{{count}}M',
-  aboutXYears: '{{count}}y',
-  xYears: '{{count}}y',
-  overXYears: '{{count}}y',
-  almostXYears: '{{count}}y',
-};
-
-function formatDistance(token: string, count: number, options?: any): string {
-  options = options || {};
-
-  const result = formatDistanceLocale[
-    token as keyof typeof formatDistanceLocale
-  ].replace('{{count}}', count.toString());
-
-  if (options.addSuffix) {
-    if (options.comparison > 0) {
-      return 'in ' + result;
-    } else {
       if (result === 'just now') return result;
       return result;
     }
-  }
-  return result;
-}
+
 
 export function formatTimeToNow(date: Date): string {
   return formatDistanceToNowStrict(date, {

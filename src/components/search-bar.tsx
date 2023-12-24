@@ -10,7 +10,7 @@ import {
   CommandList,
 } from './ui/command';
 
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { useOnClickOutside } from '@/lib/hooks/use-on-click-outside';
 import debounce from 'lodash.debounce';
 import { usePathname, useRouter } from 'next/navigation';
@@ -49,9 +49,9 @@ const SearchBar = () => {
         className="outline-none border-none placeholder:text-xs focus:border-none focus:outline-none ring-0 "
         placeholder="Type a name or username..."
         value={searchInput}
-        onValueChange={(value) => {
+        onValueChange={async (value) => {
           setSearchInput(value);
-          request();
+          await request();
         }}
       />
 
@@ -74,7 +74,7 @@ const SearchBar = () => {
                   className="cursor-pointer"
                   value={user.name ?? user.username ?? ''}
                   key={user.id}
-                  onSelect={(e) => {
+                  onSelect={() => {
                     router.push(`/${user.username}`);
                     router.refresh();
                   }}

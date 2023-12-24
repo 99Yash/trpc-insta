@@ -1,10 +1,13 @@
 'use client';
-import { api } from '@/lib/api/api';
+import type { OurFileRouter } from '@/app/api/uploadthing/core';
 import { customToastError, manualDialogClose } from '@/lib/utils';
-import { imageFileSchema, imageSchema } from '@/lib/validators';
-import { useUploadThing } from '@/utils/uploadthing';
+import type { imageFileSchema } from '@/lib/validators';
+import { imageSchema } from '@/lib/validators'
+import { api } from '@/trpc/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ChangeEvent, useRef } from 'react';
+import { generateReactHelpers } from '@uploadthing/react/hooks';
+import { useRef } from 'react';
+import type { ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Icons } from '../icons';
@@ -30,8 +33,9 @@ const EditProfilePhoto = ({
   name?: string;
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const apiCtx = api.useContext();
+  const apiCtx = api.useUtils();
 
+  const { useUploadThing } = generateReactHelpers<OurFileRouter>()
   const { isUploading, startUpload } = useUploadThing('profilePicUploader');
 
   const handleButtonClick = () => {
@@ -77,8 +81,8 @@ const EditProfilePhoto = ({
       try {
         const profilePic = await startUpload([selectedFile]).then((res) => {
           const formattedImage = res?.map((img) => ({
-            url: img?.fileUrl,
-            id: img?.fileKey,
+            url: img.url,
+            id: img.key,
           }));
           return formattedImage?.at(0);
         });
@@ -86,9 +90,11 @@ const EditProfilePhoto = ({
           id: profilePic!.id,
           url: profilePic!.url,
         });
-        const oldPicUrl = new URL(photoUrl);
-        if (oldPicUrl.hostname === 'uploadthing.com') {
-        }
+        // const oldPicUrl = new URL(photoUrl);
+        // if (oldPicUrl.hostname === 'uploadthing.com'||'utfs.io') {
+
+        // }
+
         form.reset();
       } catch (err) {
         customToastError(err);

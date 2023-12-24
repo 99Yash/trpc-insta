@@ -1,6 +1,6 @@
 'use client';
 
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { formatTimeToNow } from '@/lib/utils';
 import Link from 'next/link';
 import { Skeleton } from './ui/skeleton';
@@ -36,8 +36,8 @@ const PostComments = ({ postId }: { postId: string }) => {
       {comments?.map((cmt) => (
         <div key={cmt.id} className="flex gap-1 mt-2">
           <CustomAvatar
-            imgUrl={cmt.user.image as string}
-            name={cmt.user.name as string}
+            imgUrl={cmt.user.image}
+            name={cmt.user.name}
           />
           <div className="flex flex-col gap-2">
             <div className="flex gap-2">

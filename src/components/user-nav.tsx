@@ -7,7 +7,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User } from 'next-auth';
+import type { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -35,12 +35,12 @@ export const UserButton = ({ user }: UserButtonProps) => {
 
   const handleSignOut = async () => {
     try {
-      setIsSigningOut(true); // Set the loading state
+      setIsSigningOut(true); 
       await signOut();
     } catch (error) {
       console.error('Error signing out', error);
     } finally {
-      setIsSigningOut(false); // Reset the loading state
+      setIsSigningOut(false); 
     }
   };
   return (
@@ -51,7 +51,7 @@ export const UserButton = ({ user }: UserButtonProps) => {
           className="border-none opacity-70 focus-within:border-none cursor-pointer focus:border-none"
         >
           <Avatar className="h-10 w-10">
-            <AvatarImage src={user?.image as string} />
+            <AvatarImage src={user.image!} />
             <AvatarFallback>{`${user.name?.split(' ')[0]![0]}${
               user.name?.split(' ')[1] ? user.name?.split(' ')[1]![0] : ''
             }`}</AvatarFallback>

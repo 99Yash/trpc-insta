@@ -1,18 +1,22 @@
 import Header from '@/components/header';
 import TailwindIndicator from '@/components/tailwind-indicator';
 import { ThemeProvider } from '@/components/theme-provider';
-import TRPCProvider from '@/context/trpc-provider';
-import type { Metadata } from 'next';
-import '../styles/globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { DM_Sans } from 'next/font/google';
+import { TRPCReactProvider } from '@/trpc/react';
 import { Analytics } from '@vercel/analytics/react';
-const dm_sans = DM_Sans({
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import { cookies } from 'next/headers';
+import * as React from 'react';
+import '../styles/globals.css';
+import { extractRouterConfig } from 'uploadthing/server';
+import { ourFileRouter } from './api/uploadthing/core';
+
+const dm_sans = Inter({
   display: 'swap',
   subsets: ['latin-ext', 'latin'],
-  weight: ['400', '500', '700'],
 });
 
 export const metadata: Metadata = {
@@ -67,28 +71,36 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <TRPCProvider>
-      <html
-        lang="en"
-        className={cn(
-          'scroll-smooth bg-neutral-950 font-sans text-slate-50 antialiased'
-        )}
-        suppressHydrationWarning
-      >
-        <head>
-          <Analytics />
-        </head>
-        <body className={cn(`min-h-screen ${dm_sans.className} `)}>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            <TailwindIndicator />
-            <main className={cn('container sm:max-w-full h-screen')}>
+    <html
+      lang="en"
+      className={cn(
+        'scroll-smooth bg-neutral-950 font-sans text-slate-50 antialiased'
+      )}
+    >
+      <head>
+        <Analytics />
+      </head>
+      <body className={cn(`min-h-screen ${dm_sans.className} `)}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <TailwindIndicator />
+          <main className={cn('container sm:max-w-full h-screen')}>
+            <TRPCReactProvider cookies={cookies().toString()}>
               <Header />
+              <NextSSRPlugin
+          /**
+           * The `extractRouterConfig` will extract **only** the route configs
+           * from the router to prevent additional information from being
+           * leaked to the client. The data passed to the client is the same
+           * as if you were to fetch `/api/uploadthing` directly.
+           */
+          routerConfig={extractRouterConfig(ourFileRouter)}
+        />
               {children}
-            </main>
-            <Toaster />
-          </ThemeProvider>
-        </body>
-      </html>
-    </TRPCProvider>
+            </TRPCReactProvider>
+          </main>
+          <Toaster />
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
