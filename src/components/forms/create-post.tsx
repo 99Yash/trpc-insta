@@ -32,7 +32,7 @@ import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
 import { Zoom } from '../zoom-image';
 import { generateReactHelpers } from '@uploadthing/react/hooks';
-import { OurFileRouter } from '@/app/api/uploadthing/core';
+import type { OurFileRouter } from '@/app/api/uploadthing/core';
 
 type AddPostSchema = z.infer<typeof addPostSchema>;
 
@@ -81,8 +81,6 @@ const CreatePost = () => {
   const onSubmit: SubmitHandler<AddPostSchema> = async (
     inputs: AddPostSchema
   ) => {
-    //todo if form is unmodified, stop. isDirty not working
-    console.log(inputs);
     try {
       const images = inputs.images
         ? await startUpload(inputs.images).then((res) => {
@@ -101,8 +99,8 @@ const CreatePost = () => {
 
       form.reset();
       setFiles(null);
-    } catch (err: any) {
-      customToastError(err);
+    } catch (err) {
+      customToastError((err as any).message);
     } finally {
       manualDialogClose();
     }

@@ -35,15 +35,15 @@ const AddComment = ({ postId }: { postId: string }) => {
     try {
       await addCommentMutation.mutateAsync({ postId, text: comment });
       setComment('');
-    } catch (err: any) {
-      customToastError(err);
+    } catch (err) {
+      customToastError((err as any).message);
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      onSubmit();
+     await onSubmit();
     }
   };
 

@@ -1,8 +1,7 @@
 import {
   getServerSession,
-  type AuthOptions,
-  type DefaultSession,
 } from 'next-auth';
+import type { AuthOptions, DefaultSession } from 'next-auth';
 
 import { env } from '@/env.mjs';
 import { prisma } from '@/server/db';

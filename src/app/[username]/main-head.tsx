@@ -13,11 +13,11 @@ const MdHead = ({ username }: { username: string }) => {
   const { data: currentUser } = api.user.fetchCurrentUser.useQuery();
 
   const { data: userFollowerCount } = api.user.fetchFollowerCount.useQuery({
-    userId: user?.id as string,
+    userId: user?.id!,
   });
 
   const { data: userFollowingCount } = api.user.fetchFollowingCount.useQuery({
-    userId: user?.id as string,
+    userId: user?.id!,
   });
 
   const { data: numberOfPosts } = api.post.fetchPostCount.useQuery({
@@ -32,12 +32,12 @@ const MdHead = ({ username }: { username: string }) => {
           <div className="flex gap-2 justify-end ">
             <CreatePost />
             <EditProfile
-              name={user?.name as string}
+              name={user?.name!}
               username={username}
               bio={(user?.bio as string) || ''}
             />
             <EditProfilePhoto
-              photoUrl={user?.image as string}
+              photoUrl={user?.image!}
               name={user?.name ?? ''}
             />
           </div>

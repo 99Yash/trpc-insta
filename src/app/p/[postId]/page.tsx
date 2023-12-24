@@ -1,5 +1,5 @@
 import { prisma } from '@/server/db';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Post from './Post';
 

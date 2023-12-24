@@ -16,20 +16,20 @@ const PostImage = ({
 }) => {
   const apiUtils = api.useUtils();
   //TODO flash a heart on double click.
-  const [imageUrl, setImageUrl] = useState<string>(imageUrls.at(0) as string);
+  const [imageUrl, setImageUrl] = useState<string>(imageUrls.at(0)!);
 
   const handlePrevImage = () => {
     if (imageUrls.length < 1) return;
     const index = imageUrls.indexOf(imageUrl);
     if (index === 0) return;
-    setImageUrl(imageUrls[index - 1] as string);
+    setImageUrl(imageUrls[index - 1]!);
   };
 
   const handleNextImage = () => {
     if (imageUrls.length < 1) return;
     const index = imageUrls.indexOf(imageUrl);
     if (index === imageUrls.length - 1) return;
-    setImageUrl(imageUrls[index + 1] as string);
+    setImageUrl(imageUrls[index + 1]!);
   };
 
   const addLikeMutation = api.like.addLike.useMutation({
@@ -74,7 +74,7 @@ const PostImage = ({
           />
         )}
       <Image
-        src={imageUrl as string}
+        src={imageUrl!}
         alt={'Cannot preview image'}
         className="object-contain absolute top-0 left-0 w-[100%] h-[100%] bg-gray-950 select-none"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"

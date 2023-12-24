@@ -90,7 +90,7 @@ const EditProfile = ({
       } else {
         router.push(`/${inputs.username}`);
       }
-    } catch (err: any) {
+    } catch (err) {
       customToastError(err);
     } finally {
       manualDialogClose();

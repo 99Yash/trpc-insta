@@ -26,7 +26,7 @@ const PostModal = ({ postId }: { postId: string }) => {
     <div className="flex flex-col md:flex-row max-w-screen h-[90vh] md:max-w-[80vw]">
       {/* //? image on the left and comments in right. at least on big devices */}
       <PostImage
-        imageUrls={post.images.map((i) => i.url) as string[]}
+        imageUrls={post.images.map((i) => i.url!)}
         postId={post.id}
       />
 
@@ -36,8 +36,8 @@ const PostModal = ({ postId }: { postId: string }) => {
         {/* //? header -- user info */}
         <div className="flex pl-4 pt-2 gap-2 h-[10%] items-center w-full">
           <CustomAvatar
-            imgUrl={post.user.image as string}
-            name={post.user.name as string}
+            imgUrl={post.user.image!}
+            name={post.user.name!}
           />
           <Link href={`/${post.user.username}`} className="text-sm">
             {post?.user.username}
@@ -52,8 +52,8 @@ const PostModal = ({ postId }: { postId: string }) => {
           <div className="flex flex-col justify-between gap-2 w-full pl-2 ">
             <div className="flex mt-3">
               <CustomAvatar
-                imgUrl={post.user.image as string}
-                name={post.user.name as string}
+                imgUrl={post.user.image!}
+                name={post.user.name!}
               />
               {/* //? user caption */}
               <div className="flex pt-2">

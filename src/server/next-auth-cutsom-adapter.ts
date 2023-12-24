@@ -1,6 +1,6 @@
 import type { Account, Prisma, User } from '@prisma/client';
-import { PrismaClientAccelerated } from './db';
-import { AdapterAccount } from '@auth/core/adapters';
+import type { PrismaClientAccelerated } from './db';
+import type { AdapterAccount } from '@auth/core/adapters';
 
 export function customAdapter(p: PrismaClientAccelerated) {
   return {

@@ -14,7 +14,6 @@ import {
   Instagram,
   Loader2,
   LogOut,
-  LucideProps,
   MessageCircle,
   MessageSquare,
   MoreHorizontal,
@@ -26,6 +25,7 @@ import {
   Users,
   X,
 } from 'lucide-react';
+import type { LucideProps } from 'lucide-react';
 
 export const Icons = {
   alertTriangle: AlertTriangle,

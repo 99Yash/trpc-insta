@@ -1,5 +1,5 @@
 import { prisma } from '@/server/db';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { UserPosts } from './user-posts';
 import { UserProfile } from './user-profile';
@@ -34,7 +34,7 @@ export async function generateMetadata({
       url: '',
       images: [
         {
-          url: user.image as string,
+          url: user.image ?? '',
           width: 400,
           height: 400,
         },

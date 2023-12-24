@@ -1,17 +1,17 @@
 'use client';
 import { cn } from '@/lib/utils';
 import { signIn } from 'next-auth/react';
-import React, { FC } from 'react';
+import { useState } from 'react';
+import type { FC } from 'react';
 import { Icons } from './icons';
 import { Button } from './ui/button';
 
 interface LoginButtonProps extends React.HTMLAttributes<HTMLDivElement> {}
 const LoginButton: FC<LoginButtonProps> = ({ className, ...props }) => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const loginWithGoogle = async () => {
     setIsLoading(true);
-
     try {
       await signIn('google');
     } catch (error) {

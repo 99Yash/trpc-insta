@@ -12,7 +12,7 @@
   resolved "https://registry.npmjs.org/@alloc/quick-lru/-/quick-lru-5.2.0.tgz"
   integrity sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==
 
-"@auth/core@0.18.6", "@auth/core@^0.18.6":
+"@auth/core@^0.18.6":
   version "0.18.6"
   resolved "https://registry.yarnpkg.com/@auth/core/-/core-0.18.6.tgz#cb97103285a670656fc4b38a2952962aa9959a99"
   integrity sha512-AI7tnyNOg5zVS2elA44O03MWS6jyp69S8habJts63IyiCIoSkhqcZX4EcEJ0287m0hxzOltPCV9Zq2aqXbrNSA==
@@ -24,13 +24,6 @@
     oauth4webapi "^2.4.0"
     preact "10.11.3"
     preact-render-to-string "5.2.3"
-
-"@auth/prisma-adapter@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@auth/prisma-adapter/-/prisma-adapter-1.0.11.tgz#caec7aaf5d251d9732807e7dc6d952b1d8def941"
-  integrity sha512-xKk/rdU6xd3AzEEkZ4jLyYza7WRC9wktG45IilQ3zslyWor4MM5x03gXff6JiihvV1PLB5Q9qvmVfNRk0TG1EQ==
-  dependencies:
-    "@auth/core" "0.18.6"
 
 "@babel/runtime@^7.13.10", "@babel/runtime@^7.20.13", "@babel/runtime@^7.20.7", "@babel/runtime@^7.21.0":
   version "7.22.6"
@@ -150,11 +143,6 @@
   dependencies:
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
-
-"@next-auth/prisma-adapter@^1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@next-auth/prisma-adapter/-/prisma-adapter-1.0.7.tgz#86195e9cc5a23a9e71370c7e8745b630388143b1"
-  integrity sha512-Cdko4KfcmKjsyHFrWwZ//lfLUbcLqlyFqjd/nYE2m3aZ7tjMNUjpks47iw7NTCnXf+5UWz5Ypyt1dSs1EP5QJw==
 
 "@next/env@14.0.4":
   version "14.0.4"

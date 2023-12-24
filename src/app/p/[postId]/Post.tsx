@@ -20,8 +20,8 @@ export default function Post({ postId }: { postId: string }) {
       {/* //? mobile header user info */}
       <div className="flex md:hidden items-center flex-wrap gap-1 ">
         <CustomAvatar
-          imgUrl={post!.user.image as string}
-          name={post!.user.name as string}
+          imgUrl={post!.user.image!}
+          name={post!.user.name!}
         />
         <p className="text-xs inline-block font-semibold">
           {post!.user.username}
@@ -32,7 +32,7 @@ export default function Post({ postId }: { postId: string }) {
       </div>
       <div className="md:hidden">
         <PostImage
-          imageUrls={post.images.map((i) => i.url) as string[]}
+          imageUrls={post.images.map((i) => i.url!)}
           postId={post.id}
         />
       </div>
@@ -40,8 +40,8 @@ export default function Post({ postId }: { postId: string }) {
         <PostButtons postId={postId} />
         <div className="flex gap-1">
           <CustomAvatar
-            imgUrl={user?.image as string}
-            name={user?.name as string}
+            imgUrl={user?.image!}
+            name={user?.name!}
           />
           <AddComment postId={postId} />
         </div>
@@ -50,15 +50,15 @@ export default function Post({ postId }: { postId: string }) {
       {/* //? this is for non mobile */}
       <div className="md:flex hidden bg-black h-full w-full ">
         <PostImage
-          imageUrls={post.images.map((i) => i.url) as string[]}
+          imageUrls={post.images.map((i) => i.url!)}
           postId={postId}
         />
         <div className="flex flex-col py-2 ml-2 w-[45%]">
           {/* //? post author header */}
           <div className="flex items-center gap-2">
             <CustomAvatar
-              imgUrl={post!.user.image as string}
-              name={post!.user.name as string}
+              imgUrl={post!.user.image!}
+              name={post!.user.name!}
             />
             <Link
               href={`/${post.user.username}`}
@@ -75,8 +75,8 @@ export default function Post({ postId }: { postId: string }) {
           {/* //? post author caption */}
           <div className="flex items-center gap-1 mt-2 pb-4 ">
             <CustomAvatar
-              imgUrl={post!.user.image as string}
-              name={post!.user.name as string}
+              imgUrl={post!.user.image!}
+              name={post!.user.name!}
             />
             <div className="flex pt-2">
               <div className="whitespace-pre-line overflow-hidden text-sm text-ellipsis">
@@ -103,7 +103,7 @@ export default function Post({ postId }: { postId: string }) {
             {/* //? add a comment input */}
             {user ? (
               <CustomAvatar
-                imgUrl={user.image as string}
+                imgUrl={user.image!}
                 name={user.name ?? ''}
               />
             ) : null}

@@ -20,10 +20,10 @@ const SmProfile = ({ username }: { username: string }) => {
             <EditProfile
               name={user?.name ?? ''}
               username={username}
-              bio={user?.bio || ''}
+              bio={user?.bio ?? ''}
             />
             <EditProfilePhoto
-              photoUrl={user?.image as string}
+              photoUrl={user?.image!}
               name={user?.name ?? ''}
             />
           </div>

@@ -1,11 +1,13 @@
 'use client';
-import { OurFileRouter } from '@/app/api/uploadthing/core';
+import type { OurFileRouter } from '@/app/api/uploadthing/core';
 import { customToastError, manualDialogClose } from '@/lib/utils';
-import { imageFileSchema, imageSchema } from '@/lib/validators';
+import type { imageFileSchema } from '@/lib/validators';
+import { imageSchema } from '@/lib/validators'
 import { api } from '@/trpc/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { generateReactHelpers } from '@uploadthing/react/hooks';
-import { ChangeEvent, useRef } from 'react';
+import { useRef } from 'react';
+import type { ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Icons } from '../icons';
@@ -88,7 +90,7 @@ const EditProfilePhoto = ({
           id: profilePic!.id,
           url: profilePic!.url,
         });
-        const oldPicUrl = new URL(photoUrl);
+        // const oldPicUrl = new URL(photoUrl);
         // if (oldPicUrl.hostname === 'uploadthing.com'||'utfs.io') {
 
         // }
