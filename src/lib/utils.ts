@@ -44,24 +44,16 @@ export function formatBytes(
   };
   
   
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-any
-  function formatDistance(token: string, count: number, options?: any): string {
-    options = options || {};
+  function formatDistance(token: string, count: number): string {
     
     const result = formatDistanceLocale[
       token as keyof typeof formatDistanceLocale
     ].replace('{{count}}', count.toString());
 
-  if (options.addSuffix) {
-    if (options.comparison > 0) {
-      return 'in ' + result;
-    } else {
       if (result === 'just now') return result;
       return result;
     }
-  }
-  return result;
-}
+
 
 export function formatTimeToNow(date: Date): string {
   return formatDistanceToNowStrict(date, {

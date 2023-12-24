@@ -36,8 +36,8 @@ const PostComments = ({ postId }: { postId: string }) => {
       {comments?.map((cmt) => (
         <div key={cmt.id} className="flex gap-1 mt-2">
           <CustomAvatar
-            imgUrl={cmt.user.image!}
-            name={cmt.user.name!}
+            imgUrl={cmt.user.image}
+            name={cmt.user.name}
           />
           <div className="flex flex-col gap-2">
             <div className="flex gap-2">

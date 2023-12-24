@@ -37,7 +37,7 @@ export async function generateMetadata({
       description: post.caption ? post.caption : '',
       images: [
         {
-          url: post.user.image as string,
+          url: post.user.image!,
         },
       ],
     },

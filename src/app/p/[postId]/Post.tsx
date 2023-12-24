@@ -20,14 +20,14 @@ export default function Post({ postId }: { postId: string }) {
       {/* //? mobile header user info */}
       <div className="flex md:hidden items-center flex-wrap gap-1 ">
         <CustomAvatar
-          imgUrl={post!.user.image!}
-          name={post!.user.name!}
+          imgUrl={post.user.image}
+          name={post.user.name}
         />
         <p className="text-xs inline-block font-semibold">
-          {post!.user.username}
+          {post.user.username}
         </p>
         <p className="text-sm text-gray-400">
-          {formatTimeToNow(post!.createdAt)}
+          {formatTimeToNow(post.createdAt)}
         </p>
       </div>
       <div className="md:hidden">
@@ -57,17 +57,17 @@ export default function Post({ postId }: { postId: string }) {
           {/* //? post author header */}
           <div className="flex items-center gap-2">
             <CustomAvatar
-              imgUrl={post!.user.image!}
-              name={post!.user.name!}
+              imgUrl={post.user.image!}
+              name={post.user.name!}
             />
             <Link
               href={`/${post.user.username}`}
               className="text-sm font-semibold hover:text-gray-400 duration-150"
             >
-              {post!.user.username}
+              {post.user.username}
             </Link>
             <p className=" text-sm text-gray-500">
-              {formatTimeToNow(post!.createdAt)}
+              {formatTimeToNow(post.createdAt)}
             </p>
             {user?.id === post.userId && <PostActions postId={post.id} />}
           </div>
@@ -75,8 +75,8 @@ export default function Post({ postId }: { postId: string }) {
           {/* //? post author caption */}
           <div className="flex items-center gap-1 mt-2 pb-4 ">
             <CustomAvatar
-              imgUrl={post!.user.image!}
-              name={post!.user.name!}
+              imgUrl={post.user.image!}
+              name={post.user.name!}
             />
             <div className="flex pt-2">
               <div className="whitespace-pre-line overflow-hidden text-sm text-ellipsis">
@@ -107,7 +107,7 @@ export default function Post({ postId }: { postId: string }) {
                 name={user.name ?? ''}
               />
             ) : null}
-            <AddComment postId={post!.id} />
+            <AddComment postId={post.id} />
           </div>
         </div>
       </div>

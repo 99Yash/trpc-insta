@@ -51,7 +51,7 @@ export const UserButton = ({ user }: UserButtonProps) => {
           className="border-none opacity-70 focus-within:border-none cursor-pointer focus:border-none"
         >
           <Avatar className="h-10 w-10">
-            <AvatarImage src={user?.image!} />
+            <AvatarImage src={user.image!} />
             <AvatarFallback>{`${user.name?.split(' ')[0]![0]}${
               user.name?.split(' ')[1] ? user.name?.split(' ')[1]![0] : ''
             }`}</AvatarFallback>

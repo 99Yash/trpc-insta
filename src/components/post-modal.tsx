@@ -36,8 +36,8 @@ const PostModal = ({ postId }: { postId: string }) => {
         {/* //? header -- user info */}
         <div className="flex pl-4 pt-2 gap-2 h-[10%] items-center w-full">
           <CustomAvatar
-            imgUrl={post.user.image!}
-            name={post.user.name!}
+            imgUrl={post.user.image}
+            name={post.user.name}
           />
           <Link href={`/${post.user.username}`} className="text-sm">
             {post?.user.username}
@@ -52,8 +52,8 @@ const PostModal = ({ postId }: { postId: string }) => {
           <div className="flex flex-col justify-between gap-2 w-full pl-2 ">
             <div className="flex mt-3">
               <CustomAvatar
-                imgUrl={post.user.image!}
-                name={post.user.name!}
+                imgUrl={post.user.image}
+                name={post.user.name}
               />
               {/* //? user caption */}
               <div className="flex pt-2">

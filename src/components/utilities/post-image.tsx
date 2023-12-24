@@ -74,7 +74,7 @@ const PostImage = ({
           />
         )}
       <Image
-        src={imageUrl!}
+        src={imageUrl}
         alt={'Cannot preview image'}
         className="object-contain absolute top-0 left-0 w-[100%] h-[100%] bg-gray-950 select-none"
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"

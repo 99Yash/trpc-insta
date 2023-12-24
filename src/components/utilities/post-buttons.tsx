@@ -30,7 +30,7 @@ const PostButtons = ({ postId }: PostButtonProps) => {
 
   const addOrRemoveLike = async () => {
     try {
-      addLikeMutation.mutateAsync({ postId });
+      await addLikeMutation.mutateAsync({ postId });
     } catch (err) {
       customToastError(err);
     }

@@ -100,6 +100,8 @@ const CreatePost = () => {
       form.reset();
       setFiles(null);
     } catch (err) {
+      //  eslint-disable@typescript-eslint/no-explicit-any
+      // eslint-disable@typescript-eslint/no-unsafe-member-access
       customToastError((err as any).message);
     } finally {
       manualDialogClose();

@@ -34,8 +34,8 @@ const Post = async ({ post }: PostProps) => {
     <div key={post.id} className="flex flex-col gap-3 container ">
       <div className="flex items-center gap-2">
         <CustomAvatar
-          imgUrl={post.user.image as string}
-          name={post?.user.name as string}
+          imgUrl={post.user.image!}
+          name={post?.user.name!}
         />
         <Link
           href={`/${post.user.username}`}
@@ -50,12 +50,12 @@ const Post = async ({ post }: PostProps) => {
       </div>
       <div className="hidden md:block">
         <PostImage
-          imageUrls={post.images.map((i) => i.url) as string[]}
+          imageUrls={post.images.map((i) => i.url)}
           postId={post.id}
         />
       </div>
       <Image
-        src={post.images[0]?.url as string}
+        src={post.images[0]?.url!}
         alt="Cant preview image"
         width={700}
         height={700}
