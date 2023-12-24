@@ -19,6 +19,7 @@ import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
 import CustomAvatar from './custom-avatar';
+import { UTApi } from 'uploadthing/server';
 
 type ImageFileSchema = z.infer<typeof imageFileSchema>;
 
@@ -77,8 +78,8 @@ const EditProfilePhoto = ({
       try {
         const profilePic = await startUpload([selectedFile]).then((res) => {
           const formattedImage = res?.map((img) => ({
-            url: img?.fileUrl,
-            id: img?.fileKey,
+            url: img.url,
+            id: img.key,
           }));
           return formattedImage?.at(0);
         });
@@ -89,6 +90,7 @@ const EditProfilePhoto = ({
         const oldPicUrl = new URL(photoUrl);
         if (oldPicUrl.hostname === 'uploadthing.com') {
         }
+        
         form.reset();
       } catch (err) {
         customToastError(err);

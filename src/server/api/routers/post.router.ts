@@ -5,7 +5,7 @@ import {
   publicProcedure,
 } from '@/server/api/trpc';
 import { TRPCError } from '@trpc/server';
-import { utapi } from 'uploadthing/server';
+// import { utapi } from 'uploadthing/server';
 import { z } from 'zod';
 
 export const postRouter = createTRPCRouter({
@@ -195,7 +195,7 @@ export const postRouter = createTRPCRouter({
           images: true,
         },
       });
-      await utapi.deleteFiles(deletedPost.images.map((image) => image.id));
+      // await utapi.deleteFiles(deletedPost.images.map((image) => image.id));
       return deletedPost;
     }),
 });

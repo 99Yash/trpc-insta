@@ -85,8 +85,8 @@ const CreatePost = () => {
       const images = inputs.images
         ? await startUpload(inputs.images).then((res) => {
             const formattedImages = res?.map((image) => ({
-              id: image.fileKey,
-              url: image.fileUrl,
+              id: image.key,
+              url: image.url,
             }));
             return formattedImages ?? [];
           })

@@ -7,3 +7,8 @@ const handler = createNextPageApiHandler({
 });
 
 export default handler;
+
+import { createUploadthing, type FileRouter } from "uploadthing/next";
+ 
+const f = createUploadthing();
+export const uploadRouter = { ourFileRouter };

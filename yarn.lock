@@ -1068,22 +1068,25 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@uploadthing/mime-types@^0.2.0":
+"@uploadthing/mime-types@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@uploadthing/mime-types/-/mime-types-0.2.2.tgz#94ec59c61729f6bef5662d8b222831e8afd59369"
   integrity sha512-ZUo1JHOPPMZDsUw1mOhhVDIvJGlsjj6T0xJ/YJtulyJwL43S9B5pxg1cHcRuTEgjaxj7B55jiqQ6r9mDrrjH9A==
 
-"@uploadthing/react@5.2.0":
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/@uploadthing/react/-/react-5.2.0.tgz#1951076c5324b85f0392ae256ed53fab2791590a"
-  integrity sha512-kVM/3JZJhMgk2QGvyhyqPA5Zycq9TaqgCg/MNWvWDSgzw5MKeMyiXsEAJEQ7jO1BBjAfZ0O0NCM0VXCXuMLkPQ==
+"@uploadthing/react@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@uploadthing/react/-/react-6.0.2.tgz#a75986f504019c9cc6e778627ebc7a78d3375fa8"
+  integrity sha512-gUJwNvSFs0bg4m0c6wlFo1Fe3uyGTmAp0BESkRZvqyN4hNhIcxMY0TxjqxCKsYkv1T0/y3dHgN/XU2BDAQQh7w==
   dependencies:
-    "@uploadthing/shared" "^5.1.0"
+    "@uploadthing/shared" "^6.0.2"
+    attr-accept "^2.2.2"
+    file-selector "^0.6.0"
+    tailwind-merge "^1.13.2"
 
-"@uploadthing/shared@^5.1.0":
-  version "5.2.7"
-  resolved "https://registry.yarnpkg.com/@uploadthing/shared/-/shared-5.2.7.tgz#a08108081070db6f66d874646773c46008e6a580"
-  integrity sha512-gc+i66m0vPQpy5PC783iq1koE8Fm9lFTd3uPrJAr7kXwpNRteJs4dnu6etDkY8EilTjMFA6w4js/AhW8AUDuQg==
+"@uploadthing/shared@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@uploadthing/shared/-/shared-6.0.2.tgz#8c804ee087b76254f06d76792967515bd12e6971"
+  integrity sha512-yFOhvzBG8VB2qmEGWDuW/tV/ZcfRZ4a6rX7i9/ZS3IqHA0FO7CKa8yitltAl3yRdSI9it88iMEQg7Ah/ve8D4A==
 
 "@vercel/analytics@^1.0.2":
   version "1.0.2"
@@ -3592,13 +3595,13 @@ update-browserslist-db@^1.0.11:
     escalade "^3.1.1"
     picocolors "^1.0.0"
 
-uploadthing@5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/uploadthing/-/uploadthing-5.2.1.tgz#63dfe657c39966d90917673bd33a544c4c3e1988"
-  integrity sha512-vav6UwvEOzBSoPYHGsM6PksyAmyUoPPylkcveTgAUWVS5kKWaaxcOlgStShveTUo3JnoKD2E9Z2+z1BWXALv8A==
+uploadthing@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/uploadthing/-/uploadthing-6.1.0.tgz#2f34b13948dd6852fb6361bef3cbed3720e274be"
+  integrity sha512-3OhxRxY+cOoA+g5kAkuYo/pIyOJKZR6+iUt077QkfhmN8GCjekFyiQDAmH/X1IQ29U8lMpMkgcxHx9HetkPtdw==
   dependencies:
-    "@uploadthing/mime-types" "^0.2.0"
-    "@uploadthing/shared" "^5.1.0"
+    "@uploadthing/mime-types" "^0.2.2"
+    "@uploadthing/shared" "^6.0.2"
 
 uri-js@^4.2.2:
   version "4.4.1"

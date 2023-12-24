@@ -60,7 +60,7 @@ export const UserPosts = ({ username }: { username: string }) => {
         <UserPost
           key={post.id}
           postId={post.id}
-          firstImageUrl={post.images[0]!.url!}
+          firstImageUrl={post.images[0]?.url ?? ''}
         />
       ))}
     </div>
