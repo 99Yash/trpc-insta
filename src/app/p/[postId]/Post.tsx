@@ -43,8 +43,8 @@ export default function Post({ postId }: { postId: string }) {
         <PostButtons postId={postId} />
         <div className="flex gap-1">
           <CustomAvatar
-            imgUrl={user?.image!}
-            name={user?.name!}
+            imgUrl={user?.image}
+            name={user?.name}
           />
           <AddComment postId={postId} />
         </div>
@@ -60,8 +60,8 @@ export default function Post({ postId }: { postId: string }) {
           {/* //? post author header */}
           <div className="flex items-center gap-2">
             <CustomAvatar
-              imgUrl={post.user.image!}
-              name={post.user.name!}
+              imgUrl={post.user.image}
+              name={post.user.name}
             />
             <Link
               href={`/${post.user.username}`}
@@ -78,8 +78,8 @@ export default function Post({ postId }: { postId: string }) {
           {/* //? post author caption */}
           <div className="flex items-center gap-1 mt-2 pb-4 ">
             <CustomAvatar
-              imgUrl={post.user.image!}
-              name={post.user.name!}
+              imgUrl={post.user.image}
+              name={post.user.name}
             />
             <div className="flex pt-2">
               <div className="whitespace-pre-line overflow-hidden text-sm text-ellipsis">
@@ -106,7 +106,7 @@ export default function Post({ postId }: { postId: string }) {
             {/* //? add a comment input */}
             {user ? (
               <CustomAvatar
-                imgUrl={user.image!}
+                imgUrl={user.image}
                 name={user.name ?? ''}
               />
             ) : null}

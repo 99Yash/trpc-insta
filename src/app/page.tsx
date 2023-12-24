@@ -75,9 +75,9 @@ const Post = async ({ post }: PostProps) => {
       </div>
       {post.comments && post.comments.length > 0 ? (
         <span className="text-gray-500">
-          View {post.comments && post.comments.length > 2 ? 'all' : null}{' '}
-          {post.comments &&  post.comments.length}{' '}
-          {post.comments && post.comments.length > 1 ? 'comments' : 'comment'}{' '}
+          View {post.comments.length > 2 ? 'all' : null}{' '}
+          { post.comments.length}{' '}
+          {post.comments.length > 1 ? 'comments' : 'comment'}{' '}
         </span>
       ) : null}
       <div className="flex">
