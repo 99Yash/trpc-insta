@@ -1,6 +1,6 @@
 'use client';
 
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { formatTimeToNow } from '@/lib/utils';
 import Link from 'next/link';
 import AddComment from './forms/add-comment';

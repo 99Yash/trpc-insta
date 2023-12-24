@@ -6,7 +6,7 @@ import CustomAvatar from '@/components/utilities/custom-avatar';
 import PostActions from '@/components/utilities/post-actions';
 import PostButtons from '@/components/utilities/post-buttons';
 import PostImage from '@/components/utilities/post-image';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { formatTimeToNow } from '@/lib/utils';
 import Link from 'next/link';
 

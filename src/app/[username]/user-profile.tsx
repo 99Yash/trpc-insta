@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import EditProfilePhoto from '@/components/utilities/edit-dp';
 import FollowUnfollowBtn from '@/components/utilities/follow-unfollow';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 
 export const UserProfile = ({ username }: { username: string }) => {
   const { data: user } = api.user.fetchUser.useQuery({

@@ -1,6 +1,6 @@
 'use client';
 
-import { api } from '@/lib/api/client';
+import { api } from '@/trpc/react';
 import { Button } from '../ui/button';
 import { toast } from '../ui/use-toast';
 import { customToastError } from '@/lib/utils';

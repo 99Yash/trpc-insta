@@ -82,7 +82,7 @@ export default function RootLayout({
           <TailwindIndicator />
           <main className={cn('container sm:max-w-full h-screen')}>
             <TRPCReactProvider cookies={cookies().toString()}>
-              {/* <Header /> */}
+              <Header />
               {children}
             </TRPCReactProvider>
           </main>

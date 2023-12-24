@@ -1,5 +1,5 @@
 'use client';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { customToastError, manualDialogClose } from '@/lib/utils';
 import { imageFileSchema, imageSchema } from '@/lib/validators';
 import { useUploadThing } from '@/utils/uploadthing';

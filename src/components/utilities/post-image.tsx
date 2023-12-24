@@ -1,5 +1,5 @@
 'use client';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { customToastError } from '@/lib/utils';
 import Image from 'next/image';
 import { useState } from 'react';

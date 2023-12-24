@@ -1,6 +1,6 @@
 'use client';
 
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import {

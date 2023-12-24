@@ -4,7 +4,7 @@ import { Icons } from '@/components/icons';
 import { Skeleton } from '@/components/ui/skeleton';
 import AddPostButton from '@/components/utilities/add-post-button';
 import UserPost from '@/components/utilities/user-post';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 
 export const UserPosts = ({ username }: { username: string }) => {
   const { data: user } = api.user.fetchUser.useQuery({

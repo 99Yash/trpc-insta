@@ -1,6 +1,6 @@
 'use client';
 import { toast } from '@/components/ui/use-toast';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { customToastError } from '@/lib/utils';
 import { useState } from 'react';
 import { Icons } from '../icons';

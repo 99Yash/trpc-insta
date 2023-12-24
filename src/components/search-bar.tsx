@@ -10,7 +10,7 @@ import {
   CommandList,
 } from './ui/command';
 
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { useOnClickOutside } from '@/lib/hooks/use-on-click-outside';
 import debounce from 'lodash.debounce';
 import { usePathname, useRouter } from 'next/navigation';

@@ -1,5 +1,5 @@
 'use client';
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 import { customToastError, manualDialogClose } from '@/lib/utils';
 import { addPostSchema } from '@/lib/validators';
 import { FileWithPreview } from '@/types';

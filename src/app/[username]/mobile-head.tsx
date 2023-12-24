@@ -1,6 +1,6 @@
 'use client';
 
-import { api } from '@/lib/api/api';
+import { api } from '@/trpc/react';
 
 export default function MobileHead({ username }: { username: string }) {
   const { data: user } = api.user.fetchUser.useQuery({
