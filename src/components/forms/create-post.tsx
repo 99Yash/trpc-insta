@@ -2,12 +2,13 @@
 import { api } from '@/trpc/react';
 import { customToastError, manualDialogClose } from '@/lib/utils';
 import { addPostSchema } from '@/lib/validators';
-import { FileWithPreview } from '@/types';
+import type { FileWithPreview } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import type { z } from 'zod';
 import { FileDialog } from '../file-dialog';
 import { Icons } from '../icons';
 import { Button } from '../ui/button';
