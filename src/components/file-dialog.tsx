@@ -60,21 +60,20 @@ export function FileDialog<TFieldValues extends FieldValues>({
 }: FileDialogProps<TFieldValues>) {
   const onDrop = React.useCallback(
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
-      setValue(
-        name,
-        acceptedFiles as PathValue<TFieldValues, Path<TFieldValues>>,
-        {
-          shouldValidate: true,
-        }
-      );
+      // setValue(
+      //   name,
+      //   acceptedFiles as PathValue<TFieldValues, Path<TFieldValues>>,
+      //   {
+      //     shouldValidate: true,
+      //   }
+      // );
 
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
-      );
+      acceptedFiles.forEach(file=>{
+        const fileWithPreview=Object.assign(file,{
+          preview:URL.createObjectURL(file)
+        })
+        setFiles(prev=>[...(prev ?? []), fileWithPreview])
+      })
 
       if (rejectedFiles.length > 0) {
         rejectedFiles.forEach(({ errors }) => {
@@ -91,8 +90,14 @@ export function FileDialog<TFieldValues extends FieldValues>({
       }
     },
 
-    [maxSize, name, setFiles, setValue]
+    [maxSize, setFiles]
   );
+
+    // Register files to react-hook-form
+    React.useEffect(() => {
+      setValue(name, files as PathValue<TFieldValues, Path<TFieldValues>>)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [files])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

@@ -5,7 +5,7 @@ import { getCurrentUser } from '@/lib/session';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { FC } from 'react';
+import type { FC } from 'react';
 
 const SignInPage: FC = async () => {
   const user = await getCurrentUser();

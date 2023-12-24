@@ -5,11 +5,14 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { TRPCReactProvider } from '@/trpc/react';
 import { Analytics } from '@vercel/analytics/react';
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
 import * as React from 'react';
 import '../styles/globals.css';
+import { extractRouterConfig } from 'uploadthing/server';
+import { ourFileRouter } from './api/uploadthing/core';
 
 const dm_sans = Inter({
   display: 'swap',
@@ -83,6 +86,15 @@ export default function RootLayout({
           <main className={cn('container sm:max-w-full h-screen')}>
             <TRPCReactProvider cookies={cookies().toString()}>
               <Header />
+              <NextSSRPlugin
+          /**
+           * The `extractRouterConfig` will extract **only** the route configs
+           * from the router to prevent additional information from being
+           * leaked to the client. The data passed to the client is the same
+           * as if you were to fetch `/api/uploadthing` directly.
+           */
+          routerConfig={extractRouterConfig(ourFileRouter)}
+        />
               {children}
             </TRPCReactProvider>
           </main>

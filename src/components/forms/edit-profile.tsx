@@ -42,7 +42,7 @@ const EditProfile = ({
 }) => {
   const { toast } = useToast();
   const router = useRouter();
-  const apiCtx = api.useContext();
+  const apiCtx = api.useUtils();
 
   const defaultValues: UsernameBioMetadata = {
     username,

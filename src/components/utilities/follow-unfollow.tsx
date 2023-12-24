@@ -7,7 +7,7 @@ import { customToastError } from '@/lib/utils';
 
 const FollowUnfollowBtn = ({ userId }: { userId: string }) => {
   //* this userId prop refers to the user whose profile is being viewed, not the current user
-  const apiUtils = api.useContext();
+  const apiUtils = api.useUtils();
   const { data: currentUser } = api.user.fetchCurrentUser.useQuery();
   if (!currentUser)
     return (

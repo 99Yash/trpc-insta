@@ -11,7 +11,7 @@ type PostButtonProps = {
 
 const PostButtons = ({ postId }: PostButtonProps) => {
   const router = useRouter();
-  const apiUtils = api.useContext();
+  const apiUtils = api.useUtils();
   const { data: user } = api.user.fetchCurrentUser.useQuery();
   const { data: likes } = api.like.getLikesCount.useQuery({ postId });
 

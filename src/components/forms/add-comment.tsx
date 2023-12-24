@@ -9,7 +9,7 @@ import { Input } from '../ui/input';
 
 const AddComment = ({ postId }: { postId: string }) => {
   const [comment, setComment] = useState('');
-  const apiUtils = api.useContext();
+  const apiUtils = api.useUtils();
 
   const addCommentMutation = api.comment.addComment.useMutation({
     onSuccess: async () => {

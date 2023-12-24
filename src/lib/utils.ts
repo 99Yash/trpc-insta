@@ -1,5 +1,5 @@
 import { toast } from '@/components/ui/use-toast';
-import { type ClassValue, clsx } from 'clsx';
+import { ClassValue, clsx } from 'clsx';
 import { formatDistanceToNowStrict } from 'date-fns';
 import locale from 'date-fns/locale/en-US';
 import { twMerge } from 'tailwind-merge';

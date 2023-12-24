@@ -3,7 +3,6 @@ import { api } from '@/trpc/react';
 import { customToastError, manualDialogClose } from '@/lib/utils';
 import { addPostSchema } from '@/lib/validators';
 import { FileWithPreview } from '@/types';
-import { useUploadThing } from '@/utils/uploadthing';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -32,6 +31,8 @@ import {
 import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
 import { Zoom } from '../zoom-image';
+import { generateReactHelpers } from '@uploadthing/react/hooks';
+import { OurFileRouter } from '@/app/api/uploadthing/core';
 
 type AddPostSchema = z.infer<typeof addPostSchema>;
 
@@ -41,9 +42,10 @@ const CreatePost = () => {
     images: null,
   };
   const { toast } = useToast();
-  const apiCtx = api.useContext();
+  const apiCtx = api.useUtils();
   const [files, setFiles] = useState<FileWithPreview[] | null>(null);
 
+  const { useUploadThing } = generateReactHelpers<OurFileRouter>()
   const { isUploading, startUpload } = useUploadThing('postImageUploader');
 
   const form = useForm<AddPostSchema>({

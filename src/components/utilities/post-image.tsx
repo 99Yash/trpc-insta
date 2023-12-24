@@ -14,7 +14,7 @@ const PostImage = ({
   imageUrls: Array<string>;
   postId: string;
 }) => {
-  const apiUtils = api.useContext();
+  const apiUtils = api.useUtils();
   //TODO flash a heart on double click.
   const [imageUrl, setImageUrl] = useState<string>(imageUrls.at(0) as string);
 

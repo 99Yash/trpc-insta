@@ -15,7 +15,7 @@ import { toast } from '../ui/use-toast';
 import { manualDialogClose } from '@/lib/utils';
 
 export default function PostActions({ postId }: { postId: string }) {
-  const apiUtils = api.useContext();
+  const apiUtils = api.useUtils();
 
   const deletePostMutation = api.post.delete.useMutation({
     onSuccess: async () => {
