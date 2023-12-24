@@ -4,8 +4,9 @@ import { customToastError, manualDialogClose } from '@/lib/utils';
 import { userProfileSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form'
+import type { z } from 'zod';
 import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import {

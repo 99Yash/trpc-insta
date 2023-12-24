@@ -9,7 +9,7 @@ import { generateReactHelpers } from '@uploadthing/react/hooks';
 import { useRef } from 'react';
 import type { ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import type { z } from 'zod';
 import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import {
