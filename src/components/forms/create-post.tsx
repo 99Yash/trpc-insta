@@ -148,14 +148,14 @@ const CreatePost = () => {
             />
             <FormItem className="flex w-full flex-col gap-1.5">
               <FormLabel>Images</FormLabel>
-              {!isUploading && previews?.length ? (
+              {previews?.length ? (
                 <div className="flex items-center gap-2">
                   {previews.map((file) => (
                     <Zoom key={file.name}>
                       <Image
                         src={file.preview}
                         alt={file.name}
-                        className="h-20 w-20 shrink-0 rounded-md object-cover object-center"
+                        className={`h-20 w-20 shrink-0 rounded-md object-cover object-center ${(isUploading || addPostMutation.isLoading) ? "opacity-45" : "" }`}
                         width={80}
                         height={80}
                       />
