@@ -63,10 +63,10 @@ const Post = async ({ post }: PostProps) => {
       />
       <PostButtons postId={post.id} />
       <div className="flex flex-wrap">
-        <div className="whitespace-pre-line overflow-hidden text-ellipsis">
+        <div className="whitespace-pre-line overflow-hidden text-sm text-ellipsis">
           <Link
             href={`/${post.user.username}`}
-            className="text-sm font-semibold hover:text-gray-400 duration-150 mr-2"
+            className="text-xs font-semibold hover:text-gray-400 duration-150 mr-2"
           >
             {post.user.username}
           </Link>
