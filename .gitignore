@@ -29,6 +29,8 @@ yarn-error.log*
 # local env files
 .env*.local
 
+/pscale_dump_trpc-insta_main_20240309_115559
+
 # vercel
 .vercel
 
