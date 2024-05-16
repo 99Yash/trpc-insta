@@ -15,7 +15,6 @@ export default function Post({ postId }: { postId: string }) {
   const { data: post } = api.post.fetchPost.useQuery({ postId });
 
   //? don't return notFound() in a client component
-  
   if (!post) return null;
   
   return (
@@ -103,7 +102,6 @@ export default function Post({ postId }: { postId: string }) {
           </div>
           <div className="flex gap-2">
             {/* //! dont remove this div */}
-            {/* //? add a comment input */}
             {user ? (
               <CustomAvatar
                 imgUrl={user.image}
