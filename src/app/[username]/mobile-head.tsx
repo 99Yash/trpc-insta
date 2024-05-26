@@ -21,7 +21,7 @@ export default function MobileHead({ username }: { username: string }) {
 
   return (
     <div className="flex flex-col md:hidden gap-2">
-      <h5 className="text-md self-start md:hidden font-semibold ">
+      <h5 className=" self-start md:hidden font-semibold ">
         {user?.name}
       </h5>
       <p className="text-sm self-start whitespace-pre-line md:hidden  text-gray-300">
@@ -31,20 +31,20 @@ export default function MobileHead({ username }: { username: string }) {
       {/* //? row of numbers(posts, following, followers) */}
       <div className="grid grid-cols-3 justify-evenly">
         <div className="flex flex-col items-center ">
-          <h5 className="text-md font-semibold ">{numberOfPosts}</h5>
+          <h5 className=" font-semibold ">{numberOfPosts}</h5>
           <p className="text-sm text-gray-400">
             {numberOfPosts === 1 ? 'post' : 'posts'}
           </p>
         </div>
 
         <div className="flex flex-col items-center ">
-          <h5 className="text-md font-semibold ">{userFollowerCount}</h5>
+          <h5 className=" font-semibold ">{userFollowerCount}</h5>
           <p className="text-sm text-gray-400">
             {userFollowerCount === 1 ? 'Follower' : 'Followers'}
           </p>
         </div>
         <div className="flex flex-col items-center ">
-          <h5 className="text-md font-semibold ">{userFollowingCount}</h5>
+          <h5 className=" font-semibold ">{userFollowingCount}</h5>
           <p className="text-sm text-gray-400">Following</p>
         </div>
       </div>
